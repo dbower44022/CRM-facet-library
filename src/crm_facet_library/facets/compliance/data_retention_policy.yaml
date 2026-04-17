@@ -1,0 +1,56 @@
+id: compliance.data_retention_policy
+version: 0.1.0
+status: active
+name: Configurable data retention policy
+description: >
+  Whether the CRM exposes configurable retention policies — per entity or
+  tenant-wide — such that records and their histories are retained or
+  purged according to rules the administrator can set (for GDPR,
+  customer-data minimization, and similar compliance needs).
+
+question: >
+  Can an administrator configure, per entity or tenant-wide, how long
+  records and their change history are retained before purge?
+
+answer_schema:
+  type: structured
+  fields:
+    configurable:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+    granularity:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Per-entity, per-field, and per-relationship retention rules.
+        partial: Tenant-wide only, or per-entity only.
+        none: Retention is fixed; no admin control.
+
+applies_to:
+  - cross-cutting
+
+tags:
+  - family:compliance
+  - applies-to:records
+  - axis:retention
+  - crm-dim:entity
+
+examples:
+  - requirement: "Purge closed-deal records older than 7 years for GDPR compliance"
+    expected_answer:
+      configurable: full
+      granularity: full
+
+related_facets:
+  - history.relationship.retention
+  - history.field.audit_trail
+
+source_hints:
+  standards_refs:
+    - "GDPR Article 5(1)(e) — storage limitation"
+    - "SOC 2 CC6.5 — data retention and disposal"
+
+created: 2026-04-17
+modified: 2026-04-17
+author: doug
+reviewer: doug

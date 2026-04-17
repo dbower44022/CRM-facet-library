@@ -1,0 +1,48 @@
+id: permission.audit_log_access
+version: 0.1.0
+status: active
+name: Audit log access control
+description: >
+  Whether access to the CRM's audit log is gated by a distinct permission
+  separate from general record access, so that (for example) an auditor
+  role can inspect change history without being granted write access to
+  business records.
+
+question: >
+  Is access to the CRM's audit log controlled by a permission that is
+  separate from general record-read permissions?
+
+answer_schema:
+  type: rating
+  allowed_values: [full, partial, none, unknown]
+  scoring_hints:
+    full: A dedicated audit-log permission exists and is assignable per role.
+    partial: Audit log is accessible, but only via the same permission as record reads.
+    none: Audit log is not accessible through any permission model.
+    unknown: Insufficient evidence.
+
+applies_to:
+  - persona
+
+tags:
+  - family:permission
+  - family:compliance
+  - applies-to:audit
+  - crm-dim:persona
+
+examples:
+  - requirement: "Let an internal auditor read the audit log without read access to customer records"
+    expected_answer: full
+
+related_facets:
+  - history.field.audit_trail
+  - compliance.data_retention_policy
+
+source_hints:
+  standards_refs:
+    - "SOC 2 CC6.1 — logical access controls"
+
+created: 2026-04-17
+modified: 2026-04-17
+author: doug
+reviewer: doug

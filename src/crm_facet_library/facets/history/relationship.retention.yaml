@@ -1,0 +1,54 @@
+id: history.relationship.retention
+version: 0.1.0
+status: active
+name: Relationship history retention
+description: >
+  When a relationship between two records changes (e.g., a contact switches
+  jobs), whether the prior relationship state is preserved and, if so, for
+  how long.
+
+question: >
+  When a relationship between records changes, does the CRM preserve the
+  prior state? What is the retention duration?
+
+answer_schema:
+  type: structured
+  fields:
+    preserved:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+    duration:
+      type: scalar
+      unit: months
+      allowed_special: [indefinite, configurable, unknown]
+
+applies_to:
+  - entity
+  - cross-cutting
+
+tags:
+  - family:history
+  - family:compliance
+  - applies-to:relationships
+  - axis:retention
+  - crm-dim:entity
+
+examples:
+  - requirement: "Track all past employment across our relationship with a contact"
+    expected_answer:
+      preserved: full
+      duration: indefinite
+
+related_facets:
+  - history.relationship.temporal_modeling
+  - history.field.audit_trail
+  - compliance.data_retention_policy
+
+source_hints:
+  corpus_refs:
+    - REQ-001-employment-history
+
+created: 2026-04-17
+modified: 2026-04-17
+author: doug
+reviewer: doug

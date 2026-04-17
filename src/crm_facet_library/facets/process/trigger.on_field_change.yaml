@@ -1,0 +1,50 @@
+id: process.trigger.on_field_change
+version: 0.1.0
+status: active
+name: On-field-change trigger
+description: >
+  Whether the CRM's automation engine can fire a trigger when a specific
+  named field's value changes (not just when any field changes or when
+  the record is saved), and whether conditions on the old/new value are
+  expressible.
+
+question: >
+  Can an automation fire specifically when a named field changes, with
+  conditions on the prior and new value?
+
+answer_schema:
+  type: structured
+  fields:
+    fires_on_named_field:
+      type: rating
+      allowed_values: [full, partial, workaround, none, unknown]
+    conditions_on_old_new:
+      type: rating
+      allowed_values: [full, partial, workaround, none, unknown]
+
+applies_to:
+  - process
+
+tags:
+  - family:process
+  - applies-to:automation
+  - axis:triggers
+  - crm-dim:process
+
+examples:
+  - requirement: "When Account.status changes from 'Prospect' to 'Customer', notify the account manager"
+    expected_answer:
+      fires_on_named_field: full
+      conditions_on_old_new: full
+
+related_facets:
+  - history.field.audit_trail
+
+source_hints:
+  corpus_refs:
+    - REQ-015-status-change-timeline
+
+created: 2026-04-17
+modified: 2026-04-17
+author: doug
+reviewer: doug

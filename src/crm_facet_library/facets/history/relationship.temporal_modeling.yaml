@@ -1,0 +1,60 @@
+id: history.relationship.temporal_modeling
+version: 0.1.0
+status: active
+name: Temporal relationship modeling
+description: >
+  Whether the CRM can natively represent relationships between entities
+  that are bounded by a start date and end date (e.g., a contact's employment
+  at a company from date A to date B), producing a first-class historical
+  record rather than overwriting current state.
+
+question: >
+  Does the CRM support relationships bounded by start/end dates, preserved
+  as first-class historical records?
+
+answer_schema:
+  type: rating
+  allowed_values: [full, partial, workaround, none, unknown]
+  scoring_hints:
+    full: Native support — a dedicated "effective-dated" relationship type or equivalent.
+    partial: Supported but requires workarounds (e.g., a custom entity with manually managed dates).
+    workaround: Achievable only via external integration or heavy custom development.
+    none: Not supported in any documented form.
+    unknown: Insufficient evidence; default rating.
+
+applies_to:
+  - entity
+  - cross-cutting
+
+tags:
+  - family:history
+  - applies-to:relationships
+  - axis:modeling
+  - crm-dim:entity
+
+examples:
+  - requirement: "See a contact's employment history across our relationship with them"
+    expected_answer: full
+    commentary: >
+      A CRM that models Employment as a first-class time-bounded relationship
+      between Contact and Account satisfies this cleanly.
+
+related_facets:
+  - history.relationship.retention
+  - history.field.audit_trail
+  - history.queryability.point_in_time
+
+prerequisites:
+  - entity.relationship.cardinality
+
+source_hints:
+  corpus_refs:
+    - REQ-001-employment-history
+    - REQ-007-subscription-periods
+  standards_refs:
+    - "Bitemporal modeling (Snodgrass, 2000)"
+
+created: 2026-04-17
+modified: 2026-04-17
+author: doug
+reviewer: doug

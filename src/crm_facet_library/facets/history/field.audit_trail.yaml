@@ -1,0 +1,62 @@
+id: history.field.audit_trail
+version: 0.1.0
+status: active
+name: Field-level audit trail
+description: >
+  Whether the CRM automatically records changes to record fields, with
+  timestamps and prior/new values, and whether this history is programmatically
+  queryable (not just displayable in a UI feed).
+
+question: >
+  Does the CRM record every field change with a timestamp, previous value,
+  new value, and actor — and is this data programmatically queryable?
+
+answer_schema:
+  type: structured
+  fields:
+    auto_recorded:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+    queryable_via_api:
+      type: boolean
+      allowed_values: ["yes", "no", unknown]
+    retention:
+      type: scalar
+      unit: months
+      allowed_special: [indefinite, configurable, unknown]
+
+applies_to:
+  - entity
+  - cross-cutting
+
+tags:
+  - family:history
+  - family:compliance
+  - applies-to:fields
+  - axis:retention
+  - complexity:requires-probe
+  - crm-dim:entity
+
+examples:
+  - requirement: "Surface a timeline of every status-field change on an engagement"
+    expected_answer:
+      auto_recorded: full
+      queryable_via_api: "yes"
+      retention: indefinite
+
+related_facets:
+  - history.relationship.retention
+  - history.queryability.point_in_time
+  - permission.audit_log_access
+
+source_hints:
+  corpus_refs:
+    - REQ-001-employment-history
+    - REQ-015-status-change-timeline
+  standards_refs:
+    - "SOC 2 CC7.2 audit logging"
+
+created: 2026-04-17
+modified: 2026-04-17
+author: doug
+reviewer: doug

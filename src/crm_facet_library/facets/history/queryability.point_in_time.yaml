@@ -1,0 +1,52 @@
+id: history.queryability.point_in_time
+version: 0.1.0
+status: active
+name: Point-in-time state query
+description: >
+  Whether the CRM can answer, programmatically, "what was this record's
+  complete state on date X?" — as opposed to merely listing change events
+  or showing a recent-change feed in the UI.
+
+question: >
+  Can the CRM return a record's full state as it existed on a specific
+  past date, through an API call?
+
+answer_schema:
+  type: rating
+  allowed_values: [full, partial, workaround, none, unknown]
+  scoring_hints:
+    full: A single API call returns the reconstructed record as of an arbitrary past date.
+    partial: Partial reconstruction is possible (some fields but not relationships, or vice versa).
+    workaround: Only achievable by replaying the audit trail client-side.
+    none: No path to reconstruct historical state.
+    unknown: Insufficient evidence.
+
+applies_to:
+  - entity
+  - cross-cutting
+
+tags:
+  - family:history
+  - applies-to:records
+  - axis:queryability
+  - crm-dim:entity
+
+examples:
+  - requirement: "Answer 'what was this contact's employer on 2024-03-15?' from the API"
+    expected_answer: full
+
+related_facets:
+  - history.relationship.temporal_modeling
+  - history.relationship.retention
+  - history.field.audit_trail
+
+source_hints:
+  corpus_refs:
+    - REQ-001-employment-history
+  standards_refs:
+    - "Bitemporal modeling (Snodgrass, 2000)"
+
+created: 2026-04-17
+modified: 2026-04-17
+author: doug
+reviewer: doug

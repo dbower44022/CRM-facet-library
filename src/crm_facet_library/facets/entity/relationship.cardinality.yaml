@@ -1,0 +1,58 @@
+id: entity.relationship.cardinality
+version: 0.1.0
+status: active
+name: Relationship cardinality support
+description: >
+  The cardinalities the CRM can natively express between two entity types —
+  one-to-one, one-to-many, many-to-many — and whether the cardinality is
+  enforced by the platform rather than left to application logic.
+
+question: >
+  Which relationship cardinalities does the CRM support natively between
+  two custom entity types, and are they enforced by the platform?
+
+answer_schema:
+  type: structured
+  fields:
+    one_to_one:
+      type: rating
+      allowed_values: [full, partial, workaround, none, unknown]
+    one_to_many:
+      type: rating
+      allowed_values: [full, partial, workaround, none, unknown]
+    many_to_many:
+      type: rating
+      allowed_values: [full, partial, workaround, none, unknown]
+
+applies_to:
+  - entity
+
+tags:
+  - family:entity
+  - family:relationship
+  - applies-to:relationships
+  - axis:modeling
+  - crm-dim:entity
+
+examples:
+  - requirement: "Let one Contact belong to many Accounts and vice versa"
+    expected_answer:
+      one_to_one: full
+      one_to_many: full
+      many_to_many: full
+    commentary: >
+      Most mature CRMs support one-to-many natively but vary widely on
+      many-to-many — some require an explicit junction entity.
+
+related_facets:
+  - history.relationship.temporal_modeling
+  - history.relationship.retention
+
+source_hints:
+  corpus_refs:
+    - REQ-001-employment-history
+
+created: 2026-04-17
+modified: 2026-04-17
+author: doug
+reviewer: doug

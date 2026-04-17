@@ -1,0 +1,70 @@
+# Library-wide metadata for the CRM facet library.
+# Enumerates the reserved families, tag namespaces, and rating vocabulary.
+# The validator reads this file first; adding a family or tag namespace
+# requires an explicit edit here.
+#
+# Specification: PRD 02 §6.2.
+
+library_version: 0.1.0
+schema_version: 1
+
+# Standard rating vocabulary (PRD 02 §2.3). Per-facet answer_schema
+# narrows this set to the values meaningful for that facet.
+rating_vocabulary:
+  - full
+  - partial
+  - read_only
+  - indirect
+  - workaround
+  - none
+  - na
+  - unknown
+
+# Reserved top-level facet families (PRD 02 §3.3). A facet's id must begin
+# with one of these segments. Renaming or removing a family requires
+# deprecating every facet under it.
+families:
+  - entity
+  - field
+  - relationship
+  - process
+  - data
+  - permission
+  - history
+  - workflow
+  - ui
+  - integration
+  - admin
+  - compliance
+  - commercial
+  - api
+
+# Reserved tag namespaces (PRD 02 §4.1). Tags not in one of these
+# namespaces are rejected by the validator.
+tag_namespaces:
+  - family
+  - applies-to
+  - axis
+  - crm-dim
+  - complexity
+  - impact
+
+# Allowed values for a facet's applies_to field.
+applies_to_values:
+  - entity
+  - process
+  - persona
+  - cross-cutting
+
+# Allowed values for a facet's status field.
+status_values:
+  - active
+  - deprecated
+  - draft
+
+# Allowed answer_schema.type values.
+answer_schema_types:
+  - rating
+  - boolean
+  - scalar
+  - structured

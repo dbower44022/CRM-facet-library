@@ -1,0 +1,16 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+      - id: crm-facet-lint
+        name: crm-facet-lint
+        entry: crm-facet-lint
+        language: system
+        pass_filenames: false
+        files: ^(src/crm_facet_library/LIBRARY\.yaml|src/crm_facet_library/facets/.*\.yaml)$
