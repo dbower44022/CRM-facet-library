@@ -42,9 +42,11 @@ related_facets:
 
 source_hints:
   corpus_refs:
-    - REQ-015-status-change-timeline
+    - REQ-004-cadence-aware-inactivity-monitoring
+    - REQ-011-mentor-departure-and-reactivation
+    - REQ-032-student-retention-early-alerts
 
 created: 2026-04-17
-modified: 2026-04-17
+modified: 2026-04-19
 author: doug
 reviewer: doug

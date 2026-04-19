@@ -1,0 +1,92 @@
+id: integration.bidirectional_sync
+version: 0.1.0
+status: active
+name: Bi-directional sync with an external system
+description: >
+  Whether the CRM can act as either source-of-truth or subscriber in a
+  bi-directional sync with another system (SIS, LMS, EHR, ERP, marketing
+  platform, email system), with configurable conflict resolution, per-field
+  direction control, and auditable change attribution so drift can be
+  diagnosed.
+
+question: >
+  Can the CRM participate in bi-directional sync with an external system,
+  with per-field direction, configurable conflict resolution, and change
+  attribution on every synced field?
+
+answer_schema:
+  type: structured
+  fields:
+    bidirectional_supported:
+      type: rating
+      allowed_values: [full, partial, workaround, none, unknown]
+      scoring_hints:
+        full: First-class bi-directional sync mechanism; inbound and outbound on the same link.
+        partial: Built-in one-way sync with custom webhook return path.
+        workaround: Achievable only by writing bespoke integration code.
+        none: No sync capability beyond one-off import/export.
+    per_field_direction:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Per-field direction configurable (this field owned by CRM, that field owned by the external system).
+        partial: Direction configured at the record-type level only.
+        none: Direction is all-or-nothing across the link.
+    conflict_resolution:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Multiple conflict-resolution rules available (last-write-wins, source-priority, field-by-field arbitration, flag-for-review).
+        partial: Only one hardcoded rule (typically last-write-wins).
+        none: Conflicts result in silent overwrite or silent reject with no user-visible signal.
+    change_attribution:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Every synced change carries which side made it and when; auditable for drift diagnosis.
+        partial: Source side logged but not reliably on every change.
+        none: No attribution on synced changes.
+
+applies_to:
+  - cross-cutting
+
+tags:
+  - family:integration
+  - applies-to:external-systems
+  - axis:sync-direction
+  - crm-dim:entity
+  - complexity:requires-probe
+
+examples:
+  - requirement: "The CRM syncs with the Student Information System: admissions data flows CRM→SIS when a student enrolls; attendance and grade events flow SIS→CRM continuously. The contact-info field is editable on either side with last-write-wins; demographic fields are owned by SIS and read-only in the CRM. Every synced change shows which side changed it."
+    expected_answer:
+      bidirectional_supported: full
+      per_field_direction: full
+      conflict_resolution: full
+      change_attribution: full
+  - requirement: "The CRM logs outbound emails against the contact and pulls inbound replies from the connected mailbox into the contact's activity timeline"
+    expected_answer:
+      bidirectional_supported: full
+      per_field_direction: na
+      conflict_resolution: na
+      change_attribution: partial
+    commentary: >
+      Email integration is a degenerate bi-directional case: activity
+      records flow in; contact updates do not. Per-field direction and
+      conflict resolution are not applicable.
+
+related_facets:
+  - data.identity_resolution
+  - history.field.audit_trail
+
+source_hints:
+  corpus_refs:
+    - REQ-022-email-integration-with-auto-logging
+    - REQ-027-lms-integration-for-training
+    - REQ-028-marketing-list-sync
+    - REQ-034-sis-lms-bidirectional-integration
+
+created: 2026-04-19
+modified: 2026-04-19
+author: doug
+reviewer: doug

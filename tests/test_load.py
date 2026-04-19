@@ -4,7 +4,7 @@ from crm_facet_library import Facet, Library, load_library
 def test_load_bundled_library():
     lib = load_library()
     assert isinstance(lib, Library)
-    assert lib.version == "0.1.0"
+    assert lib.version == "0.1.1"
     assert len(lib) >= 3
 
 

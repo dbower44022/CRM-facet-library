@@ -5,7 +5,7 @@
 #
 # Specification: PRD 02 §6.2.
 
-library_version: 0.1.0
+library_version: 0.1.1
 schema_version: 1
 
 # Standard rating vocabulary (PRD 02 §2.3). Per-facet answer_schema

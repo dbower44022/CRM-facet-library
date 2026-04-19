@@ -33,11 +33,12 @@ tags:
   - crm-dim:entity
 
 examples:
-  - requirement: "See a contact's employment history across our relationship with them"
+  - requirement: "Model a mentor's engagement with a client as a time-bounded relationship (active from start date through closure date), producing a first-class historical record after closure"
     expected_answer: full
     commentary: >
-      A CRM that models Employment as a first-class time-bounded relationship
-      between Contact and Account satisfies this cleanly.
+      A CRM that models Engagement as a first-class time-bounded relationship
+      between Mentor and Client satisfies this cleanly. A CRM that overwrites
+      current mentor assignment on closure does not.
 
 related_facets:
   - history.relationship.retention
@@ -49,12 +50,12 @@ prerequisites:
 
 source_hints:
   corpus_refs:
-    - REQ-001-employment-history
-    - REQ-007-subscription-periods
+    - REQ-003-active-engagement-with-sessions
+    - REQ-012-partner-organization-relationships
   standards_refs:
     - "Bitemporal modeling (Snodgrass, 2000)"
 
 created: 2026-04-17
-modified: 2026-04-17
+modified: 2026-04-19
 author: doug
 reviewer: doug

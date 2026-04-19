@@ -50,9 +50,10 @@ related_facets:
 
 source_hints:
   corpus_refs:
-    - REQ-001-employment-history
+    - REQ-002-mentor-matching-and-assignment
+    - REQ-012-partner-organization-relationships
 
 created: 2026-04-17
-modified: 2026-04-17
+modified: 2026-04-19
 author: doug
 reviewer: doug

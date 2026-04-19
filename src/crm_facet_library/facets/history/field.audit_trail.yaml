@@ -51,12 +51,13 @@ related_facets:
 
 source_hints:
   corpus_refs:
-    - REQ-001-employment-history
-    - REQ-015-status-change-timeline
+    - REQ-001-online-client-intake
+    - REQ-031-admissions-application-review-workflow
+    - REQ-036-multichannel-patient-outreach
   standards_refs:
     - "SOC 2 CC7.2 audit logging"
 
 created: 2026-04-17
-modified: 2026-04-17
+modified: 2026-04-19
 author: doug
 reviewer: doug

@@ -34,7 +34,7 @@ tags:
   - crm-dim:entity
 
 examples:
-  - requirement: "Track all past employment across our relationship with a contact"
+  - requirement: "After a mentor-client engagement closes, preserve the prior mentor-client relationship state with its outcome"
     expected_answer:
       preserved: full
       duration: indefinite
@@ -46,9 +46,10 @@ related_facets:
 
 source_hints:
   corpus_refs:
-    - REQ-001-employment-history
+    - REQ-005-engagement-closure-with-outcomes
+    - REQ-011-mentor-departure-and-reactivation
 
 created: 2026-04-17
-modified: 2026-04-17
+modified: 2026-04-19
 author: doug
 reviewer: doug

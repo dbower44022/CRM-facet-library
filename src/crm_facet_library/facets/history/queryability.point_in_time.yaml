@@ -32,7 +32,7 @@ tags:
   - crm-dim:entity
 
 examples:
-  - requirement: "Answer 'what was this contact's employer on 2024-03-15?' from the API"
+  - requirement: "Answer 'what was this client's engagement status and assigned mentor on 2025-06-30?' from the API"
     expected_answer: full
 
 related_facets:
@@ -42,11 +42,12 @@ related_facets:
 
 source_hints:
   corpus_refs:
-    - REQ-001-employment-history
+    - REQ-005-engagement-closure-with-outcomes
+    - REQ-018-donor-stewardship-and-lifetime-value
   standards_refs:
     - "Bitemporal modeling (Snodgrass, 2000)"
 
 created: 2026-04-17
-modified: 2026-04-17
+modified: 2026-04-19
 author: doug
 reviewer: doug

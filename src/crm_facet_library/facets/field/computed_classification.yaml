@@ -1,0 +1,91 @@
+id: field.computed_classification
+version: 0.1.0
+status: active
+name: Computed classification / tier field
+description: >
+  Whether the CRM supports fields whose value is derived on a cadence or
+  on event from multiple inputs (numeric signals, category values, external
+  data feeds), producing a classification or tier that drives downstream
+  behavior (workflow branching, ownership, cadence). Distinct from formula
+  fields that compute at read time — this covers materialized, longitudinal
+  classifications whose history is retained.
+
+question: >
+  Can the CRM maintain a materialized classification or tier field on a
+  record, computed from multiple inputs, updated on a cadence or event,
+  with history retained?
+
+answer_schema:
+  type: structured
+  fields:
+    multi_input_computation:
+      type: rating
+      allowed_values: [full, partial, workaround, none, unknown]
+      scoring_hints:
+        full: Rule engine or scorecard takes arbitrary inputs (fields, external feeds, aggregates) and produces a classification.
+        partial: Simple single-source formulas only (one field → one output).
+        workaround: Only achievable via external integration that writes back.
+        none: No computed-classification capability beyond static fields.
+    cadence_or_event_refresh:
+      type: rating
+      allowed_values: [full, partial, workaround, none, unknown]
+      scoring_hints:
+        full: Refresh on schedule (daily / hourly) and on input-change events, configurable per classification.
+        partial: Only one of schedule or event-driven, not both.
+        workaround: Manual recompute button only.
+    history_retained:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Every classification change creates a retained history record so trajectory is queryable.
+        partial: Current + previous value retained; no longer history.
+        none: Only current value; no history.
+    explainability:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: The inputs and rule that produced the current classification are visible to the user, not just the output.
+        partial: Rule is visible in admin UI but not per-record.
+        none: Classification appears without visible provenance.
+
+applies_to:
+  - entity
+  - cross-cutting
+
+tags:
+  - family:field
+  - applies-to:fields
+  - axis:computation
+  - crm-dim:entity
+  - complexity:requires-probe
+
+examples:
+  - requirement: "Compute a patient risk tier (Complex / High / Rising / Stable) from clinical indicators + claims + SDOH survey, refreshed nightly, with tier-change history and inputs visible to the coordinator"
+    expected_answer:
+      multi_input_computation: full
+      cadence_or_event_refresh: full
+      history_retained: full
+      explainability: full
+  - requirement: "Compute a student retention-risk score from attendance + LMS login + grade trends, alert advisor when threshold crossed"
+    expected_answer:
+      multi_input_computation: full
+      cadence_or_event_refresh: full
+      history_retained: partial
+      explainability: partial
+    commentary: >
+      Higher-ed early-alert systems typically surface the score but not always
+      the input composition; explainability tends to be partial rather than full.
+
+related_facets:
+  - process.trigger.on_field_change
+  - history.field.audit_trail
+
+source_hints:
+  corpus_refs:
+    - REQ-032-student-retention-early-alerts
+    - REQ-038-risk-tiered-patient-segmentation
+
+created: 2026-04-19
+modified: 2026-04-19
+author: doug
+reviewer: doug
