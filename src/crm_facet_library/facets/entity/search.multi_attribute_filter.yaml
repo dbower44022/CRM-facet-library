@@ -1,0 +1,82 @@
+id: entity.search.multi_attribute_filter
+version: 0.1.0
+status: active
+name: Multi-attribute filterable roster search
+description: Whether the CRM supports searching and filtering a list of entity records by multiple simultaneous
+  attribute types — including multi-select categorical fields (e.g. expertise, industry, language), numeric
+  or derived fields (e.g. capacity remaining), and boolean flags — in a single interactive query without
+  requiring a report export or custom development.
+question: Can a user search a list of records by simultaneously filtering on multiple field types — including
+  multi-select categories and numeric/derived values — in the CRM's standard UI?
+answer_schema:
+  type: structured
+  fields:
+    multi_select_filter:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Multi-select category fields (e.g. expertise tags) can be used as list-view filters, with
+          AND/OR logic configurable.
+        partial: Single-value categorical filters only; multi-select field content not filterable in standard
+          UI.
+        workaround: Only via custom report or external BI tool.
+        none: No filterable list views.
+    numeric_derived_filter:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Numeric fields and computed/rollup fields can be used as range filters in the standard list
+          view.
+        partial: Numeric fields filterable but computed/derived fields are not.
+        workaround: Only via report builder, not interactive list view.
+        none: No numeric filtering capability.
+    compound_filter_across_field_types:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: A single search can combine categorical, numeric, boolean, and text filters simultaneously
+          with AND/OR logic.
+        partial: Simultaneous filters supported but limited to same-type fields or without boolean logic
+          control.
+        none: Only one filter active at a time.
+applies_to:
+- entity
+- persona
+tags:
+- family:ui
+- applies-to:records
+- axis:search
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: Coordinator needs to filter the mentor roster by area of expertise (multi-select), industry
+    background (multi-select), language spoken, and remaining capacity (numeric) simultaneously to find
+    the best match for a client
+  expected_answer:
+    multi_select_filter: full
+    numeric_derived_filter: full
+    compound_filter_across_field_types: full
+related_facets:
+- entity.relationship.cardinality
+- field.computed_classification
+source_hints:
+  corpus_refs:
+  - REQ-002-mentor-matching-and-assignment
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

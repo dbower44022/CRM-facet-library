@@ -1,0 +1,85 @@
+id: ui.internal_directory_search
+version: 0.1.0
+status: active
+name: Internal contact directory for non-admin users
+description: Whether the CRM provides a searchable directory of contact records — filterable by multi-value
+  profile attributes such as skills, industry, language, or availability — that is accessible to non-administrator
+  internal users (such as coordinators and peers) and not just to system administrators.
+question: Can non-administrator internal users search a directory of contact records filtered by multi-value
+  profile attributes such as skills, industry, or language?
+answer_schema:
+  type: structured
+  fields:
+    multi_attribute_filter_search:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Search UI supports simultaneous filtering by multiple multi-select fields (e.g., skills
+          AND language AND availability); results update dynamically.
+        partial: Single-attribute filtering only, or only text search without structured faceted filtering.
+        workaround: Requires building a custom report or list view; no dedicated directory interface.
+        none: No search or directory capability for internal users.
+    accessible_to_non_admin_roles:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Directory and search capability is available to any permissioned internal role, not just
+          system administrators.
+        partial: Basic search available to all; faceted/multi-attribute filtering restricted to administrator
+          roles.
+        none: Directory accessible only to system administrators.
+    peer_access_for_contacts:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Contact-role users (e.g., mentors) can also browse the directory to find peers for collaboration,
+          with appropriate field visibility controls.
+        partial: Contact-role users can search but see only their own record.
+        workaround: Peer directory implemented as a separate external page or portal not integrated with
+          the CRM.
+        none: No peer access to the directory.
+applies_to:
+- persona
+- entity
+tags:
+- family:ui
+- applies-to:records
+- axis:queryability
+- crm-dim:persona
+examples:
+- requirement: A coordinator needs to search the mentor directory filtering by industry background, languages
+    spoken, and current availability to find candidates for a new client match — without running a report
+  expected_answer:
+    multi_attribute_filter_search: full
+    accessible_to_non_admin_roles: full
+    peer_access_for_contacts: partial
+- requirement: Mentors can browse a directory of other active mentors to identify potential collaboration
+    partners by area of expertise
+  expected_answer:
+    multi_attribute_filter_search: full
+    accessible_to_non_admin_roles: full
+    peer_access_for_contacts: full
+related_facets:
+- ui.persona_driven_view_composition
+- permission.self_service_field_edit
+source_hints:
+  corpus_refs:
+  - REQ-010-mentor-profile-and-capacity
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

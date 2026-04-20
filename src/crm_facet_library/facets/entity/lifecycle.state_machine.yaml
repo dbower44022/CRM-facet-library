@@ -1,0 +1,94 @@
+id: entity.lifecycle.state_machine
+version: 0.1.0
+status: active
+name: Controlled lifecycle state machine on a contact or record
+description: Whether the CRM supports a formal, administrator-defined state machine on a contact or record
+  entity — where only allowed transitions can fire, arbitrary status edits are blocked, and the transition
+  itself (not just the resulting state) can carry required metadata such as a reason code.
+question: Does the CRM enforce a configurable state machine on a record with allowed-transition controls
+  and required metadata captured per transition?
+answer_schema:
+  type: structured
+  fields:
+    allowed_transitions_enforced:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Only administrator-defined transitions can fire; arbitrary status edits by non-admin users
+          are blocked at the platform level.
+        partial: Transitions are defined but not enforced — a user with record-edit rights can set any
+          status value.
+        workaround: Enforcement only via validation rules or custom code, not native state-machine capability.
+        none: Status is a free-edit picklist field; no transition logic.
+    required_metadata_on_transition:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Each transition can be configured to require one or more fields (e.g., reason, date, approver)
+          before it completes; the record cannot transition without them.
+        partial: A single global required-reason field exists on all transitions but is not configurable
+          per transition.
+        workaround: Required fields enforced via validation rules that fire on save, not as a first-class
+          transition gate.
+        none: No mechanism to require data capture at transition time.
+    distinct_terminal_vs_reversible_states:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: The state machine natively distinguishes terminal states (no further outbound transitions)
+          from reversible ones, configurable per state.
+        partial: All states are reversible by default; terminal states can only be approximated by removing
+          edit rights.
+        none: No distinction; all states are always editable.
+applies_to:
+- entity
+- process
+tags:
+- family:entity
+- family:process
+- applies-to:records
+- axis:modeling
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: Mentors transition between Active, Inactive, and Departed states; only the administrator
+    can initiate transitions; each transition requires a recorded reason; reactivation is allowed from
+    Inactive but not from Departed
+  expected_answer:
+    allowed_transitions_enforced: full
+    required_metadata_on_transition: full
+    distinct_terminal_vs_reversible_states: full
+- requirement: A mentor application moves through Pending → Approved / Deferred / Rejected, each requiring
+    an administrator rationale before the transition completes
+  expected_answer:
+    allowed_transitions_enforced: full
+    required_metadata_on_transition: full
+    distinct_terminal_vs_reversible_states: partial
+  commentary: Many CRMs support required rationale on approval/reject but do not natively mark Rejected
+    as terminal; a validation rule may be needed to block re-opening.
+related_facets:
+- process.trigger.on_field_change
+- history.field.audit_trail
+- process.workflow.multi_gate_transition
+source_hints:
+  corpus_refs:
+  - REQ-011-mentor-departure-and-reactivation
+  - REQ-008-mentor-application-and-admission
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

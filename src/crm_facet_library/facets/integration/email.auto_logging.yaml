@@ -1,0 +1,79 @@
+id: integration.email.auto_logging
+version: 0.1.0
+status: active
+name: Automatic email logging to related records
+description: Whether the CRM automatically logs sent and received emails against the relevant contact
+  record and against any related parent records (e.g. Engagement, Partner, Donor, Application) — by matching
+  on email address and/or conversation thread — without any manual copy-paste by the user.
+question: Does the CRM automatically log every sent and received email against the matching contact AND
+  against related parent records (engagement, partner, etc.) by email-address or thread matching?
+answer_schema:
+  type: structured
+  fields:
+    contact_auto_log:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Every inbound and outbound email is automatically matched to a contact record by email address
+          and logged without user action.
+        partial: Auto-logging works for outbound only, or requires user confirmation per message.
+        workaround: BCC-to-CRM address only; user must manually BCC each message.
+        none: No automatic contact-level logging.
+    parent_record_auto_log:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Email is also associated to a specific parent record (e.g. the active Engagement for that
+          contact) automatically, using thread or context matching.
+        partial: Email is logged to the contact but must be manually linked to a parent record.
+        workaround: Parent-record linking available only via manual drag/drop or explicit user action.
+        none: No parent-record association; contact-level only.
+    thread_context_matching:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Conversation thread is used to keep reply chains associated with the same parent record
+          even as recipients change.
+        partial: Thread tracking exists but does not propagate to parent records.
+        none: Each message matched independently by email address only; no thread context.
+applies_to:
+- process
+- entity
+tags:
+- family:integration
+- applies-to:email
+- axis:auto-association
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: Every email sent or received by a staff member should be automatically logged against the
+    relevant contact and engagement record without copy-pasting
+  expected_answer:
+    contact_auto_log: full
+    parent_record_auto_log: full
+    thread_context_matching: full
+related_facets:
+- integration.email.native_send_receive
+- integration.bidirectional_sync
+- history.field.audit_trail
+source_hints:
+  corpus_refs:
+  - REQ-022-email-integration-with-auto-logging
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

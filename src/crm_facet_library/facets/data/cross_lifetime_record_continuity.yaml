@@ -1,0 +1,67 @@
+id: data.cross_lifetime_record_continuity
+version: 0.1.0
+status: active
+name: Cross-lifetime record continuity for returning contacts
+description: Whether the CRM preserves all historical child records (engagements, sessions, goals, notes,
+  surveys) on a long-lived parent record (contact or organization) such that when a formerly closed client
+  re-engages, the full prior history is immediately browsable from the same parent record — without requiring
+  archival retrieval or data reconstruction.
+question: 'When a contact re-engages after a closed engagement, is the full prior history browsable from
+  their current record without losing child records?
+
+  '
+answer_schema:
+  type: structured
+  fields:
+    closed_children_retained_on_parent:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Closed or terminal-state child records (engagements, sessions, etc.) remain associated to
+          the parent and are visible without any archival retrieval step.
+        partial: Closed child records are retained in the database but require a filter change or separate
+          archive view to see.
+        none: Closed child records are deleted, anonymized, or detached from the parent on closure.
+    multiple_engagement_lifetimes:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: A parent record can have any number of completed engagement records across time, all browsable
+          simultaneously.
+        partial: Limited number of historical engagements retained per parent (e.g. only the most recent
+          N).
+        none: Only one engagement record per parent supported; re-engagement requires creating a new parent
+          record.
+applies_to:
+- entity
+- cross-cutting
+tags:
+- family:data
+- applies-to:records
+- axis:retention
+- crm-dim:entity
+examples:
+- requirement: If a former client reapplies years later, their full prior engagement history — sessions,
+    goals, outcomes — should be immediately available so the next engagement starts with context
+  expected_answer:
+    closed_children_retained_on_parent: full
+    multiple_engagement_lifetimes: full
+related_facets:
+- history.relationship.retention
+- compliance.data_retention_policy
+- history.queryability.point_in_time
+source_hints:
+  corpus_refs:
+  - REQ-005-engagement-closure-with-outcomes
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

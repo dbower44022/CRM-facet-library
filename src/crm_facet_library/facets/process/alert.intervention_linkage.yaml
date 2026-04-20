@@ -1,0 +1,65 @@
+id: process.alert.intervention_linkage
+version: 0.1.0
+status: active
+name: Alert-to-intervention record linkage
+description: Whether the CRM links automated alerts to the intervention records that respond to them,
+  so that an advisor's follow-up action (meeting, referral, communication) is traceable back to the specific
+  triggering alert — enabling outcome reporting on which interventions correlated with retained students.
+question: When an automated alert fires, can the CRM associate the resulting advisor action or intervention
+  record with the specific alert that triggered it, for outcome reporting?
+answer_schema:
+  type: structured
+  fields:
+    alert_to_action_linkage:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Intervention or action record is created with a first-class reference to the originating
+          alert; visible in both directions (alert shows actions taken; action shows originating alert).
+        partial: Intervention recorded but linked to the alert only via timestamp proximity or free-text
+          note, not a structured reference.
+        workaround: Linkage achievable by manually copying alert ID into a note or custom field.
+        none: No link between alerts and downstream actions.
+    outcome_reportable:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Built-in reports can show, for a cohort of alerts, which were acted upon and what the retention
+          outcome was — without exporting to BI.
+        partial: Alert and outcome data available but joinable only via export or custom report builder.
+        none: No path from alert to outcome in any supported report.
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:process
+- applies-to:automation
+- axis:triggers
+- crm-dim:process
+- complexity:requires-probe
+- impact:high
+examples:
+- requirement: Advisors need the alert with enough context to have a useful conversation, not just a flag.
+    Outcome tracking should show which interventions correlated with retention outcomes.
+  expected_answer:
+    alert_to_action_linkage: full
+    outcome_reportable: full
+related_facets:
+- process.trigger.on_field_change
+- field.computed_classification
+source_hints:
+  corpus_refs:
+  - REQ-032-student-retention-early-alerts
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

@@ -1,0 +1,62 @@
+id: permission.multi_role_composition
+version: 0.1.0
+status: active
+name: Multi-role permission composition per user
+description: Whether the CRM allows a single user to hold multiple roles simultaneously, and how it composes
+  the resulting permission set — additively (union of all role permissions), restrictively (intersection),
+  or via an explicit precedence policy. This matters when the same individual serves as, for example,
+  both a coordinator and a board member.
+question: Can a single CRM user hold multiple roles simultaneously, and how are the resulting permissions
+  composed?
+answer_schema:
+  type: structured
+  fields:
+    multi_role_supported:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: A user can be assigned multiple roles in a single account; all are active simultaneously.
+        partial: Multiple roles can be assigned but only one is active at a time (user must switch).
+        none: Each user holds exactly one role.
+    composition_policy:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Composition policy is configurable (additive, restrictive, or precedence-ordered) by the
+          administrator.
+        partial: Policy is fixed (typically additive/union) with no administrator control.
+        none: No meaningful composition — single role only.
+applies_to:
+- persona
+tags:
+- family:permission
+- applies-to:personas
+- axis:access-control
+- crm-dim:persona
+- complexity:requires-probe
+examples:
+- requirement: The same individual may hold more than one persona role simultaneously and the system should
+    compose permissions accordingly
+  expected_answer:
+    multi_role_supported: full
+    composition_policy: partial
+  commentary: Most CRMs that allow multi-role assignment use additive/union composition with no admin
+    control over the policy; fully configurable composition is rare.
+related_facets:
+- permission.field_level_access_control
+- ui.persona_driven_view_composition
+source_hints:
+  corpus_refs:
+  - REQ-021-role-based-access-control
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

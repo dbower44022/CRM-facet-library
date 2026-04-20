@@ -1,0 +1,80 @@
+id: entity.external_identifier.multi_source
+version: 0.1.0
+status: active
+name: Multiple simultaneous external identifiers per record
+description: Whether the CRM can store and manage multiple external identifiers per record simultaneously
+  — each from a different source system (e.g., MRN from hospital A, Medicaid ID from payer, self-enrollment
+  ID from portal) — with identity and source tracked per identifier, enabling cross-system lookup without
+  collision.
+question: Can the CRM store multiple distinct external identifiers per record, each tagged to its source
+  system, and use any of them to look up or match the record?
+answer_schema:
+  type: structured
+  fields:
+    multiple_ids_per_record:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Unlimited external identifiers per record, each tagged with source system and identifier
+          type; any can be used for lookup.
+        partial: A fixed small number of external ID fields exist (e.g. one primary + one secondary),
+          but not open-ended.
+        workaround: Achievable only via a custom child entity or tag list requiring bespoke code.
+        none: Only one external identifier field per record; additional IDs cannot be stored natively.
+    source_tagged:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Each external ID record carries the source system, identifier type, and timestamp it was
+          assigned.
+        partial: Source system tracked at record level but not per individual identifier.
+        none: External IDs stored as plain text fields with no source metadata.
+    cross_system_lookup:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Any stored external ID can be used to query or match the record via API and UI.
+        partial: Only the primary/designated identifier supports lookup; secondary IDs are display-only.
+        none: External IDs are stored but not indexed for lookup.
+applies_to:
+- entity
+- cross-cutting
+tags:
+- family:entity
+- family:data
+- applies-to:records
+- axis:modeling
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: A patient arrives via referral (hospital MRN), payer data feed (Medicaid ID), and self-enrollment
+    form (portal ID). All three identifiers must be stored on the unified patient record, each tagged
+    to its source, so that any downstream system can look up the patient by whichever ID it holds.
+  expected_answer:
+    multiple_ids_per_record: full
+    source_tagged: full
+    cross_system_lookup: full
+related_facets:
+- data.identity_resolution
+- history.field.audit_trail
+source_hints:
+  corpus_refs:
+  - REQ-035-unified-patient-record-deduplication
+  - REQ-034-sis-lms-bidirectional-integration
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

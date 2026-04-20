@@ -1,0 +1,52 @@
+id: integration.external_system_provisioning_trigger
+version: 0.1.0
+status: active
+name: External account provisioning on status change
+description: Whether the CRM can initiate provisioning of an account or identity in an external system
+  (such as an email platform, SSO directory, or identity provider) when a record reaches a specific status
+  — without requiring manual action by a system administrator outside the CRM.
+question: Can the CRM automatically trigger provisioning of an account in an external identity or email
+  system when a record's status changes to a specified value?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - workaround
+  - none
+  - unknown
+  scoring_hints:
+    full: Native outbound webhook or integration action fires on status change and calls the external
+      provisioning API; configurable without custom code deployment.
+    partial: CRM can notify an administrator or trigger a workflow step, but the actual provisioning call
+      requires a middleware tool (iPaaS) rather than being native.
+    workaround: Achievable by exporting a report and manually running a provisioning script; no automated
+      trigger.
+    none: CRM has no mechanism to initiate actions in external identity systems.
+    unknown: Insufficient evidence.
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:integration
+- family:process
+- applies-to:automation
+- axis:triggers
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: When a Provisional mentor's status changes to Active, automatically create their organizational
+    email address and grant access to the mentor portal without a system administrator having to do it
+    manually in a separate system
+  expected_answer: full
+related_facets:
+- process.trigger.on_field_change
+- integration.bidirectional_sync
+- entity.lifecycle.state_machine
+source_hints:
+  corpus_refs:
+  - REQ-009-mentor-onboarding-with-training
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

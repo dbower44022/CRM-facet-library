@@ -1,0 +1,97 @@
+id: integration.inbound_webhook.form_to_record
+version: 0.1.0
+status: active
+name: Inbound webhook / API form-to-record endpoint
+description: Whether the CRM can automatically receive web form submissions from an external public website
+  via webhook or REST API and create the appropriate CRM records — without manual re-entry. Covers both
+  the case where the CRM hosts its own embeddable form builder and the case where an external site POSTs
+  to a CRM ingestion endpoint. Key discriminators include field-mapping configurability, submission authentication/signing,
+  idempotency on retries, and duplicate handling.
+question: 'Can the CRM receive external form submissions via webhook/API and create the correct record
+  types, with configurable field mapping, authenticated submission, and idempotent retry?
+
+  '
+answer_schema:
+  type: structured
+  fields:
+    inbound_endpoint:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: CRM exposes a documented REST/webhook ingestion endpoint that an external site can POST
+          form payloads to, OR provides an embeddable form builder that writes directly to CRM records.
+        partial: One ingestion pattern supported (e.g. embed only, or webhook only) but not both; or requires
+          manual mapping per deployment.
+        workaround: Ingestion only via third-party middleware (Zapier, Make) with no native endpoint.
+        none: No web-form-to-record ingestion; manual data entry required.
+    field_mapping_configurability:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Administrators can configure which inbound payload fields map to which CRM record fields,
+          per form type, without code.
+        partial: Field mapping is possible but requires developer involvement or is limited to a fixed
+          schema.
+        none: No configurable field mapping; inbound data accepted only in a fixed CRM-defined format.
+    submission_authentication:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Inbound submissions are authenticated (e.g. HMAC signature, API key, OAuth token) so spoofed
+          or spam submissions can be rejected.
+        partial: Some form of authentication available but not cryptographic signing (e.g. IP allowlist
+          only).
+        none: No authentication on inbound webhook; any POST is accepted.
+    idempotency_and_dedup:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Duplicate or retried submissions are detected and do not create duplicate records; idempotency
+          key or dedup logic is configurable.
+        partial: Basic dedup on exact-match fields (e.g. email) but no idempotency key support.
+        none: Every inbound submission creates a new record regardless of duplicates.
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:integration
+- applies-to:records
+- axis:inbound-ingestion
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: Public website forms for client intake, mentor applications, event registration, partner
+    contact, and donor sign-up should all create CRM records automatically without staff re-entering data
+  expected_answer:
+    inbound_endpoint: full
+    field_mapping_configurability: full
+    submission_authentication: full
+    idempotency_and_dedup: full
+related_facets:
+- data.identity_resolution
+- integration.bidirectional_sync
+source_hints:
+  corpus_refs:
+  - REQ-026-public-website-intake-integration
+  - REQ-001-online-client-intake
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

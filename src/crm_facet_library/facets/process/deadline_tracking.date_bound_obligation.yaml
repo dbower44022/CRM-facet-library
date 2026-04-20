@@ -1,0 +1,69 @@
+id: process.deadline_tracking.date_bound_obligation
+version: 0.1.0
+status: active
+name: Date-bound obligation tracking on a record
+description: Whether the CRM can attach one or more named, dated obligations to a record — such as grant
+  reporting deadlines or pledge installment due dates — and automatically surface or alert on upcoming
+  or overdue obligations without relying on the user to maintain an external calendar.
+question: Can the CRM track named dated obligations (e.g. grant reporting deadlines) on a record and alert
+  responsible users as deadlines approach or are missed?
+answer_schema:
+  type: structured
+  fields:
+    multiple_obligations_per_record:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: A record can carry multiple named, dated obligations (e.g. interim report due, final report
+          due, renewal deadline) as a first-class child list.
+        partial: A single due-date field per record; multiple deadlines require separate related records.
+        workaround: Obligations tracked as tasks in a task manager related to the record, not as a structured
+          obligation list.
+        none: No deadline tracking on records.
+    proactive_alerting:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Platform generates an alert (in-app notification or email) to the record owner N days before
+          each obligation's due date, configurable per obligation type.
+        partial: Alert fires at a fixed interval before due date, not configurable; or alert is only visible
+          on a dashboard, not proactively pushed.
+        workaround: Obligation due dates are surfaced in a report; user must check the report manually.
+        none: No alerting; overdue obligations only discoverable by viewing the record.
+applies_to:
+- process
+- entity
+tags:
+- family:process
+- applies-to:records
+- axis:triggers
+- crm-dim:process
+examples:
+- requirement: Grants have reporting requirements and renewal dates — the system should alert the coordinator
+    before each deadline so nothing is missed.
+  expected_answer:
+    multiple_obligations_per_record: full
+    proactive_alerting: full
+  commentary: General-purpose CRMs with a single close-date field per record fail this for multi-deadline
+    grants. Nonprofit-vertical CRMs often include grant management modules with multi-deadline support.
+related_facets:
+- process.next_action.per_record_reminder
+- entity.transaction.polymorphic_typing
+source_hints:
+  corpus_refs:
+  - REQ-017-contribution-recording-and-receipts
+  - REQ-019-fundraising-analytics-reporting
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

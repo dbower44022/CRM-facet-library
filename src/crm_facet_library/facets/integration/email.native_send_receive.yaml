@@ -1,0 +1,76 @@
+id: integration.email.native_send_receive
+version: 0.1.0
+status: active
+name: Native in-CRM email send and receive
+description: Whether the CRM allows staff to compose, send, and receive email from within the CRM interface
+  — connected to their organizational mailbox — without switching to a separate email client. Covers both
+  outbound (send from CRM) and inbound (receive/read replies in CRM).
+question: Can a staff user send and receive email directly within the CRM UI, connected to their organizational
+  mailbox, without switching to an external email client?
+answer_schema:
+  type: structured
+  fields:
+    outbound_send:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: User can compose and send email from within the CRM UI using their connected mailbox identity.
+        partial: Outbound send supported but limited (e.g. templates only, or send-from-CRM-address only,
+          not personal mailbox).
+        workaround: Only BCC-to-CRM pattern; compose happens in external client.
+        none: No outbound email capability inside the CRM.
+    inbound_receive:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Inbound replies are visible inside the CRM UI, threaded with the outbound message.
+        partial: Inbound emails are logged/recorded but not readable in the CRM UI (link-out only).
+        workaround: Inbound only via forwarding rules or manual import.
+        none: No inbound email visibility inside the CRM.
+    per_user_mailbox_connection:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Each user connects their own organizational mailbox (OAuth); email identity is per-user.
+        partial: Shared CRM-side mailbox only; individual user identity not preserved.
+        none: No per-user mailbox connection supported.
+applies_to:
+- process
+- persona
+tags:
+- family:integration
+- applies-to:email
+- axis:channel
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: Staff want to send and receive email through the CRM rather than switching to a separate
+    email client, with the full communication visible inside the CRM
+  expected_answer:
+    outbound_send: full
+    inbound_receive: full
+    per_user_mailbox_connection: full
+related_facets:
+- integration.email.auto_logging
+- integration.bidirectional_sync
+source_hints:
+  corpus_refs:
+  - REQ-022-email-integration-with-auto-logging
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

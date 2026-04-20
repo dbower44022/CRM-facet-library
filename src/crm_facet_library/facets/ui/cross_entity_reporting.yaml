@@ -1,0 +1,108 @@
+id: ui.cross_entity_reporting
+version: 0.1.0
+status: active
+name: Cross-entity reporting and dashboard composition
+description: Whether the CRM's native reporting engine can join and aggregate data across multiple custom
+  entity types in a single report or dashboard widget — not just across standard entities like contacts
+  and accounts. This is a leading discriminator between platforms that serve as an operational system
+  of record versus those that require an external BI tool for cross-domain questions.
+question: Can the CRM's native report builder join and aggregate data from multiple custom entity types
+  in a single report, surfaced on a configurable dashboard with drill-down to underlying records?
+answer_schema:
+  type: structured
+  fields:
+    cross_entity_join:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Report builder can join any two or more entity types (standard or custom) in a single report
+          without leaving the CRM.
+        partial: Cross-entity reporting works for standard entities but custom entities must be reported
+          in isolation or require custom development.
+        workaround: Cross-entity queries only achievable by exporting to an external BI tool or spreadsheet.
+        none: Each entity type can only be reported on independently.
+    dashboard_composition:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Multiple report widgets from different entity types can be arranged on a single configurable
+          dashboard canvas.
+        partial: Dashboards exist but are limited to a fixed set of widgets or a single entity type per
+          dashboard.
+        none: No dashboard capability; reports are standalone only.
+    drill_down:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Clicking an aggregate number in a report or dashboard opens the list of underlying records
+          that contributed to it.
+        partial: Drill-down available on some report types but not all.
+        none: Reports are summary-only; no path to the underlying records.
+    permission_aware_data:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: The same dashboard definition shows each user only the data they have record-level access
+          to; no separate report per persona needed.
+        partial: Reports are permission-aware but require separate report definitions per role to scope
+          data.
+        none: Reports show all data to any user who can access the report, regardless of record-level
+          permissions.
+    export_formats:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: 'Reports and dashboards can be exported to at least two of: PDF, XLSX, CSV, PPTX.'
+        partial: Export available but limited to a single format (typically CSV).
+        none: No export capability; data must be manually copied.
+applies_to:
+- cross-cutting
+- persona
+tags:
+- family:ui
+- applies-to:records
+- axis:queryability
+- crm-dim:persona
+- impact:executive-visibility
+- complexity:requires-probe
+examples:
+- requirement: 'Executive dashboard spanning all program areas: active mentors and clients, engagement
+    throughput, partner activity, event impact, donor and funding trends; drill from top-level number
+    into underlying records; credible for board-level use without manual spreadsheet rework'
+  expected_answer:
+    cross_entity_join: full
+    dashboard_composition: full
+    drill_down: full
+    permission_aware_data: full
+    export_formats: full
+related_facets:
+- permission.field_level_access_control
+- permission.self_vs_others_record_scope
+source_hints:
+  corpus_refs:
+  - REQ-029-cross-domain-reporting-dashboards
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

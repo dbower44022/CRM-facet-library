@@ -1,0 +1,65 @@
+id: process.next_action.per_record_reminder
+version: 0.1.0
+status: active
+name: Per-record next-action field with reminder
+description: Whether the CRM supports a structured next-action or next-step field on a record — capturing
+  what should happen next, when, and by whom — with an automated reminder triggered on or before the due
+  date. Distinct from generic task management in that the next action is a first-class field on the record
+  itself, visible in list and pipeline views.
+question: Does the CRM support a structured next-action field on a record (what, when, who) with an automated
+  reminder fired at or before the due date?
+answer_schema:
+  type: structured
+  fields:
+    next_action_on_record:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: A native next-action or next-step field (with date and owner) exists on the record and is
+          surfaced in list/pipeline views.
+        partial: Next action is stored as a related task rather than a first-class record field; requires
+          navigating to tasks sub-tab.
+        workaround: Free-text note field used for next steps; no structured date or owner.
+        none: No next-action concept; reminders require external calendar.
+    automated_reminder:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Platform fires an in-app or email reminder on/before the next-action due date without additional
+          configuration.
+        partial: Reminder available but requires configuring a separate automation rule per record type.
+        workaround: Must connect external calendar or email to get reminders.
+        none: No reminder mechanism.
+applies_to:
+- process
+tags:
+- family:process
+- applies-to:automation
+- axis:triggers
+- crm-dim:process
+examples:
+- requirement: Nothing should slip through the cracks — each prospect record should show the next step,
+    its due date, and who owns it, with a reminder when it's due.
+  expected_answer:
+    next_action_on_record: full
+    automated_reminder: full
+related_facets:
+- process.trigger.on_field_change
+- process.pipeline.multi_entity_stage_progression
+source_hints:
+  corpus_refs:
+  - REQ-016-donor-prospect-pipeline
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

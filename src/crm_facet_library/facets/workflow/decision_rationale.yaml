@@ -1,0 +1,86 @@
+id: workflow.decision_rationale
+status: active
+version: 0.1.0
+name: Decision rationale capture and enforcement
+description: Whether the CRM can capture a structured rationale at decision moments — both at discrete
+  user actions (approving, selecting, rejecting) and at status transitions into decision states — persist
+  it immutably, and retain it in audit-queryable history for compliance defense.
+question: Can the CRM require a structured rationale on decision actions and on status transitions to
+  decision states, retaining it in auditable history?
+answer_schema:
+  type: structured
+  fields:
+    rationale_at_action:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Rationale prompt is attached to specific user actions (approve, select, reject) and persists
+          immutably linked to the decision.
+        partial: Rationale can be recorded but relies on a general notes field, not a decision-linked
+          structure.
+        workaround: Rationale capture requires custom development or a separate record.
+        none: No mechanism for capturing decision rationale.
+    rationale_at_status_transition:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Specific status transitions can require a structured rationale/reason code; bare transitions
+          are blocked.
+        partial: Required-field enforcement can fake this but is not transition-aware.
+        none: Status changes do not support rationale gating.
+    rationale_in_audit_history:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Rationale is part of an immutable audit record queryable via API.
+        partial: Rationale appears in a UI history feed but is not programmatically queryable.
+        none: Rationale is not preserved in audit history.
+applies_to:
+- process
+- entity
+tags:
+- family:workflow
+- family:compliance
+- applies-to:automation
+- axis:decision-documentation
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: When a coordinator selects a mentor for a client, the system records why that mentor was
+    chosen at the moment of selection.
+  expected_answer:
+    rationale_at_action: full
+    rationale_at_status_transition: full
+    rationale_in_audit_history: full
+- requirement: Admissions decisions (admit, deny, defer, waitlist) must document the rationale; applicants
+    can see where their application stands, but not internal reviewer commentary.
+  expected_answer:
+    rationale_at_action: partial
+    rationale_at_status_transition: full
+    rationale_in_audit_history: full
+related_facets:
+- workflow.status_transition_required_fields
+- workflow.review.per_entity_configurability
+- history.field.audit_trail
+source_hints:
+  corpus_refs:
+  - REQ-001-online-client-intake
+  - REQ-002-mentor-matching-and-assignment
+  - REQ-031-admissions-application-review-workflow
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

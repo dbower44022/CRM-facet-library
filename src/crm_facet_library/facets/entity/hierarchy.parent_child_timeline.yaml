@@ -1,0 +1,63 @@
+id: entity.hierarchy.parent_child_timeline
+version: 0.1.0
+status: active
+name: Parent-child entity hierarchy with child timeline view
+description: Whether the CRM supports a parent entity owning multiple types of child records (e.g. an
+  Engagement owning Sessions, Goals, and SME Requests), and whether all child records across types are
+  rendered as a unified chronological timeline on the parent record's detail view — not just as separate
+  related-record lists.
+question: Does the CRM support multiple distinct child entity types under one parent, with all child records
+  rendered as a unified date-ordered timeline on the parent record view?
+answer_schema:
+  type: structured
+  fields:
+    multiple_child_entity_types:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: A single parent record can own multiple distinct child entity types (e.g. Sessions, Goals,
+          Notes, Requests), each with their own field schema.
+        partial: Only one child entity type per parent supported natively; additional types require workarounds.
+        none: No parent-child entity hierarchy supported beyond standard activity types.
+    unified_timeline_view:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: All child record types are surfaced in a single chronological timeline on the parent detail
+          view, interleaved by date.
+        partial: Child records visible on parent but in separate related-record tabs per type, not interleaved.
+        workaround: Unified view requires custom page layout or embedded report.
+        none: No timeline or related-record view on parent.
+applies_to:
+- entity
+tags:
+- family:entity
+- applies-to:records
+- axis:modeling
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: On an Engagement record, show all sessions, goals, notes, and SME requests in a single
+    chronological timeline so the administrator can see the full arc of the relationship at a glance
+  expected_answer:
+    multiple_child_entity_types: full
+    unified_timeline_view: full
+related_facets:
+- entity.relationship.cardinality
+- history.relationship.temporal_modeling
+source_hints:
+  corpus_refs:
+  - REQ-003-active-engagement-with-sessions
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

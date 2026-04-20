@@ -1,0 +1,100 @@
+id: entity.hierarchy.nested_with_versioning
+version: 0.1.0
+status: active
+name: Nested care plan with goal and intervention tracking
+description: Whether the CRM supports a first-class nested entity hierarchy — plan → goal → intervention
+  — where each level is independently trackable with its own status, completion state, and due dates,
+  and where scheduled or recurring milestones generate tasks automatically. Distinct from flat task lists
+  or generic project structures.
+question: Does the CRM support a native nested entity hierarchy (plan → goal → intervention) where each
+  level has independent status tracking and scheduled milestones generate tasks automatically?
+answer_schema:
+  type: structured
+  fields:
+    nested_entity_hierarchy:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: A native three-or-more level hierarchy (plan → goal → intervention or equivalent) exists
+          as a first-class data model; each level independently trackable.
+        partial: Two levels natively (plan → task, or goal → intervention) but not three; the third level
+          requires a workaround.
+        workaround: Achievable via generic custom entities with manual relationship wiring, but no purpose-built
+          care-plan model.
+        none: Only flat task lists; no hierarchical plan structure supported.
+    per_node_completion_state:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Each goal and each intervention has its own status field (e.g., Not Started / In Progress
+          / Completed / Missed) independently updated.
+        partial: Status tracked at plan level only; individual goals and interventions do not have independent
+          state.
+        none: No completion state below the plan level.
+    milestone_to_task_generation:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Milestone due dates on goals/interventions automatically generate tasks or calendar items
+          assigned to the responsible coordinator, configurable per intervention type.
+        partial: Milestones tracked but tasks must be created manually; no automatic generation.
+        workaround: Achievable via a workflow automation rule, but not built into the plan entity itself.
+        none: No milestone-to-task linkage.
+    plan_versioning:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: When a care plan is revised, the prior version is archived and queryable; longitudinal plan
+          history is retained indefinitely.
+        partial: Plan edits are tracked in a field-level audit trail but prior full plan state is not
+          reconstructable as a snapshot.
+        none: Editing a plan overwrites the prior state; no version history.
+applies_to:
+- entity
+- process
+tags:
+- family:entity
+- family:process
+- applies-to:records
+- axis:modeling
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: Each patient has a care plan with 3–5 goals (e.g., 'Reduce A1c by 1.0 over 6 months').
+    Each goal has 2–4 interventions (e.g., 'Refer to diabetes educator', 'Schedule home visit monthly').
+    Quarterly reviews revise the plan; the prior quarterly plan must remain accessible. Missed interventions
+    trigger coordinator alerts.
+  expected_answer:
+    nested_entity_hierarchy: full
+    per_node_completion_state: full
+    milestone_to_task_generation: full
+    plan_versioning: full
+related_facets:
+- entity.relationship.cardinality
+- process.trigger.on_field_change
+- history.relationship.temporal_modeling
+source_hints:
+  corpus_refs:
+  - REQ-037-care-plan-tracking-adherence
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

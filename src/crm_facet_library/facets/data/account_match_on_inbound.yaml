@@ -1,0 +1,69 @@
+id: data.account_match_on_inbound
+version: 0.1.0
+status: active
+name: Configurable account match key on inbound contact
+description: Whether the CRM can, during contact creation from any intake channel, attempt to match the
+  inbound contact's company information against an existing account using a configurable key (e.g., website
+  URL rather than company name), and create a new account only when no match is found. This prevents duplicate
+  accounts from name variants.
+question: Can the CRM match an inbound contact's company to an existing account using a configurable match
+  key (e.g., website URL), creating a new account only on no-match?
+answer_schema:
+  type: structured
+  fields:
+    configurable_match_key:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Administrator can specify which field(s) (e.g., website domain, EIN, external ID) are used
+          as the match key for account lookup on inbound contact creation.
+        partial: Match key is hardcoded (e.g., always company name); no administrator control over which
+          field drives the match.
+        workaround: Match-or-create logic must be implemented in an external integration or post-submit
+          automation.
+        none: No automatic account matching on contact creation; duplicates must be found and resolved
+          manually.
+    applies_across_channels:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: The same match-or-create rule applies uniformly to all intake channels (web form, import,
+          API, manual entry).
+        partial: Match-or-create applies to some channels but not others (e.g., form submits only, not
+          CSV imports).
+        none: Match-or-create is not applied at intake; resolution is entirely post-creation.
+applies_to:
+- entity
+- process
+tags:
+- family:data
+- family:entity
+- applies-to:records
+- axis:deduplication
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: When company info is given, match against an existing organization by website before creating
+    a new one — names alone aren't trustworthy because two firms can share a name
+  expected_answer:
+    configurable_match_key: full
+    applies_across_channels: full
+related_facets:
+- data.identity_resolution
+- data.intake_channel_record_type_resolution
+source_hints:
+  corpus_refs:
+  - REQ-020-universal-contact-creation-rules
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

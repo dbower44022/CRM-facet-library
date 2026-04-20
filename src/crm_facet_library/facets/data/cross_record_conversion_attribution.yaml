@@ -1,0 +1,76 @@
+id: data.cross_record_conversion_attribution
+version: 0.1.0
+status: active
+name: Cross-record conversion attribution
+description: Whether the CRM can link a downstream conversion event (application submitted, client enrolled)
+  back to a specific upstream touchpoint record (event attendance, campaign response, referral) that preceded
+  it — enabling measurement of which activities drive conversion without requiring an external analytics
+  system.
+question: Can the CRM link an application or enrollment back to the specific event attendance or campaign
+  response that preceded it, and report conversion rates by touchpoint?
+answer_schema:
+  type: structured
+  fields:
+    touchpoint_to_conversion_link:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: A conversion record (application, enrollment) natively carries a pointer to the originating
+          touchpoint record (event registration, campaign response) and the link is maintained through
+          lifecycle transitions.
+        partial: Link exists at the contact level (source field) but not to a specific touchpoint record.
+        workaround: Only achievable via manual tagging or external analytics with CRM writeback.
+        none: No linkage between conversion events and upstream touchpoints.
+    conversion_rate_reporting:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Native reports can show, for each event or campaign, how many attendees/responders later
+          converted, without custom scripting.
+        partial: Raw data available for export but no native conversion-rate report.
+        workaround: Requires offline analysis or external BI tool.
+        none: No reporting on conversion rates from touchpoints.
+applies_to:
+- entity
+- process
+- cross-cutting
+tags:
+- family:data
+- applies-to:records
+- axis:attribution
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: Know which events drove the most program applications; show the ratio of event attendees
+    who later submitted an application
+  expected_answer:
+    touchpoint_to_conversion_link: full
+    conversion_rate_reporting: full
+- requirement: Track which outreach campaign produced each eventual applicant so we can compare cost-per-acquisition
+    across channels
+  expected_answer:
+    touchpoint_to_conversion_link: full
+    conversion_rate_reporting: full
+related_facets:
+- data.referral_attribution
+- process.campaign.multichannel_attribution
+- entity.event.registration_management
+source_hints:
+  corpus_refs:
+  - REQ-014-workshop-and-event-management
+  - REQ-013-outreach-marketing-attribution
+  - REQ-015-alumni-reactivation-and-recovery
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

@@ -1,0 +1,85 @@
+id: field.rollup_aggregate.child_to_parent
+version: 0.1.0
+status: active
+name: Rollup / aggregate field from child records to parent
+description: Whether the CRM can display and store a computed aggregate value on a parent record that
+  is derived from child records — for example, total lifetime contributions on a donor record rolled up
+  from all linked donation and sponsorship records. Covers both the sum/count aggregation and whether
+  the rollup field is live (recomputed on child change) versus manually refreshed.
+question: Can the CRM display a live aggregate field on a parent record (e.g. lifetime contribution total)
+  computed automatically from child records?
+answer_schema:
+  type: structured
+  fields:
+    aggregate_supported:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Native rollup field type is available; administrator can define sum, count, min, max, or
+          average over a child object's numeric field with optional filter conditions.
+        partial: Rollup available but limited to count only, or limited to one child object type, or requires
+          a formula field rather than a dedicated rollup type.
+        workaround: Achievable only via a scheduled batch job, external BI, or manual update.
+        none: No rollup or aggregate capability; totals must be looked up in a separate report.
+    live_recomputation:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Rollup field value updates automatically when a child record is created, modified, or deleted
+          — no manual refresh required.
+        partial: Rollup is recomputed on a scheduled basis (e.g. nightly) but not immediately on child
+          change.
+        none: Rollup must be manually triggered or is computed only at report run time.
+    cross_type_rollup:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: A single rollup field can aggregate across multiple child entity types (e.g. donations +
+          sponsorships + grants all rolled into one lifetime value field).
+        partial: Rollup is restricted to a single child entity type per rollup field; multiple rollup
+          fields needed to cover multiple types.
+        none: No cross-type rollup; only one child entity type per rollup.
+applies_to:
+- entity
+- cross-cutting
+tags:
+- family:field
+- applies-to:fields
+- axis:computation
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: Each donor profile should show total lifetime contributions rolled up from all linked donation,
+    sponsorship, and grant records, updated as new contributions are recorded.
+  expected_answer:
+    aggregate_supported: full
+    live_recomputation: full
+    cross_type_rollup: full
+  commentary: Salesforce natively supports rollup-summary fields on master-detail relationships, but only
+    for one child object type per field, making cross-type rollup partial without formula fields or custom
+    code. Many lighter CRMs have no native rollup type at all.
+related_facets:
+- field.computed_classification
+- entity.transaction.polymorphic_typing
+source_hints:
+  corpus_refs:
+  - REQ-018-donor-stewardship-and-lifetime-value
+  - REQ-017-contribution-recording-and-receipts
+  - REQ-010-mentor-profile-and-capacity
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

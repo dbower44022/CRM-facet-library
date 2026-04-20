@@ -1,0 +1,81 @@
+id: compliance.consent_and_tos_capture
+version: 0.1.0
+status: active
+name: Consent / TOS acceptance with immutable timestamp
+description: Whether the CRM can record a contact's acceptance of a terms-of-service or consent document
+  with an immutable timestamp and identity binding — such that the captured event is tamper-evident, queryable,
+  and survives subsequent edits to the contact record.
+question: Can the CRM record a contact's acceptance of a terms or consent document with an immutable,
+  identity-bound timestamp that survives subsequent record edits?
+answer_schema:
+  type: structured
+  fields:
+    acceptance_event_recorded:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: A discrete acceptance event record is created with timestamp, identity of the accepting
+          party, document version, and method of acceptance; this record is separate from the contact
+          and cannot be silently edited.
+        partial: Acceptance is recorded as a field on the contact (e.g., boolean + date) but not as a
+          separate immutable event record.
+        none: No structured consent capture; only free-text notes.
+    tamper_evidence:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: The acceptance record is write-once or append-only; edits or deletions are either blocked
+          for all users or produce an auditable trail detectable by an administrator.
+        partial: Record is in the audit trail but can be edited by administrators without a separate approval.
+        none: Acceptance data is mutable with no special protection.
+    document_version_binding:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: The captured event links to a specific version of the document accepted, so version updates
+          do not retroactively change what the contact agreed to.
+        partial: Document title recorded but not version; updating the document text could silently change
+          what the stored acceptance refers to.
+        none: No document reference stored with acceptance.
+applies_to:
+- entity
+- cross-cutting
+tags:
+- family:compliance
+- applies-to:records
+- axis:retention
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: Record each mentor applicant's acceptance of our volunteer terms and conditions with an
+    immutable timestamp and their identity, so we have defensible evidence if a dispute arises later
+  expected_answer:
+    acceptance_event_recorded: full
+    tamper_evidence: full
+    document_version_binding: full
+related_facets:
+- history.field.audit_trail
+- compliance.data_retention_policy
+- permission.audit_log_access
+source_hints:
+  corpus_refs:
+  - REQ-008-mentor-application-and-admission
+  standards_refs:
+  - GDPR Article 7 — conditions for consent
+  - SOC 2 CC6.1 — logical access controls
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

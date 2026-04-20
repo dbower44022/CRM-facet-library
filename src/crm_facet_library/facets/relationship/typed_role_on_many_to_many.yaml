@@ -1,0 +1,52 @@
+id: relationship.typed_role_on_many_to_many
+version: 0.1.0
+status: active
+name: Typed role on many-to-many relationship
+description: Whether the CRM supports assigning a typed role to each party in a many-to-many relationship
+  — such that two contacts related to the same engagement can hold different roles (primary mentor, co-mentor,
+  subject-matter expert) without requiring separate relationship types or custom junction entities per
+  role.
+question: Can the CRM assign a typed role to each participant in a many-to-many relationship, distinguishing
+  role within the same relationship type?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - workaround
+  - none
+  - unknown
+  scoring_hints:
+    full: A role attribute on the junction record is natively supported and UI-editable; each party's
+      role is distinct and queryable.
+    partial: Role can be stored as a field on the junction record but is not enforced or surfaced in standard
+      UI list/filter views.
+    workaround: Separate relationship types per role (e.g. 'Primary Mentor' link vs. 'Co-Mentor' link)
+      required as a workaround.
+    none: Many-to-many supported but no role discrimination — all participants are equivalent.
+    unknown: Insufficient evidence.
+applies_to:
+- entity
+tags:
+- family:relationship
+- applies-to:relationships
+- axis:modeling
+- crm-dim:entity
+examples:
+- requirement: One engagement can have a primary mentor, one or more co-mentors, and one or more subject
+    matter experts — each in their distinct role on the same engagement record
+  expected_answer: full
+  commentary: CRMs that only support a single lookup field per relationship type require three separate
+    relationship fields or junction entities to model this, which makes querying and UI rendering significantly
+    more complex.
+related_facets:
+- entity.relationship.cardinality
+- history.relationship.temporal_modeling
+source_hints:
+  corpus_refs:
+  - REQ-002-mentor-matching-and-assignment
+  - REQ-003-active-engagement-with-sessions
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

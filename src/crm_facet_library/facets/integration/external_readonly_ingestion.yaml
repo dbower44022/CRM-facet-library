@@ -1,0 +1,112 @@
+id: integration.external_readonly_ingestion
+status: active
+version: 0.1.0
+name: Scheduled read-only ingestion from external system
+description: Whether the CRM can consume data from an external system-of-record on a configurable cadence
+  — displaying it read-only, supporting per-event-type handlers, and making the ingested data available
+  to gate or trigger CRM workflows — even when no pre-built connector exists.
+question: Can the CRM ingest data read-only from an authoritative external system on a configurable cadence,
+  with per-signal-type handlers, and use it to drive CRM workflows?
+answer_schema:
+  type: structured
+  fields:
+    scheduled_ingestion:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Configurable per-source schedule with monitoring and failure handling.
+        partial: Scheduled ingestion available but schedule granularity or per-source config is limited.
+        workaround: Achievable only via external ETL/integration platform.
+        none: No scheduled ingestion capability.
+    per_signal_type_handler:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Per-event-type handlers (e.g. attendance vs. grades vs. hold) configurable independently.
+        partial: Single generic handler; differentiation requires custom logic.
+        none: Ingestion produces undifferentiated records.
+    read_only_display:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Ingested fields render as first-class read-only fields on the record; users cannot accidentally
+          overwrite.
+        partial: Displayed but no read-only enforcement at the API/UI level.
+        none: Ingested data cannot be cleanly separated from user-editable fields.
+    workflow_gate_on_external_data:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Automation can gate a workflow step on the value of an ingested external field.
+        partial: External data is visible but cannot drive workflow conditions natively.
+        workaround: Custom script required to bridge.
+        none: No gating available.
+    connector_flexibility:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: REST / webhook / SFTP / file-drop all supported; no pre-built connector required.
+        partial: Pre-built connector ecosystem but building a new one requires vendor help.
+        none: Only vendor-blessed connectors work; no custom ingestion path.
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:integration
+- applies-to:external-systems
+- axis:ingestion
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: Training completion data lives in the LMS; the CRM pulls it nightly, displays it read-only
+    on the mentor record, and uses it to gate the activation step of the onboarding workflow.
+  expected_answer:
+    scheduled_ingestion: full
+    per_signal_type_handler: full
+    read_only_display: full
+    workflow_gate_on_external_data: full
+    connector_flexibility: full
+- requirement: The CRM pulls attendance, LMS logins, assignment submissions, and financial-hold status
+    from the SIS on a configurable cadence; each signal has distinct handling; alerts fire when thresholds
+    trip.
+  expected_answer:
+    scheduled_ingestion: full
+    per_signal_type_handler: full
+    read_only_display: full
+    workflow_gate_on_external_data: full
+    connector_flexibility: partial
+related_facets:
+- integration.bidirectional_sync
+- process.trigger.on_field_change
+- field.computed_classification
+source_hints:
+  corpus_refs:
+  - REQ-027-lms-integration-for-training
+  - REQ-032-student-retention-early-alerts
+  - REQ-034-sis-lms-bidirectional-integration
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

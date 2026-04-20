@@ -1,0 +1,86 @@
+id: process.pipeline.multi_entity_stage_progression
+version: 0.1.0
+status: active
+name: Multi-entity pipeline with stage progression
+description: Whether the CRM supports a pipeline (kanban or list) view that tracks records of mixed parent
+  type — both individual contacts and organizations — through named, ordered stages, with time-in-stage
+  metrics and stage-conversion visibility. Distinct from a simple status field in that movement between
+  stages is the primary unit of work and the pipeline is queryable as a forecasting instrument.
+question: Does the CRM provide a pipeline view that tracks contacts and organizations through ordered
+  stages with time-in-stage metrics and conversion visibility?
+answer_schema:
+  type: structured
+  fields:
+    mixed_entity_types_on_one_pipeline:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Contacts and organizations can coexist as rows on the same pipeline view without custom
+          development.
+        partial: Only one entity type per pipeline; combining types requires a workaround (e.g. a shared
+          wrapper entity).
+        workaround: Achievable only via a custom junction or external list tool.
+        none: Pipelines are restricted to a single hard-coded entity type.
+    stage_progression_tracked:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: 'Stage transitions are first-class events: date of entry per stage is recorded, enabling
+          time-in-stage and conversion-rate queries.'
+        partial: Current stage is stored but transition history is not retained beyond the audit trail.
+        none: Status is a field; no pipeline semantics.
+        workaround: Stage-transition history requires external tooling or manual date stamps.
+    conversion_rate_visibility:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: The platform shows stage-to-stage conversion rates natively on the pipeline view or a built-in
+          report.
+        partial: Conversion metrics available only via custom report builder, not on the pipeline view.
+        workaround: Requires export and external analysis.
+        none: No conversion visibility.
+applies_to:
+- process
+- entity
+tags:
+- family:process
+- family:entity
+- applies-to:records
+- axis:pipeline
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: A fundraising coordinator needs a single pipeline view showing both individual donors and
+    sponsoring organizations as prospects moving through Prospect → Contacted → In Discussion → Committed
+    → Active → Lapsed, with time-in-stage and conversion rates visible.
+  expected_answer:
+    mixed_entity_types_on_one_pipeline: full
+    stage_progression_tracked: full
+    conversion_rate_visibility: full
+  commentary: Many CRMs support pipelines only for a single entity type (e.g. Opportunity linked to either
+    Contact or Account, not both simultaneously). Mixed-type pipelines often require a workaround entity.
+related_facets:
+- process.trigger.on_field_change
+- history.field.audit_trail
+source_hints:
+  corpus_refs:
+  - REQ-016-donor-prospect-pipeline
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

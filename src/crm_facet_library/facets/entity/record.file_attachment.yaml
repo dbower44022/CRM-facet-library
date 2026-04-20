@@ -1,0 +1,50 @@
+id: entity.record.file_attachment
+version: 0.1.0
+status: active
+name: File and document attachment to a record
+description: Whether the CRM allows files and documents (PDFs, presentations, agendas, contracts) to be
+  attached directly to a specific record — such as an event or agreement — and browsed or downloaded in
+  context, without requiring an external document management system.
+question: Can files and documents be attached to and browsed on a specific CRM record (e.g., an event
+  or agreement), accessible in context without leaving the CRM?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - workaround
+  - none
+  - unknown
+  scoring_hints:
+    full: Files can be uploaded directly to any record; attachments are listed on the record detail view
+      and downloadable in context; supported for custom entity types as well as standard ones.
+    partial: File attachment supported on standard entity types (contacts, accounts) but not on custom
+      entities such as events or agreements.
+    workaround: Only achievable by storing files in an external system (SharePoint, Google Drive) and
+      pasting a link into a text field.
+    none: No file attachment capability.
+    unknown: Insufficient evidence.
+applies_to:
+- entity
+- cross-cutting
+tags:
+- family:entity
+- applies-to:records
+- axis:modeling
+- crm-dim:entity
+examples:
+- requirement: Store the event agenda and slide deck on the Event record so the Event Administrator can
+    access them without leaving the CRM
+  expected_answer: full
+- requirement: Attach the signed partnership agreement PDF to the Partner Organization record
+  expected_answer: full
+related_facets:
+- entity.organization.agreement_lifecycle
+source_hints:
+  corpus_refs:
+  - REQ-014-workshop-and-event-management
+  - REQ-012-partner-organization-relationships
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

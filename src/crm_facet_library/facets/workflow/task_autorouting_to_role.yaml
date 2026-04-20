@@ -1,0 +1,86 @@
+id: workflow.task_autorouting_to_role
+version: 0.1.0
+status: active
+name: Task auto-routing to role queue with individual pickup
+description: Whether the CRM can auto-assign tasks to a role queue rather than a named individual — so
+  that tasks surface to everyone in that role and ownership emerges when a team member picks up the task
+  from the queue — supporting dynamic team coverage without requiring a manager to manually assign every
+  task to a specific person.
+question: Can the CRM automatically route tasks to a role-level queue where any qualified team member
+  can pick them up, rather than requiring pre-assignment to a named individual?
+answer_schema:
+  type: structured
+  fields:
+    role_queue_routing:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Tasks can be assigned to a role or team queue; all members of that role see the task; ownership
+          is claimed via queue pickup. Configurable routing rules determine which queue.
+        partial: Tasks can be assigned to a team/group but the assignment is visible as a group notification
+          rather than a true shared queue with pickup mechanics.
+        workaround: Round-robin assignment to individuals via a custom automation approximates queue behavior.
+        none: Tasks must be assigned to a named individual at creation time; no role-queue concept.
+    priority_ordering_in_queue:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: The queue is ordered by a configurable priority formula (combining urgency, patient risk
+          tier, overdue age, escalation flag) visible to the team member without manual sorting.
+        partial: Queue ordered by a single fixed criterion (e.g., due date only); multi-factor ordering
+          not configurable.
+        none: Queue is unordered or user-sorted only.
+    supervisor_cross_team_view:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: A supervisor role has a first-class view of tasks across all team members' queues, filterable
+          by overdue, escalated, or unassigned — without running an ad-hoc report.
+        partial: Supervisor can see team tasks via a saved report or filter, but there is no dedicated
+          supervisor-queue view.
+        workaround: Supervisor view requires building and maintaining a custom dashboard or report.
+        none: No cross-team task visibility for supervisors.
+applies_to:
+- process
+- persona
+tags:
+- family:workflow
+- family:process
+- applies-to:automation
+- axis:routing
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: A clinical alert task for a high-risk patient must route to the 'Nurse Coordinator' role
+    queue, ordered so the highest-risk, most-overdue patients appear at the top. A program supervisor
+    must see all overdue tasks across the nursing team without running a report.
+  expected_answer:
+    role_queue_routing: full
+    priority_ordering_in_queue: full
+    supervisor_cross_team_view: full
+related_facets:
+- ui.persona_driven_view_composition
+- workflow.tier_driven_routing
+- field.computed_classification
+source_hints:
+  corpus_refs:
+  - REQ-039-care-coordinator-task-queue-persona
+  - REQ-038-risk-tiered-patient-segmentation
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

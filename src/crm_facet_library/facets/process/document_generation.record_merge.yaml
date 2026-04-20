@@ -1,0 +1,70 @@
+id: process.document_generation.record_merge
+version: 0.1.0
+status: active
+name: Document generation from record data (mail-merge / letter)
+description: Whether the CRM can generate a formatted document — such as a donor acknowledgment letter,
+  tax receipt, or contract — by merging record field values into a stored template, without requiring
+  the user to export data to an external word processor. Covers both the template authoring capability
+  and the per-record generation and delivery (print, email, PDF download).
+question: Can the CRM generate a formatted document (e.g. tax receipt or acknowledgment letter) from a
+  record's data using a stored template, and deliver it as PDF or email?
+answer_schema:
+  type: structured
+  fields:
+    template_authoring:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Administrators can author and manage document templates within the CRM, with field-merge
+          tokens for any record field.
+        partial: Templates exist but are limited to a fixed set of document types (e.g. only email, not
+          printable PDF).
+        workaround: Template lives in an external tool (Word, Google Docs); CRM exports a data file that
+          is manually merged.
+        none: No templating capability; all documents produced outside the CRM.
+    per_record_generation:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: A user can generate a merged document from any individual record with a single action; output
+          available as PDF download and/or email send.
+        partial: Batch generation only (e.g. mail merge runs for all records in a list), not per-record
+          on demand.
+        workaround: User exports record data and merges manually.
+        none: No per-record document generation.
+applies_to:
+- process
+tags:
+- family:process
+- applies-to:records
+- axis:output
+- crm-dim:process
+examples:
+- requirement: Generate a donor acknowledgment and tax receipt from a contribution record — capturing
+    donor name, donation date, amount, and designation — and deliver it as a PDF or email without leaving
+    the CRM.
+  expected_answer:
+    template_authoring: full
+    per_record_generation: full
+  commentary: General-purpose CRMs often handle email templates well but lack printable PDF generation
+    from record data. Vertical nonprofit CRMs typically include acknowledgment-letter generation out of
+    the box.
+related_facets:
+- entity.transaction.polymorphic_typing
+source_hints:
+  corpus_refs:
+  - REQ-017-contribution-recording-and-receipts
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

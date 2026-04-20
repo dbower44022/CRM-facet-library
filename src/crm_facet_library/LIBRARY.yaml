@@ -5,8 +5,15 @@
 #
 # Specification: PRD 02 §6.2.
 
-library_version: 0.1.1
+library_version: 0.1.2
 schema_version: 1
+
+# Family convention note (v0.1.2):
+# `process` covers automation primitives — triggers, actions, notifications,
+# single-event handling. `workflow` covers multi-step sequencing, branching,
+# gating, and review processes. Both are first-class families; facets
+# occasionally carry both via tags (family:workflow + family:process) when
+# they straddle the boundary.
 
 # Standard rating vocabulary (PRD 02 §2.3). Per-facet answer_schema
 # narrows this set to the values meaningful for that facet.

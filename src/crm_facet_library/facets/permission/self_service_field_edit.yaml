@@ -1,0 +1,67 @@
+id: permission.self_service_field_edit
+version: 0.1.0
+status: active
+name: Self-service field-level editing by a contact or portal user
+description: Whether the CRM allows a contact (i.e., a non-staff user such as a mentor or client) to edit
+  a defined subset of fields on their own record through a portal or self-service interface, while administrator-controlled
+  fields remain read-only or hidden to that user — with field-level granularity on the permission boundary.
+question: Can a contact or portal user edit a configured subset of fields on their own record while other
+  fields on the same record remain read-only or hidden to them?
+answer_schema:
+  type: structured
+  fields:
+    self_edit_supported:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Contact-role users can edit their own record through a portal; field visibility and editability
+          are configurable at the field level per role.
+        partial: Self-service editing supported but at section or page-layout level only — cannot mix
+          editable and read-only fields on the same section.
+        workaround: Self-edit requires a custom external form that writes back via API; no native portal
+          field-level control.
+        none: Contacts cannot edit any part of their own record; all edits require staff.
+    field_level_permission_granularity:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Each field can independently be set to editable, read-only, or hidden for the contact role
+          without affecting other fields on the same record.
+        partial: Field permissions configurable but only at a coarser level (e.g., all contact-info fields
+          editable, all admin fields hidden — no field-by-field mix).
+        none: All fields are either all editable or all read-only for the contact role.
+applies_to:
+- persona
+tags:
+- family:permission
+- family:ui
+- applies-to:personas
+- axis:view-composition
+- crm-dim:persona
+- complexity:requires-probe
+examples:
+- requirement: A mentor can update their own biography, areas of expertise, languages spoken, and availability
+    through a self-service portal, but cannot change their status, capacity maximum, or any administrator-managed
+    fields
+  expected_answer:
+    self_edit_supported: full
+    field_level_permission_granularity: full
+related_facets:
+- ui.persona_driven_view_composition
+- permission.audit_log_access
+source_hints:
+  corpus_refs:
+  - REQ-010-mentor-profile-and-capacity
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

@@ -1,0 +1,50 @@
+id: entity.event.multi_role_relationships
+version: 0.1.0
+status: active
+name: Multi-role relationships on an event record
+description: Whether the CRM can link multiple different types of related parties to a single event record
+  — such as attendees, presenters, co-sponsoring organizations, and donor sponsors — each via a distinct
+  typed relationship, without collapsing them into a single undifferentiated list.
+question: Can the CRM associate multiple distinct relationship types (e.g., attendee, presenter, co-sponsor,
+  donor sponsor) to a single event record, each typed separately?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - workaround
+  - none
+  - unknown
+  scoring_hints:
+    full: Each relationship type (presenter, sponsor, co-sponsor, attendee) is a separately typed link
+      to the event; each is independently queryable and reportable.
+    partial: Multiple parties can be linked but via a single undifferentiated relationship type or via
+      tags to distinguish them.
+    workaround: Only achievable by creating separate custom entities or using a notes/tag workaround.
+    none: Events support only one relationship type (e.g., attendees only).
+    unknown: Insufficient evidence.
+applies_to:
+- entity
+tags:
+- family:entity
+- family:relationship
+- applies-to:relationships
+- axis:modeling
+- crm-dim:entity
+examples:
+- requirement: Link a Partner Organization as co-sponsor, a Donor as event sponsor, individual Contacts
+    as presenters, and Contacts as attendees — all to the same Event record, each in a distinct typed
+    relationship
+  expected_answer: full
+  commentary: CRMs with a rigid event model (attendees only) rate none; those supporting typed junction
+    entities or polymorphic relationships rate full.
+related_facets:
+- entity.relationship.cardinality
+- entity.event.registration_management
+source_hints:
+  corpus_refs:
+  - REQ-014-workshop-and-event-management
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

@@ -1,0 +1,50 @@
+id: entity.organization.primary_contact_designation
+version: 0.1.0
+status: active
+name: Primary contact designation on a multi-contact organization
+description: Whether the CRM supports designating one contact among multiple contacts linked to an organization
+  record as the primary contact — a first-class role rather than a free-text flag — such that the primary
+  contact is surfaced prominently on the organization record and is used as the default addressing target
+  for communications.
+question: Can the CRM designate one contact as the primary contact for an organization, surfaced prominently
+  on the organization record and used as the default for outbound communications?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - workaround
+  - none
+  - unknown
+  scoring_hints:
+    full: A native primary-contact role exists on the organization record; only one contact can hold it
+      at a time; it is surfaced on the organization view and used as the default email/mail target.
+    partial: Primary contact designation exists but is a custom field rather than a platform concept;
+      communications do not default to it automatically.
+    workaround: Primary contact stored as a free-text name field or a tag; no platform enforcement of
+      uniqueness or default routing.
+    none: No concept of primary contact; all linked contacts are equal.
+    unknown: Insufficient evidence.
+applies_to:
+- entity
+tags:
+- family:entity
+- family:relationship
+- applies-to:relationships
+- axis:modeling
+- crm-dim:entity
+examples:
+- requirement: Organizational donors may have multiple contacts — we need a primary-contact designation
+    so outreach goes to the right person by default.
+  expected_answer: full
+  commentary: Most mature CRMs have a primary-contact concept on accounts, but the enforcement (single
+    primary, default routing) varies considerably.
+related_facets:
+- entity.relationship.cardinality
+source_hints:
+  corpus_refs:
+  - REQ-018-donor-stewardship-and-lifetime-value
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

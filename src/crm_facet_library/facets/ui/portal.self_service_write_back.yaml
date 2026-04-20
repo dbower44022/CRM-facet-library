@@ -1,0 +1,95 @@
+id: ui.portal.self_service_write_back
+version: 0.1.0
+status: active
+name: External portal self-service write-back to CRM
+description: Whether the CRM's external-facing portal allows authenticated contacts to perform self-service
+  write actions — document upload, contact-info update, event registration, appointment scheduling — that
+  write back to the internal CRM record in real time, triggering configured downstream workflows.
+question: 'Can an authenticated external user perform portal self-service write actions (upload, update,
+  register, schedule) that update the CRM record in real time and trigger workflows?
+
+  '
+answer_schema:
+  type: structured
+  fields:
+    document_upload:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: External user uploads a document; it is immediately attached to their CRM record and visible
+          to staff; optional workflow trigger on upload.
+        partial: Upload accepted but stored outside CRM (e.g., email attachment or third-party storage)
+          with manual staff import.
+        none: No external document upload capability.
+    contact_info_update:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: External user edits contact fields; changes write directly to the CRM record with change
+          attribution.
+        partial: User submits a change request; staff must approve before the CRM record updates.
+        none: External user cannot update their own contact information.
+    event_and_appointment_scheduling:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Portal surfaces real-time staff availability; booking creates a CRM activity record and
+          notifies the staff member natively.
+        partial: Link to an external scheduling tool (Calendly, etc.) without native write-back to CRM.
+        workaround: Manual scheduling only; portal provides a contact form.
+        none: No scheduling capability in portal.
+    workflow_trigger_on_action:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Each self-service action type (upload, update, registration) can independently trigger a
+          configured CRM automation or notification.
+        partial: Workflow triggered only on record save, not differentiated by action type.
+        none: No workflow triggers from portal actions.
+applies_to:
+- persona
+- process
+tags:
+- family:ui
+- family:process
+- applies-to:personas
+- axis:self-service
+- crm-dim:persona
+- complexity:requires-probe
+examples:
+- requirement: They want to check their application status, upload missing documents, register for campus
+    events, update their contact information, see their admission offer, and schedule an advising meeting
+    — all without calling or emailing our office.
+  expected_answer:
+    document_upload: full
+    contact_info_update: full
+    event_and_appointment_scheduling: full
+    workflow_trigger_on_action: full
+related_facets:
+- ui.persona_driven_view_composition
+- workflow.decision_rationale
+- history.field.audit_trail
+source_hints:
+  corpus_refs:
+  - REQ-033-self-service-student-portal-persona
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

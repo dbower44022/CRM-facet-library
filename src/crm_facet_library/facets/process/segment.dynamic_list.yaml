@@ -1,0 +1,64 @@
+id: process.segment.dynamic_list
+version: 0.1.0
+status: active
+name: Dynamic saved segment for outreach targeting
+description: Whether the CRM supports saved segment definitions — criteria-based filters over contact
+  records including lifecycle state, history, and date-based criteria — that automatically include newly
+  qualifying records and exclude records that no longer qualify, without requiring a manual rebuild before
+  each campaign.
+question: Can the CRM maintain a saved segment that dynamically updates its membership based on lifecycle,
+  history, and date criteria, so outreach campaigns can target it without manual list rebuilds?
+answer_schema:
+  type: structured
+  fields:
+    criteria_based_dynamic_membership:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Segment definition saved once; membership recalculated automatically (real-time or on scheduled
+          cadence) as records change.
+        partial: Saved filter exists but membership is a static snapshot taken at save time; requires
+          manual refresh.
+        workaround: Only achievable by exporting a fresh filtered list before each campaign.
+        none: No saved segment or dynamic list capability.
+    history_and_date_criteria:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Segment criteria can reference historical activity (e.g., attended event in last 12 months,
+          application incomplete for >30 days) and relative date expressions.
+        partial: Criteria limited to current field values; no historical activity or relative date criteria.
+        none: Segment criteria limited to static field equality only.
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:process
+- applies-to:automation
+- axis:segmentation
+- crm-dim:process
+examples:
+- requirement: Automatically identify all former clients who exited the program more than one year ago
+    and haven't responded to any outreach in the past 6 months, for a seasonal re-engagement campaign
+  expected_answer:
+    criteria_based_dynamic_membership: full
+    history_and_date_criteria: full
+related_facets:
+- entity.contact.lifecycle_state
+- process.campaign.multichannel_attribution
+source_hints:
+  corpus_refs:
+  - REQ-015-alumni-reactivation-and-recovery
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

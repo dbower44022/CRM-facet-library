@@ -1,0 +1,49 @@
+id: ui.campaign.goal_vs_actual_visualization
+version: 0.1.0
+status: active
+name: Campaign goal-vs-actual progress visualization
+description: Whether the CRM can display a visual progress indicator on a campaign record showing contributions
+  received to date against a defined goal amount — as a first-class element of the campaign record or
+  dashboard, updated in real time from linked contribution records, without requiring a custom report.
+question: Does the CRM show a live goal-vs-actual progress indicator on a campaign record, derived automatically
+  from linked contributions?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - workaround
+  - none
+  - unknown
+  scoring_hints:
+    full: A native goal-progress component (bar, gauge, or summary) exists on the campaign record and
+      updates automatically as contributions are linked.
+    partial: Goal and actual fields exist on the campaign record but progress visualization requires navigating
+      to a separate report or dashboard widget.
+    workaround: Progress is computed via a custom report that the user must run manually.
+    none: No campaign goal or progress concept.
+    unknown: Insufficient evidence.
+applies_to:
+- entity
+- process
+tags:
+- family:ui
+- applies-to:records
+- axis:reporting
+- crm-dim:entity
+examples:
+- requirement: Show campaign progress against goals in a consolidated fundraising analytics view.
+  expected_answer: full
+  commentary: Many general-purpose CRMs support opportunity pipeline totals but not a campaign-level goal
+    tracker tied to contribution child records. Nonprofit CRMs typically include this natively.
+related_facets:
+- field.rollup_aggregate.child_to_parent
+- ui.reporting.multi_dimension_pivot
+source_hints:
+  corpus_refs:
+  - REQ-019-fundraising-analytics-reporting
+  - REQ-017-contribution-recording-and-receipts
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

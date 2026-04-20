@@ -1,0 +1,79 @@
+id: process.attribution.lifecycle_persistence
+version: 0.1.0
+status: active
+name: Attribution persistence across lifecycle stages
+description: Whether the CRM retains the original campaign and channel attribution on a contact record
+  across all lifecycle stage transitions — from first inquiry through application, admission, and enrollment
+  — so that downstream reporting can answer which campaigns actually produced enrolled students.
+question: Does the CRM preserve the original campaign and channel attribution on a contact record through
+  every lifecycle stage transition, all the way to enrollment or equivalent terminal stage?
+answer_schema:
+  type: structured
+  fields:
+    attribution_persisted:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Original source and multi-touch attribution are immutable first-class fields that survive
+          all stage transitions and record conversions.
+        partial: Original source retained but multi-touch attribution lost on conversion or stage change.
+        none: Attribution is overwritten or dropped when the record transitions stages.
+    multi_touch_model:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Multiple attribution touchpoints (first touch, last touch, campaign membership history)
+          are all retained and reportable.
+        partial: Only first-touch or last-touch attribution stored; intermediate touches not retained.
+        none: Single attribution field only; no touch history.
+    reportable_at_terminal_stage:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Built-in reporting can join terminal-stage outcome (enrolled, converted) back to originating
+          campaign without custom SQL or export.
+        partial: Possible via export/BI tool but not in built-in reports.
+        none: Attribution data and outcome data cannot be joined in any supported report.
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:data
+- family:process
+- applies-to:records
+- axis:attribution
+- crm-dim:process
+- complexity:requires-probe
+- impact:high
+examples:
+- requirement: Attribution has to persist all the way to enrollment so we can answer which channels actually
+    produce students.
+  expected_answer:
+    attribution_persisted: full
+    multi_touch_model: full
+    reportable_at_terminal_stage: full
+related_facets:
+- data.multichannel_lead_ingestion
+- data.identity_resolution
+- history.field.audit_trail
+source_hints:
+  corpus_refs:
+  - REQ-030-prospective-student-inquiry-nurture
+  - REQ-034-sis-lms-bidirectional-integration
+  - REQ-007-mentor-recruitment-outreach
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

@@ -1,0 +1,66 @@
+id: permission.field_level_access_control
+version: 0.1.0
+status: active
+name: Field-level access control per role
+description: Whether the CRM's permission model can restrict visibility and editability at the individual
+  field level — not just the record level — so that a role can read some fields on a record but not others,
+  or read a field without being able to edit it. This is distinct from record-level access control and
+  is a significant discriminator across CRM platforms.
+question: Can the CRM restrict field visibility and field editability independently per role, below the
+  record-access level?
+answer_schema:
+  type: structured
+  fields:
+    field_visibility_per_role:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Administrators can hide individual fields from specific roles so that the field does not
+          appear in any view or API response for that role.
+        partial: Field visibility can be controlled at a section or layout level, but not at the individual
+          field level.
+        none: All fields on a record are visible to any role that has record-read access.
+    field_write_restriction_per_role:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Administrators can make individual fields read-only for specific roles, independently of
+          whether the role has general record-edit rights.
+        partial: Write restriction applies at the record type level (a role can edit the whole record
+          or none of it) but not at the individual field level.
+        none: Write access is all-or-nothing per record; no field-level restriction.
+applies_to:
+- entity
+- persona
+tags:
+- family:permission
+- applies-to:fields
+- axis:access-control
+- crm-dim:persona
+- complexity:requires-probe
+examples:
+- requirement: A mentor can edit their own profile but not their status; an executive member has read
+    access across everything but doesn't edit operational data
+  expected_answer:
+    field_visibility_per_role: full
+    field_write_restriction_per_role: full
+  commentary: Many CRMs support record-level RBAC but stop short of field-level write restrictions. Platforms
+    that enforce field-level security natively are a minority.
+related_facets:
+- permission.audit_log_access
+- ui.persona_driven_view_composition
+source_hints:
+  corpus_refs:
+  - REQ-021-role-based-access-control
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

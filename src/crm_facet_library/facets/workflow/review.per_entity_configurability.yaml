@@ -1,0 +1,83 @@
+id: workflow.review.per_entity_configurability
+version: 0.1.0
+status: active
+name: Per-entity-type configurable review workflow
+description: Whether the CRM allows distinct workflow configurations — stages, assigned reviewers, required
+  documents, scoring criteria — to be defined independently per entity type or program type, rather than
+  forcing all instances of a record type through a single hard-coded workflow.
+question: Can an administrator configure entirely different workflow stages, reviewer assignments, required
+  documents, and scoring criteria per entity type or program type without code?
+answer_schema:
+  type: structured
+  fields:
+    per_type_stage_config:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Each program type (or record subtype) can have its own stage sequence, with stages not shared
+          unless explicitly reused.
+        partial: Stages shared across all types but stage visibility can be filtered per type.
+        workaround: Separate CRM objects or pipelines per type; high admin overhead.
+        none: Single workflow sequence for all records of the entity type.
+    per_type_reviewer_assignment:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Reviewer pools or routing rules configured per program type; assignment can be sequential
+          or parallel.
+        partial: Reviewer assignment available but not branched by type; all types share the same reviewer
+          pool.
+        none: No structured reviewer assignment; manual only.
+    document_completeness_gate:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Transition to the next stage is blocked until a configurable set of documents is marked
+          received and complete.
+        partial: Documents tracked but gate is advisory rather than enforced.
+        workaround: Requires a custom validation field or process step to simulate a gate.
+        none: No document-completeness gating on stage transitions.
+applies_to:
+- process
+- entity
+tags:
+- family:workflow
+- family:process
+- applies-to:automation
+- axis:configuration
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: Every academic program has its own admissions criteria and its own reviewers, so the application
+    workflow can't be a single hard-coded sequence. The system has to let us configure different intake
+    forms, required documents, stages, reviewers, and decision criteria per program.
+  expected_answer:
+    per_type_stage_config: full
+    per_type_reviewer_assignment: full
+    document_completeness_gate: full
+related_facets:
+- workflow.decision_rationale
+- history.field.audit_trail
+- ui.persona_driven_view_composition
+source_hints:
+  corpus_refs:
+  - REQ-031-admissions-application-review-workflow
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

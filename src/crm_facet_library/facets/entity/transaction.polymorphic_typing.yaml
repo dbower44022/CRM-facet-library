@@ -1,0 +1,89 @@
+id: entity.transaction.polymorphic_typing
+version: 0.1.0
+status: active
+name: Polymorphic contribution transaction modeling
+description: Whether the CRM can model multiple distinct contribution types — donations, sponsorships,
+  grants, and pledges — either as separate first-class entities with type-specific fields or as a single
+  entity with a type discriminator and conditional field sets. The choice of approach determines whether
+  type-specific fields (e.g. grant reporting deadlines, pledge installment schedules) can be captured
+  without losing the unified contribution history.
+question: Can the CRM model donations, sponsorships, grants, and pledges as distinct transaction types
+  — each with type-specific fields — while maintaining a unified contribution history per donor?
+answer_schema:
+  type: structured
+  fields:
+    type_specific_fields:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Type-specific fields (e.g. grant award dates and reporting deadlines; pledge installment
+          schedules) are natively supported per contribution type, either via separate entities or a conditional-field
+          mechanism on one entity.
+        partial: A single contribution entity exists with a type field, but all fields are shared — type-specific
+          fields must be re-purposed from generic fields.
+        workaround: Separate entities for each type but no unified contribution roll-up across types.
+        none: Only one contribution type supported; others must be recorded as free-text notes.
+    unified_history_across_types:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: All contribution types (donation, sponsorship, grant, pledge) are queryable in a single
+          unified history list on the parent donor record.
+        partial: Types exist in separate entity lists; a unified view requires a custom report.
+        workaround: Unified history requires external BI or manual assembly.
+        none: No cross-type history view.
+    pledge_installment_tracking:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: A pledge entity supports a payment schedule with installment due dates and tracks promised
+          vs. received amounts automatically.
+        partial: Pledge total is stored but installment schedule requires manual updates or a related
+          task per installment.
+        workaround: Pledge tracked via a free-text note and external spreadsheet.
+        none: No pledge concept.
+applies_to:
+- entity
+tags:
+- family:entity
+- applies-to:records
+- axis:modeling
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: Record donations (date, amount, method, designation), sponsorships (terms, supported program),
+    grants (award amount, reporting deadlines, renewal dates), and pledges (promised amount, installment
+    schedule, received to date) — all linkable to a campaign and to a donor.
+  expected_answer:
+    type_specific_fields: full
+    unified_history_across_types: full
+    pledge_installment_tracking: full
+  commentary: Many general-purpose CRMs treat all monetary transactions as a single 'Opportunity' entity
+    with a close date and amount. Nonprofit-specific CRMs or heavily configured platforms add pledge schedules
+    and grant management as distinct objects. The gap is highly discriminating between general and vertical
+    CRMs.
+related_facets:
+- entity.relationship.cardinality
+- field.computed_classification
+source_hints:
+  corpus_refs:
+  - REQ-017-contribution-recording-and-receipts
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

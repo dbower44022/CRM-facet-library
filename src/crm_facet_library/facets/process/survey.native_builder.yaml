@@ -1,0 +1,95 @@
+id: process.survey.native_builder
+version: 0.1.0
+status: active
+name: Native survey builder with CRM record linkage
+description: Whether the CRM provides a native survey-building capability — custom question types, scheduled
+  or workflow-triggered delivery, and response collection stored as first-class CRM records linked to
+  the relevant parent record and respondent — without requiring an external survey tool. A native capability
+  keeps response data in the CRM for cross-entity reporting; an external tool requires integration.
+question: Does the CRM include a native survey builder whose responses are stored as linked CRM records,
+  deliverable on a schedule or workflow trigger, reusable across multiple entity types?
+answer_schema:
+  type: structured
+  fields:
+    native_survey_builder:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: The CRM includes a survey designer with configurable question types (free text, rating,
+          multiple choice, etc.) without requiring a third-party survey tool.
+        partial: Basic survey capability (e.g., simple form builder) but with limited question types or
+          no branching logic.
+        workaround: Survey must be built in an external tool (Typeform, SurveyMonkey, etc.) and responses
+          imported.
+        none: No survey or form-builder capability beyond intake web forms.
+    response_as_linked_record:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Each survey response is stored as a first-class CRM record linked to both the respondent
+          and the parent record (e.g., engagement, event); queryable and reportable as any other entity.
+        partial: Responses are stored but as a flat export or blob attached to the survey definition,
+          not linked to individual parent records.
+        none: Responses are collected externally and not stored in the CRM at all without manual effort.
+    delivery_trigger:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Surveys can be delivered on a schedule (date/time) and via workflow trigger (e.g., engagement
+          closure), both configurable.
+        partial: Only one delivery mode supported (manual send only, or schedule only, or workflow only).
+        none: Surveys are sent manually each time; no automated delivery.
+    multi_entity_reuse:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: A single survey definition can be reused and linked to different parent entity types (contacts,
+          events, engagements) across program areas.
+        partial: Survey is reusable but only within a single entity type.
+        none: Surveys are one-off or siloed per use-case; no reuse mechanism.
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:process
+- applies-to:automation
+- axis:triggers
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: Shared survey capability — create surveys with custom question types, deliver on a schedule
+    or via workflow trigger, collect responses linked to CRM records, reusable across client satisfaction,
+    event follow-up, and mentor onboarding feedback
+  expected_answer:
+    native_survey_builder: full
+    response_as_linked_record: full
+    delivery_trigger: full
+    multi_entity_reuse: full
+related_facets:
+- process.trigger.on_field_change
+- entity.polymorphic_notes
+source_hints:
+  corpus_refs:
+  - REQ-025-shared-survey-mechanism
+  - REQ-006-client-satisfaction-surveys
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

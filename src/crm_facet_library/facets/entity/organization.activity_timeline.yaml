@@ -1,0 +1,64 @@
+id: entity.organization.activity_timeline
+version: 0.1.0
+status: active
+name: Shared multi-user activity timeline on organization
+description: Whether the CRM maintains a unified, chronological interaction log (calls, emails, meetings,
+  notes) on an organization record where multiple internal users can each contribute entries, with each
+  entry attributed to the staff member who logged it — supporting shared visibility into a relationship
+  owned by a team rather than an individual.
+question: Can multiple internal users log and view a shared interaction history on a single organization
+  record, with each entry attributed to the user who created it?
+answer_schema:
+  type: structured
+  fields:
+    multi_user_logging:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Any user with access to the record can add activity entries; all entries appear in a unified
+          timeline with per-entry actor attribution.
+        partial: Multiple users can log activities but the timeline is fragmented (e.g., per-user views)
+          or attribution is not per-entry.
+        workaround: Achievable only via shared notes field or external collaboration tool.
+        none: Activity logging is single-user or not available on organization records.
+    per_entry_attribution:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Each activity entry records which internal user created it and when, visible in the timeline.
+        partial: Attribution captured but not surfaced in the timeline view.
+        none: No per-entry attribution; all entries appear as system-generated or under a single owner.
+applies_to:
+- entity
+- process
+tags:
+- family:entity
+- applies-to:records
+- axis:collaboration
+- crm-dim:entity
+examples:
+- requirement: Multiple staff members communicate with the same partner organization; every call, email,
+    and meeting should appear in a single shared timeline on the partner record, showing which staff member
+    logged each entry
+  expected_answer:
+    multi_user_logging: full
+    per_entry_attribution: full
+related_facets:
+- history.field.audit_trail
+- entity.organization.agreement_lifecycle
+source_hints:
+  corpus_refs:
+  - REQ-012-partner-organization-relationships
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

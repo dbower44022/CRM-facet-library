@@ -1,0 +1,99 @@
+id: ui.reporting.multi_dimension_pivot
+version: 0.1.0
+status: active
+name: Multi-dimension pivot reporting on a transaction entity
+description: Whether the CRM's built-in report builder can group and aggregate a transaction entity (e.g.
+  contributions) across multiple simultaneous dimensions — such as date range, campaign, donor type, and
+  designation — without requiring data export or an external BI tool. Covers both tabular pivot output
+  and chart visualization of the same underlying query.
+question: 'Can the CRM''s report builder pivot and aggregate across multiple simultaneous dimensions (e.g.
+  date × campaign × type) and visualize the result without export?
+
+  '
+answer_schema:
+  type: structured
+  fields:
+    multi_dimension_groupby:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: The report builder allows grouping by multiple fields simultaneously and produces a cross-tabulated
+          or matrix-style output.
+        partial: Grouping is limited to one dimension at a time (no cross-tab); multi-dimension requires
+          separate reports.
+        workaround: Multi-dimension pivot requires data export to spreadsheet or external BI tool.
+        none: Report builder is limited to flat lists with no aggregation.
+    chart_visualization:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Charts (bar, line, pie) are available directly from the same report definition without separate
+          configuration.
+        partial: Chart types limited (e.g. bar only, no trend lines); or chart available only on dashboards,
+          not within report builder.
+        none: No visualization; tabular output only.
+    scheduled_report_delivery:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Reports can be scheduled to run on a recurring cadence (weekly, monthly) and delivered via
+          email or in-app notification automatically.
+        partial: Scheduling available but delivery is to in-app inbox only, not email.
+        workaround: Scheduling requires an external automation tool to trigger the CRM's export API.
+        none: Reports are run on demand only; no scheduling.
+    export_to_external_format:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Report results exportable to XLSX, PDF, and/or CSV from within the report builder.
+        partial: Export available but limited to CSV only (no formatted PDF or XLSX).
+        none: No export; data accessible only within the CRM UI.
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:ui
+- applies-to:records
+- axis:reporting
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: Show campaign progress against goals, filter contributions by donor type, campaign, date
+    range, and designation, and produce board-ready monthly summaries exportable to PDF/XLSX.
+  expected_answer:
+    multi_dimension_groupby: full
+    chart_visualization: full
+    scheduled_report_delivery: full
+    export_to_external_format: full
+  commentary: Lightweight CRMs often support single-dimension grouping and CSV export but lack true cross-tab
+    pivot, trend-line charts, or scheduled PDF delivery. The board-ready export requirement (PDF/PPTX/XLSX)
+    is frequently the gap.
+related_facets:
+- data.tagged_subpopulation_reporting
+- field.rollup_aggregate.child_to_parent
+source_hints:
+  corpus_refs:
+  - REQ-019-fundraising-analytics-reporting
+  - REQ-018-donor-stewardship-and-lifetime-value
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

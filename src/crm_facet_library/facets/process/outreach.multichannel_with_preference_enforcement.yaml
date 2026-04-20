@@ -1,0 +1,84 @@
+id: process.outreach.multichannel_with_preference_enforcement
+version: 0.1.0
+status: active
+name: Multi-channel outreach with preference enforcement
+description: Whether the CRM can execute outbound outreach across multiple channels (phone, SMS, email,
+  mail) from a single platform, while enforcing per-contact channel preferences and do-not-contact flags
+  at send time — not just as UI filters — so that a compliant channel is selected automatically and an
+  opted-out channel cannot be used accidentally.
+question: Can the CRM send outreach across phone, SMS, email, and mail, automatically enforcing per-contact
+  channel preferences and do-not-contact flags at the moment of send — not just as UI filters?
+answer_schema:
+  type: structured
+  fields:
+    channel_coverage:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Phone dial, SMS, email, and print/mail are all executable from the CRM natively or via a
+          native connector, without switching platforms.
+        partial: Two or three channels natively supported; remaining channels require a separate tool.
+        none: Only one channel supported natively.
+    preference_enforcement_at_send:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Channel preferences and do-not-contact flags are enforced by the platform at send time;
+          the system blocks or reroutes a send that would violate them, for both automated and manual
+          sends.
+        partial: Preferences enforced for automated campaigns but not for manual sends by coordinators,
+          or vice versa.
+        workaround: Preferences visible in UI but enforcement requires coordinator discipline; no hard
+          block.
+        none: No enforcement; preferences are advisory notes only.
+    consent_basis_tracking:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Opt-in / opt-out records carry the regulatory basis (e.g., HIPAA authorization, TCPA consent,
+          marketing opt-in) and timestamp; auditable per channel.
+        partial: Opt-in/out captured but without regulatory basis or not per-channel.
+        none: No structured consent tracking; free-text notes only.
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:process
+- family:compliance
+- applies-to:automation
+- axis:outreach
+- crm-dim:process
+- complexity:requires-probe
+- impact:regulatory
+examples:
+- requirement: A care coordinator needs to send an appointment reminder to a patient who has consented
+    to SMS but opted out of email. The system must automatically send via SMS and block the email channel
+    without requiring the coordinator to remember the patient's preference.
+  expected_answer:
+    channel_coverage: full
+    preference_enforcement_at_send: full
+    consent_basis_tracking: full
+related_facets:
+- process.trigger.on_field_change
+- history.field.audit_trail
+- compliance.data_retention_policy
+source_hints:
+  corpus_refs:
+  - REQ-036-multichannel-patient-outreach
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

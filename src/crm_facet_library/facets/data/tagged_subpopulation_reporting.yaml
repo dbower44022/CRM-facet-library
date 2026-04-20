@@ -1,0 +1,70 @@
+id: data.tagged_subpopulation_reporting
+version: 0.1.0
+status: active
+name: Tagged sub-population reporting across an entity set
+description: Whether the CRM can define named sub-populations of records within a single entity type (e.g.
+  board members, active mentors) using tags or category fields — and produce reports or filtered views
+  that treat these sub-populations as first-class segments, including aggregated metrics per segment,
+  without requiring them to be modeled as separate entities.
+question: Can the CRM define named sub-populations of a single entity type via tags or categories and
+  produce aggregated reports per sub-population without separate entities?
+answer_schema:
+  type: structured
+  fields:
+    tag_or_category_field:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Multi-value tag or category field is natively available on the entity; records can belong
+          to multiple sub-populations simultaneously.
+        partial: Single-value category field only; a contact can belong to only one sub-population.
+        workaround: Sub-population modeled as a boolean field per segment (one field per sub-population).
+        none: No tagging or category mechanism; separate entities required.
+    aggregated_report_per_segment:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Reports can group by and aggregate across tag/category values natively, producing per-segment
+          totals from the standard report builder.
+        partial: Filtering by tag is possible but group-by aggregation in reports requires custom code
+          or a separate BI tool.
+        workaround: Requires data export and external pivot for per-segment aggregation.
+        none: Tags exist for display only; no report aggregation.
+applies_to:
+- entity
+- cross-cutting
+tags:
+- family:data
+- applies-to:records
+- axis:segmentation
+- crm-dim:entity
+examples:
+- requirement: We separately track giving by board members and active mentors for internal reporting —
+    both are a subset of donors, not a separate entity.
+  expected_answer:
+    tag_or_category_field: full
+    aggregated_report_per_segment: full
+  commentary: Simpler CRMs support tags for filtering but cannot group-by tag in their report builder;
+    producing per-segment totals then requires export. This is a common gap between lightweight and enterprise
+    CRMs.
+related_facets:
+- field.computed_classification
+- history.field.audit_trail
+source_hints:
+  corpus_refs:
+  - REQ-018-donor-stewardship-and-lifetime-value
+  - REQ-019-fundraising-analytics-reporting
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

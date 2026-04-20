@@ -1,0 +1,72 @@
+id: field.computed_metric.with_drift_alert
+version: 0.1.0
+status: active
+name: Computed adherence metric with drift threshold alert
+description: Whether the CRM can compute an adherence or compliance metric per record (e.g., percentage
+  of interventions completed, streak count, or custom formula) derived from underlying activity records,
+  and fire an alert or task when that metric crosses a configured drift threshold — distinct from one-time
+  triggers or static field changes.
+question: Can the CRM compute a running adherence metric per record from activity-completion data and
+  automatically alert or create a task when the metric crosses a configured drift threshold?
+answer_schema:
+  type: structured
+  fields:
+    computed_adherence_metric:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: A metric (percentage, streak, score) is computed from child-record activity data and materialized
+          on the parent record, refreshed on a cadence or on each completion event.
+        partial: A formula field computes the metric at read time but is not materialized or refreshed
+          on event; no history.
+        workaround: Achievable only via external reporting tool that writes the metric back to a field.
+        none: No computed adherence capability; coordinators must calculate manually.
+    drift_threshold_alert:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Configurable threshold rule fires a notification or creates a task when the adherence metric
+          drops below (or crosses) a defined value; configurable per care plan type or patient tier.
+        partial: A static condition trigger (e.g., on missed intervention) exists but cannot reference
+          the computed metric value directly.
+        workaround: Alert achievable only via a custom workflow that re-evaluates the metric on a schedule
+          and sends an email.
+        none: No threshold-based alerting on adherence.
+applies_to:
+- entity
+- process
+tags:
+- family:field
+- family:process
+- applies-to:fields
+- axis:computation
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: A patient's care plan has 8 monthly check-ins scheduled. The system shows a '62% adherent'
+    metric on the patient record and alerts the care coordinator when adherence drops below 75%, so re-engagement
+    can happen before the plan fails.
+  expected_answer:
+    computed_adherence_metric: full
+    drift_threshold_alert: full
+related_facets:
+- field.computed_classification
+- process.trigger.on_field_change
+- entity.hierarchy.nested_with_versioning
+source_hints:
+  corpus_refs:
+  - REQ-037-care-plan-tracking-adherence
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

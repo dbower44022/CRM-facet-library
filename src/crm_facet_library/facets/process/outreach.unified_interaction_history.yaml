@@ -1,0 +1,67 @@
+id: process.outreach.unified_interaction_history
+version: 0.1.0
+status: active
+name: Unified outreach history (automated + manual)
+description: Whether the CRM maintains a single, chronologically interleaved communication history on
+  each contact record that includes both automated campaign outreach and manual staff-initiated contacts
+  across all channels — so that any user picking up an interaction can see the full prior context without
+  switching between separate logs.
+question: Does the CRM maintain one unified, interleaved interaction history per contact that includes
+  both automated campaign sends and manual staff outreach across all channels?
+answer_schema:
+  type: structured
+  fields:
+    automated_and_manual_interleaved:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Automated campaign contacts and manual staff contacts appear in the same chronological log
+          on the contact record, regardless of channel.
+        partial: Both exist but in separate tabs or sub-objects; no single interleaved view.
+        none: Only one type (automated or manual) is recorded; the other is not surfaced on the contact
+          record.
+    inbound_response_captured:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Inbound responses (answered call, text reply, email reply, opt-out signal) are captured
+          and linked to the originating outreach attempt in the history.
+        partial: Some inbound channels captured (e.g. email reply) but not others (e.g. SMS reply or call
+          outcome).
+        none: Only outbound attempts recorded; inbound responses not tracked on the contact record.
+applies_to:
+- process
+- entity
+tags:
+- family:process
+- family:history
+- applies-to:records
+- axis:outreach
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: 'When a care coordinator opens a patient record, they must be able to see in one timeline:
+    the automated appointment reminder sent Monday, the unanswered call placed by a colleague Tuesday,
+    the patient''s SMS reply Wednesday, and the coordinator''s own call Thursday — regardless of which
+    tool or staff member originated each touch.'
+  expected_answer:
+    automated_and_manual_interleaved: full
+    inbound_response_captured: full
+related_facets:
+- history.field.audit_trail
+- integration.bidirectional_sync
+source_hints:
+  corpus_refs:
+  - REQ-036-multichannel-patient-outreach
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

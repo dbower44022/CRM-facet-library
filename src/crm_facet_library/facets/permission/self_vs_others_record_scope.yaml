@@ -1,0 +1,47 @@
+id: permission.self_vs_others_record_scope
+version: 0.1.0
+status: active
+name: Self-vs-others record visibility scoping
+description: Whether the CRM's permission model supports a 'own records only' visibility scope — where
+  a user can see and act on records that are associated with them, but not records associated with other
+  users of the same role. This is distinct from both full access and no access, and is a common requirement
+  for volunteer or client-facing personas.
+question: Can the CRM restrict a role's record visibility to only the records associated with that specific
+  user, rather than all records of that type?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - workaround
+  - none
+  - unknown
+  scoring_hints:
+    full: A role can be configured with 'own records only' scope natively; the platform enforces it at
+      query time without custom code.
+    partial: Scoping is achievable via sharing rules or territory models but requires non-trivial configuration
+      per entity type.
+    workaround: Requires row-level security implemented in a custom integration or external BI layer.
+    none: Record visibility is all-or-nothing per record type; no ownership-based scoping.
+applies_to:
+- persona
+tags:
+- family:permission
+- applies-to:records
+- axis:access-control
+- crm-dim:persona
+- complexity:requires-probe
+examples:
+- requirement: A mentor can see their own engagement history but not other clients'; a client can see
+    their own engagement history but not other clients'
+  expected_answer: full
+related_facets:
+- permission.field_level_access_control
+- permission.multi_role_composition
+source_hints:
+  corpus_refs:
+  - REQ-021-role-based-access-control
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

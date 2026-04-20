@@ -1,0 +1,65 @@
+id: process.campaign.multichannel_attribution
+version: 0.1.0
+status: active
+name: Multi-channel campaign attribution
+description: Whether the CRM supports a campaign record that aggregates outreach activities across multiple
+  channels (email, social, paid, direct mail, in-person) and links each campaign to downstream conversions,
+  so that channel and campaign performance can be reported without external analytics tooling.
+question: Can the CRM associate outreach activities across multiple channels with a single campaign record,
+  then report on how many conversions each campaign and channel produced?
+answer_schema:
+  type: structured
+  fields:
+    multi_channel_campaign_record:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: A campaign entity can aggregate activities from at least three distinct channel types (e.g.,
+          email, social, in-person) under one record.
+        partial: Campaign records exist but are channel-specific (e.g., email campaigns only).
+        workaround: Multi-channel grouping requires external marketing platform and manual import of results.
+        none: No campaign record concept exists.
+    conversion_attribution_to_campaign:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Converted contacts (applicants, clients) carry a campaign-source pointer that is reportable
+          as a rollup on the campaign record.
+        partial: Conversion tracked but only at the channel level, not tied to a specific campaign.
+        workaround: Attribution only via manual tagging or external UTM + import workflow.
+        none: No conversion-to-campaign linkage.
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:process
+- applies-to:automation
+- axis:attribution
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: Our Client Recruiter runs outreach via SEO, social media, paid ads, direct mail, and in-person
+    canvassing; we need to see which campaign and channel each eventual applicant came from
+  expected_answer:
+    multi_channel_campaign_record: full
+    conversion_attribution_to_campaign: full
+related_facets:
+- data.referral_attribution
+- process.trigger.on_field_change
+source_hints:
+  corpus_refs:
+  - REQ-013-outreach-marketing-attribution
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

@@ -1,0 +1,77 @@
+id: entity.polymorphic_notes
+version: 0.1.0
+status: active
+name: Polymorphic notes attachable to any record type
+description: Whether the CRM provides a single, first-class Note entity that can be attached to any record
+  type (contact, organization, engagement, event, etc.) with automatic author and timestamp attribution,
+  rather than requiring per-entity note fields or separate note objects per entity type. This is the 'universal
+  sticky note' primitive that absorbs unstructured documentation without per-entity reimplementation.
+question: Does the CRM support a single Note entity that attaches to any record type, with automatic author
+  attribution and timestamp, inheriting visibility from the parent record's permissions?
+answer_schema:
+  type: structured
+  fields:
+    polymorphic_attachment:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: A single Note entity can be attached to any entity type without per-entity configuration;
+          new custom entity types automatically support notes.
+        partial: Notes are supported on standard entity types (contact, account) but require custom configuration
+          for each custom entity type.
+        none: Notes must be implemented as a text field on each entity separately; no polymorphic note
+          entity exists.
+    auto_attribution:
+      type: rating
+      allowed_values:
+      - full
+      - none
+      - unknown
+      scoring_hints:
+        full: Every note is automatically stamped with the creating user's identity and creation timestamp;
+          neither can be omitted or forged by the author.
+        none: Author and/or timestamp must be manually entered or are not captured.
+    permission_inheritance:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Note visibility is automatically derived from the parent record's access rules; no separate
+          ACL on the note itself is needed.
+        partial: Notes have their own permission layer that must be configured separately from the parent
+          record.
+        none: Notes are globally visible to all users regardless of parent record permissions.
+applies_to:
+- entity
+- cross-cutting
+tags:
+- family:entity
+- applies-to:records
+- axis:modeling
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: Attach free-form notes to any record — contacts, organizations, engagements, partners,
+    donors, events, any other record type — automatically attributed to the staff user who wrote it and
+    timestamped; visible to anyone who has access to the parent record
+  expected_answer:
+    polymorphic_attachment: full
+    auto_attribution: full
+    permission_inheritance: full
+related_facets:
+- history.field.audit_trail
+- permission.field_level_access_control
+source_hints:
+  corpus_refs:
+  - REQ-024-free-form-notes-on-any-record
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

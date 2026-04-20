@@ -1,0 +1,70 @@
+id: entity.contact.lifecycle_state
+version: 0.1.0
+status: active
+name: Multi-state contact lifecycle with out-of-active states
+description: Whether the CRM supports a contact lifecycle model that includes non-active states (alumni,
+  lapsed, incomplete-application, cold-lead) as first-class status values — retaining the contact and
+  its history without deletion — and whether these states are usable as segmentation criteria for targeted
+  outreach without polluting active-record lists.
+question: 'Can the CRM represent out-of-active contact states (alumni, lapsed, incomplete), retaining
+  full history, while keeping them filterable and separate from active records?
+
+  '
+answer_schema:
+  type: structured
+  fields:
+    non_active_states_supported:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Multiple distinct non-active states (alumni, lapsed, cold, incomplete) are first-class status
+          values; contacts in these states retain all history.
+        partial: A single generic inactive/archived state exists but does not distinguish alumni from
+          lapsed from incomplete.
+        workaround: Non-active states simulated via tags or custom fields with no platform enforcement.
+        none: Inactive contacts must be deleted or have no distinguishable state.
+    segmentable_without_polluting_active:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Default views and pipelines exclude non-active states automatically; a dedicated segment
+          or saved view surfaces them for outreach without any filter gymnastics.
+        partial: Non-active contacts are excludable from active views but require manual filter setup
+          each time.
+        workaround: Requires a separate record type or a second CRM instance.
+        none: All contacts appear in the same undifferentiated list regardless of state.
+applies_to:
+- entity
+- persona
+tags:
+- family:entity
+- applies-to:records
+- axis:modeling
+- crm-dim:entity
+examples:
+- requirement: Maintain former clients (alumni), applicants who never finished (incomplete), and event
+    attendees who didn't convert (cold leads) as distinct populations, each reachable for re-engagement
+    campaigns, without showing them in the active client list
+  expected_answer:
+    non_active_states_supported: full
+    segmentable_without_polluting_active: full
+related_facets:
+- process.segment.dynamic_list
+- data.referral_attribution
+source_hints:
+  corpus_refs:
+  - REQ-015-alumni-reactivation-and-recovery
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

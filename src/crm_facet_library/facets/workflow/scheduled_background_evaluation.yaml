@@ -1,0 +1,98 @@
+id: workflow.scheduled_background_evaluation
+version: 0.1.0
+status: active
+name: Scheduled workflow with per-record thresholds
+description: Whether the CRM's automation engine can run scheduled background evaluations across a set
+  of records — independently of any user action — and apply different threshold or cadence values drawn
+  from each record's own configuration fields rather than a single global constant, triggering actions
+  when individual records cross their own threshold.
+question: 'Can a scheduled automation evaluate each record against a threshold stored on that record —
+  not a global constant — and fire per-record actions on crossing?
+
+  '
+answer_schema:
+  type: structured
+  fields:
+    scheduled_background_run:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Automation runs on a time-based schedule (hourly, daily, custom cron) without requiring
+          any user action or record save to trigger evaluation.
+        partial: Time-based triggers available but only on record creation or update events, not as independent
+          background sweeps.
+        workaround: Requires an external scheduler (e.g. cron job hitting the API) to trigger evaluation.
+        none: No scheduled automation; all automations are event-driven only.
+    per_record_threshold:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Workflow condition can reference a field on the evaluated record as the threshold value,
+          not just a hard-coded constant in the workflow definition.
+        partial: Threshold can be parameterized at the workflow level (one value per workflow run) but
+          not per-record from the record's own field.
+        workaround: Per-record thresholds achievable only via custom code or formula fields that encode
+          branching logic.
+        none: Only global hard-coded thresholds supported in workflow conditions.
+    bidirectional_state_transition:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: The same scheduled workflow can move a record's status both forward (escalation) and backward
+          (reversion) based on re-evaluation, without two separate workflows.
+        partial: Forward and reverse transitions each require a separate workflow definition.
+        none: Workflows can only move records in one direction; reversion requires manual action.
+    exclusion_flag_suppression:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: A boolean flag on the record can exclude it from all evaluation by a workflow class, configurable
+          without modifying the workflow definition.
+        partial: Exclusion possible but requires modifying the workflow or adding a filter condition as
+          a code/admin change.
+        none: No record-level exclusion mechanism; all records in scope are always evaluated.
+applies_to:
+- process
+tags:
+- family:workflow
+- applies-to:automation
+- axis:triggers
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: 'Detect engagements that have gone quiet: a weekly-cadence engagement should alert faster
+    than a monthly-cadence one; on-hold engagements should be excluded; when activity resumes the status
+    should auto-revert'
+  expected_answer:
+    scheduled_background_run: full
+    per_record_threshold: full
+    bidirectional_state_transition: full
+    exclusion_flag_suppression: full
+related_facets:
+- process.trigger.on_field_change
+- field.computed_classification
+source_hints:
+  corpus_refs:
+  - REQ-004-cadence-aware-inactivity-monitoring
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

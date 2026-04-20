@@ -1,0 +1,72 @@
+id: workflow.status_transition_required_fields
+version: 0.1.0
+status: active
+name: Required-field enforcement on status transition
+description: Whether the CRM can enforce that specific fields must be populated before a record is allowed
+  to transition to a given status — and only on that transition, not on every save. For example, a Closure
+  reason field that is mandatory only when moving a record to 'Closed', or a decision rationale required
+  only on 'Approved' or 'Rejected'.
+question: Can the CRM require specific fields to be filled in only when a record transitions to a particular
+  status, blocking the transition if they are empty?
+answer_schema:
+  type: structured
+  fields:
+    conditional_required_fields:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Platform natively enforces transition-specific required fields; the field is optional at
+          all other times and mandatory only on the defined transition.
+        partial: Required fields can be set globally (always mandatory) but not conditioned on a specific
+          transition; workarounds exist (e.g. validation rules on save that check status).
+        workaround: Requires custom code (e.g. JavaScript, Apex, custom plugin) to implement transition-gated
+          validation.
+        none: No mechanism to conditionally require fields on transition.
+    transition_blocked_on_violation:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: The status transition is hard-blocked by the platform until required fields are provided;
+          user cannot bypass.
+        partial: Warning shown but user can proceed without filling required fields.
+        none: No blocking; validation is advisory only.
+applies_to:
+- process
+- entity
+tags:
+- family:workflow
+- applies-to:automation
+- axis:validation
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: We should not be able to close an engagement without recording a closure reason and an
+    outcome
+  expected_answer:
+    conditional_required_fields: full
+    transition_blocked_on_violation: full
+- requirement: Every approve or reject decision on an application must capture a rationale before the
+    status is saved
+  expected_answer:
+    conditional_required_fields: full
+    transition_blocked_on_violation: full
+related_facets:
+- process.trigger.on_field_change
+- history.field.audit_trail
+source_hints:
+  corpus_refs:
+  - REQ-001-online-client-intake
+  - REQ-005-engagement-closure-with-outcomes
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

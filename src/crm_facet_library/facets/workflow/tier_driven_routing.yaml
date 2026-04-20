@@ -1,0 +1,88 @@
+id: workflow.tier_driven_routing
+version: 0.1.0
+status: active
+name: Tier-driven workflow variance and ownership routing
+description: Whether the CRM can vary the automation cadence, coordinator ownership assignment, and workflow
+  path for records of the same entity type based on a computed tier or classification — so that a high-risk
+  patient and a low-risk patient on the same entity type follow materially different automated workflows
+  without custom code per tier.
+question: 'Can the CRM apply different cadences, ownership, and automation paths to records of the same
+  type based on a computed tier — configured without custom code?
+
+  '
+answer_schema:
+  type: structured
+  fields:
+    tier_conditional_branching:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Workflow rules can branch on any computed tier/classification field; different branches
+          can execute different cadences, task templates, and ownership assignments per tier.
+        partial: Branching possible on static/manual fields but not on computed classification fields,
+          or branching is limited to two tiers.
+        workaround: Tier-driven variance requires separate workflow per tier, manually duplicated and
+          maintained.
+        none: All records of the same entity type follow the same workflow regardless of tier.
+    ownership_auto_reassignment_on_tier_change:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: When a record's tier changes, the system automatically evaluates and applies new ownership
+          / queue-routing rules without manual reassignment.
+        partial: Tier change triggers a notification to a manager who then manually reassigns; not automatic.
+        workaround: Achievable only via a custom script triggered by a field-change webhook.
+        none: Ownership is not affected by tier; purely manual.
+    cadence_variance_by_tier:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Outreach frequency, task recurrence, and check-in intervals are configurable per tier so
+          a Complex patient gets weekly touches and a Stable patient gets monthly — from the same entity
+          type.
+        partial: Cadence configurable at the workflow level but requires a separate workflow definition
+          per tier.
+        none: Cadence is uniform across all records of the entity type.
+applies_to:
+- process
+- entity
+tags:
+- family:workflow
+- family:process
+- applies-to:automation
+- axis:routing
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: A patient who moves from 'Rising' tier to 'Complex' tier must automatically be reassigned
+    to a senior nurse coordinator, have their outreach cadence increased to weekly, and have a new set
+    of high-intensity intervention tasks generated — all without a manager manually intervening.
+  expected_answer:
+    tier_conditional_branching: full
+    ownership_auto_reassignment_on_tier_change: full
+    cadence_variance_by_tier: full
+related_facets:
+- field.computed_classification
+- process.trigger.on_field_change
+- workflow.task_autorouting_to_role
+source_hints:
+  corpus_refs:
+  - REQ-038-risk-tiered-patient-segmentation
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

@@ -46,11 +46,15 @@ related_facets:
   - history.field.audit_trail
 
 source_hints:
+  corpus_refs:
+    - REQ-005-engagement-closure-with-outcomes
+    - REQ-011-mentor-departure-and-reactivation
+    - REQ-017-contribution-recording-and-receipts
   standards_refs:
     - "GDPR Article 5(1)(e) — storage limitation"
     - "SOC 2 CC6.5 — data retention and disposal"
 
 created: 2026-04-17
-modified: 2026-04-17
+modified: 2026-04-20
 author: doug
 reviewer: doug

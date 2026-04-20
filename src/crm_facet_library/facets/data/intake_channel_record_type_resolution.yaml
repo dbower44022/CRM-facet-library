@@ -1,0 +1,70 @@
+id: data.intake_channel_record_type_resolution
+version: 0.1.0
+status: active
+name: Intake-channel-driven record type resolution
+description: Whether the CRM can determine a contact's type automatically from which intake channel (form,
+  import, API) the record arrived through — rather than relying on user selection at entry time. This
+  prevents operator error from producing mistyped contacts and enforces uniform classification rules across
+  every intake surface.
+question: Can the CRM assign a contact's type automatically from the intake channel configuration, without
+  user selection at entry time?
+answer_schema:
+  type: structured
+  fields:
+    channel_driven_type_assignment:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Each intake form/channel carries a configurable record-type assignment that is applied automatically
+          on submit, invisible to the end user.
+        partial: Default type is pre-populated from the channel but can be overridden by the user.
+        workaround: Achievable via post-submit automation that rewrites a user-entered type field.
+        none: Type must be selected by the user or assigned manually after creation.
+    csv_import_type_declaration:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: CSV import requires either a file-level type declaration or a per-row column specifying
+          type; neither mode allows an untyped import.
+        partial: File-level type declaration supported but no per-row override, or vice versa.
+        workaround: Type must be set via a post-import automation or manual bulk-edit.
+        none: CSV import does not support type assignment; all imported rows land as the same default
+          type.
+applies_to:
+- entity
+- process
+tags:
+- family:data
+- family:entity
+- applies-to:records
+- axis:classification
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: Contact type should be determined by which form they came in through, not by user selection;
+    CSV imports must declare the contact type for the file or read it from a per-row column
+  expected_answer:
+    channel_driven_type_assignment: full
+    csv_import_type_declaration: full
+  commentary: 'CRMs vary significantly here: some allow per-form type configuration as a hidden metadata
+    field, others require post-submit automation, others have no mechanism at all.'
+related_facets:
+- data.identity_resolution
+- entity.relationship.cardinality
+source_hints:
+  corpus_refs:
+  - REQ-020-universal-contact-creation-rules
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

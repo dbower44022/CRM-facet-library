@@ -1,0 +1,82 @@
+id: process.workflow.multi_gate_transition
+version: 0.1.0
+status: active
+name: Multi-gate readiness check on a status transition
+description: Whether the CRM can block a record from advancing to a target status until multiple independent
+  prerequisite conditions are simultaneously satisfied — where those conditions may come from different
+  sources (fields on the record, related record counts, external data synced in from another system) —
+  enforcing a logical AND across async inputs.
+question: Can the CRM hold a record in a pending state until all of several independent prerequisite conditions
+  are met, then automatically advance it?
+answer_schema:
+  type: structured
+  fields:
+    multi_condition_gate:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Administrator can define N conditions (field checks, related-record existence, external-sync
+          flags) that must all be true before the transition fires; evaluated automatically when any input
+          changes.
+        partial: Only a single condition supported as a gate, or conditions are checked only on manual
+          trigger.
+        workaround: Requires custom automation logic or external integration to compose the AND check.
+        none: No native gate mechanism; transitions are always user-initiated regardless of readiness.
+    cross_source_conditions:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Gate conditions can reference fields sourced from external systems (e.g., LMS completion
+          synced in) alongside native CRM fields.
+        partial: Gate conditions limited to fields natively authored in the CRM; external data must be
+          written to a local field first, which is not automatically re-evaluated.
+        none: Gate conditions limited to static field checks with no awareness of data origin.
+    automatic_advance_on_completion:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: When the last pending condition clears, the transition fires automatically without manual
+          intervention.
+        partial: System notifies a user that all gates are clear but requires manual confirmation to advance.
+        none: No automatic advance; user must manually check and initiate transition every time.
+applies_to:
+- process
+tags:
+- family:process
+- family:workflow
+- applies-to:automation
+- axis:triggers
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: A Provisional mentor can only be activated when (1) background check status = Cleared,
+    (2) required training completion synced from LMS, and (3) at least one supervised co-mentoring activity
+    is logged — all three must be true simultaneously before the transition to Active fires
+  expected_answer:
+    multi_condition_gate: full
+    cross_source_conditions: full
+    automatic_advance_on_completion: full
+related_facets:
+- entity.lifecycle.state_machine
+- process.trigger.on_field_change
+- integration.bidirectional_sync
+source_hints:
+  corpus_refs:
+  - REQ-009-mentor-onboarding-with-training
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

@@ -1,0 +1,79 @@
+id: process.notification.status_change_transactional
+version: 0.1.0
+status: active
+name: Automated transactional notifications on status change
+description: Whether the CRM can automatically dispatch a notification (email, SMS, or in-app message)
+  to a specific party — such as the record subject — when a record's status changes to a configured value,
+  with notification content that can incorporate field values from the record, without requiring custom
+  integration code.
+question: Can the CRM automatically send a configurable notification to the record subject when its status
+  changes to a specified value, using field values from the record in the message?
+answer_schema:
+  type: structured
+  fields:
+    trigger_on_status_change:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Native automation fires on a specified status-field value change and dispatches a notification
+          without custom code.
+        partial: Notifications available but only on record save (any change), not on a specific status
+          value transition.
+        workaround: Achievable via webhook + external email service; not a native CRM capability.
+        none: No native automated notification capability.
+    recipient_targeting:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: 'Recipient can be configured per notification: the record subject, a related contact, a
+          role-based queue, or a specific user — selectable per status transition.'
+        partial: Notifications always go to a fixed recipient or always to the record owner; cannot target
+          the record subject separately.
+        none: No recipient control; notification goes to all users or is not supported.
+    field_merge_in_content:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Notification templates support merge fields from the triggering record and related records.
+        partial: Static message only; no dynamic field values from the record.
+        none: No template or content customization.
+applies_to:
+- process
+tags:
+- family:process
+- applies-to:automation
+- axis:triggers
+- crm-dim:process
+examples:
+- requirement: When a mentor application status changes to Approved, Deferred, or Rejected, automatically
+    send the applicant a professional notification explaining the outcome, using their name and the decision
+    rationale from the record
+  expected_answer:
+    trigger_on_status_change: full
+    recipient_targeting: full
+    field_merge_in_content: full
+related_facets:
+- process.trigger.on_field_change
+- entity.lifecycle.state_machine
+source_hints:
+  corpus_refs:
+  - REQ-008-mentor-application-and-admission
+  - REQ-001-online-client-intake
+  - REQ-002-mentor-matching-and-assignment
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

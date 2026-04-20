@@ -1,0 +1,83 @@
+id: workflow.nurture.stage_and_segment_branching
+version: 0.1.0
+status: active
+name: Stage- and segment-aware automated nurture branching
+description: Whether the CRM's automated nurture / campaign engine can branch the communication sequence
+  a contact receives based on their current lifecycle stage and segment attributes (e.g., program interest,
+  geography), rather than enrolling all contacts in a single generic sequence.
+question: Can the CRM's automation send different nurture sequences to contacts based on their current
+  lifecycle stage and segment attributes, with branching configured without code?
+answer_schema:
+  type: structured
+  fields:
+    stage_based_branching:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Nurture sequences branch on lifecycle stage changes automatically; entering a new stage
+          can enroll the contact in a different track or exit the current one.
+        partial: Stage filter available at enrollment time but does not dynamically re-route if stage
+          changes mid-sequence.
+        workaround: Requires separate campaign per stage with manual segment management.
+        none: Single linear sequence only; no branching.
+    segment_attribute_branching:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Any field on the contact (program interest, geography, source) can be used as a branch condition
+          within the sequence.
+        partial: Branching available on a limited set of standard fields only.
+        workaround: Separate campaigns per segment; no within-sequence branching.
+        none: No segment-based branching.
+    cross_channel_send:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Nurture engine sends across email, SMS, and at least one additional channel (social, direct
+          mail, push) natively.
+        partial: Email only, or email + SMS only.
+        none: Single channel only.
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:workflow
+- family:process
+- applies-to:automation
+- axis:branching
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: The automated nurture has to be smart enough to reflect the prospect's stage and area of
+    interest, not send everyone the same generic sequence.
+  expected_answer:
+    stage_based_branching: full
+    segment_attribute_branching: full
+    cross_channel_send: partial
+  commentary: Most higher-ed CRMs cover email + SMS; additional channels (direct mail, social) vary widely
+    by vendor.
+related_facets:
+- process.trigger.on_field_change
+- field.computed_classification
+- ui.persona_driven_view_composition
+source_hints:
+  corpus_refs:
+  - REQ-030-prospective-student-inquiry-nurture
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

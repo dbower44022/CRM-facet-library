@@ -1,0 +1,65 @@
+id: data.multichannel_lead_ingestion
+version: 0.1.0
+status: active
+name: Multi-channel lead / inquiry ingestion
+description: Whether the CRM can receive inbound prospect records from heterogeneous channels — web form,
+  manual entry, bulk import, API push, third-party referral feed, purchased list — and normalize them
+  into a single canonical contact record with the originating channel tagged on each record.
+question: Can the CRM ingest prospect records from web forms, imports, APIs, and partner feeds, and tag
+  each record with its originating channel at the point of capture?
+answer_schema:
+  type: structured
+  fields:
+    channel_coverage:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Native connectors or built-in form builder cover web form, file import, API, and partner/referral
+          feed without custom code.
+        partial: Two or three channels covered natively; others require custom integration.
+        workaround: All ingestion requires bespoke ETL or middleware; no native multi-channel ingestion.
+        none: Only manual entry supported.
+    source_tag_on_record:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Channel / source is a first-class field populated automatically at capture time and visible
+          across the record lifecycle.
+        partial: Source captured in a free-text or note field; not a structured queryable attribute.
+        none: No channel attribution stored on the record.
+applies_to:
+- entity
+- cross-cutting
+tags:
+- family:data
+- family:integration
+- applies-to:records
+- axis:ingestion
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: Prospect inquiries from a campus visit, a college fair, a purchased list, and a web form
+    must all land in the CRM with the originating channel tagged, so recruitment staff can see where each
+    prospect came from.
+  expected_answer:
+    channel_coverage: full
+    source_tag_on_record: full
+related_facets:
+- data.identity_resolution
+- process.attribution.lifecycle_persistence
+source_hints:
+  corpus_refs:
+  - REQ-030-prospective-student-inquiry-nurture
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

@@ -1,0 +1,92 @@
+id: integration.calendar.availability_query
+version: 0.1.0
+status: active
+name: Real-time calendar availability query for scheduling
+description: 'Whether the CRM can display a staff user''s real-time availability — pulled from their connected
+  organizational calendar account (Google Workspace, Microsoft 365), including sub-calendars — at the
+  moment of scheduling a session or appointment inside the CRM. Distinct from a one-way event sync: the
+  CRM must query free/busy state in real time so that double-booking is prevented.'
+question: When scheduling from within the CRM, can the CRM query and display the staff user's real-time
+  availability from their connected organizational calendar, including all linked sub-calendars?
+answer_schema:
+  type: structured
+  fields:
+    realtime_availability_query:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: CRM fetches free/busy from the user's connected calendar at scheduling time; conflicts are
+          visible before the appointment is created.
+        partial: Availability shown but relies on a periodic sync (not real-time); stale by minutes or
+          hours.
+        workaround: User must open their calendar app separately to check availability.
+        none: No calendar availability display in the scheduling UI.
+    sub_calendar_inclusion:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Personal and additional calendars linked to the organizational account are included in the
+          free/busy query.
+        partial: Only the primary organizational calendar is queried; personal or linked calendars excluded.
+        none: No calendar queried; no availability data.
+    per_user_calendar_connection:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Each CRM user independently connects and authenticates their own calendar account via OAuth.
+        partial: Only a single shared calendar account can be connected at the tenant level.
+        none: No per-user calendar connection supported.
+    appointment_write_back:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: An appointment created in the CRM is immediately written to the user's organizational calendar
+          as a calendar event.
+        partial: Write-back possible but requires manual export/sync step.
+        workaround: User must manually add the CRM-created appointment to their calendar.
+        none: CRM appointments are not propagated to external calendars.
+applies_to:
+- process
+- persona
+tags:
+- family:integration
+- applies-to:scheduling
+- axis:availability
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: When scheduling a session from the CRM, display the staff user's full availability including
+    personal calendars linked to their Google/Microsoft account, and create the appointment on their organizational
+    calendar
+  expected_answer:
+    realtime_availability_query: full
+    sub_calendar_inclusion: full
+    per_user_calendar_connection: full
+    appointment_write_back: full
+related_facets:
+- integration.bidirectional_sync
+source_hints:
+  corpus_refs:
+  - REQ-023-calendar-availability-integration
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

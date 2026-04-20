@@ -1,0 +1,73 @@
+id: data.referral_attribution
+version: 0.1.0
+status: active
+name: Referral source attribution on converted records
+description: Whether the CRM can permanently associate a referring entity (partner organization, campaign,
+  event, or individual contact) with a converted record (applicant, client, or enrolled participant),
+  such that the originating referral source survives all lifecycle stage transitions and is reportable
+  as a rollup on the referring entity.
+question: Does the CRM retain a referral-source pointer on a contact through all lifecycle transitions,
+  and support rollup reporting of how many conversions each referral source produced?
+answer_schema:
+  type: structured
+  fields:
+    source_pointer_survives_transition:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: The referral-source field is set at intake and remains populated and visible after prospect
+          → applicant → client transitions.
+        partial: Source tracked at intake but lost or overwritten during lifecycle transitions.
+        workaround: Source preserved only via manual copy or external ETL between stage records.
+        none: No referral source field available.
+    rollup_reporting_on_source:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: A report or dashboard can show, for each partner or campaign, the count of contacts and
+          conversions attributed to it without custom scripting.
+        partial: Rollup possible but requires a custom report build or export + external analysis.
+        workaround: Only achievable via data export and offline calculation.
+        none: No rollup reporting on referral source.
+applies_to:
+- entity
+- process
+- cross-cutting
+tags:
+- family:data
+- applies-to:records
+- axis:attribution
+- crm-dim:entity
+examples:
+- requirement: Track which partner organization referred each client and report the total number of clients
+    and mentors sourced from each partner
+  expected_answer:
+    source_pointer_survives_transition: full
+    rollup_reporting_on_source: full
+- requirement: Know which outreach campaign (SEO, paid ad, direct mail) produced each applicant, even
+    after they become an active client
+  expected_answer:
+    source_pointer_survives_transition: full
+    rollup_reporting_on_source: full
+related_facets:
+- entity.relationship.cardinality
+- data.identity_resolution
+source_hints:
+  corpus_refs:
+  - REQ-012-partner-organization-relationships
+  - REQ-013-outreach-marketing-attribution
+  - REQ-015-alumni-reactivation-and-recovery
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

@@ -1,0 +1,83 @@
+id: entity.event.registration_management
+version: 0.1.0
+status: active
+name: Event registration management with capacity and waitlist
+description: Whether the CRM supports event and registration as first-class linked entities — covering
+  capacity enforcement, waitlist behavior when capacity is reached, attendance and no-show recording,
+  and automated communications (confirmations, reminders, post-event follow-ups) timed relative to the
+  event date.
+question: Does the CRM support a native event-registration entity with capacity enforcement, waitlist,
+  attendance tracking, and date-relative automated communications?
+answer_schema:
+  type: structured
+  fields:
+    capacity_and_waitlist:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Event capacity is enforced; registrations beyond capacity are automatically added to a waitlist
+          with promotion logic when a spot opens.
+        partial: Capacity tracked as a field but not enforced; waitlist is manual.
+        workaround: Only achievable via an external event-management tool with import of registration
+          data.
+        none: No capacity or waitlist capability.
+    attendance_and_noshow_tracking:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Attendance status (attended, no-show, cancelled) is recordable per registration and queryable
+          in reports.
+        partial: Attendance status recordable but not queryable or reportable.
+        none: No attendance tracking beyond registration existence.
+    date_relative_automated_comms:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Confirmation, reminder, and post-event follow-up emails are triggerable relative to the
+          event date (e.g., -1 day, +1 day) and configurable per event or event type.
+        partial: Automated comms supported but not date-relative (e.g., triggers only on registration,
+          not N days before event).
+        workaround: Only via external marketing automation platform.
+        none: No automated communications tied to event records.
+applies_to:
+- entity
+- process
+tags:
+- family:entity
+- family:process
+- applies-to:records
+- axis:modeling
+- crm-dim:entity
+- complexity:requires-probe
+examples:
+- requirement: Run a 50-person workshop with a registration page, waitlist when full, automatic confirmation
+    email on signup, reminder 24 hours before, and post-event follow-up the next day; record who actually
+    attended vs. no-showed
+  expected_answer:
+    capacity_and_waitlist: full
+    attendance_and_noshow_tracking: full
+    date_relative_automated_comms: full
+related_facets:
+- entity.relationship.cardinality
+- process.trigger.on_field_change
+source_hints:
+  corpus_refs:
+  - REQ-014-workshop-and-event-management
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

@@ -1,0 +1,49 @@
+id: data.geographic_targeting
+version: 0.1.0
+status: active
+name: Geographic targeting and filtering of contact records
+description: Whether the CRM supports querying and segmenting contact records by geographic criteria —
+  such as service area, radius from a point, postal code range, or region — enabling outreach lists to
+  be scoped to a geographic catchment without requiring an external GIS tool.
+question: Can the CRM filter or segment contact records by geographic criteria (service area, radius,
+  region, or postal code range) for targeted outreach list building?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - workaround
+  - none
+  - unknown
+  scoring_hints:
+    full: Native filtering by radius from a point, named region, or postal code range; results usable
+      as a dynamic segment or exportable list.
+    partial: Filtering by discrete fields (e.g., state, county, postal code exact match) but no radius
+      or region-polygon support.
+    workaround: Achievable only by exporting records and filtering in an external tool, then reimporting
+      a list.
+    none: No geographic filtering capability.
+    unknown: Insufficient evidence.
+applies_to:
+- entity
+- process
+tags:
+- family:data
+- applies-to:records
+- axis:segmentation
+- crm-dim:entity
+examples:
+- requirement: Target outreach to newly registered businesses within our service area (specific zip codes
+    or radius from city center)
+  expected_answer: partial
+  commentary: Most CRMs support exact-match zip filtering (partial) but very few support radius-from-point
+    natively without a mapping add-on.
+related_facets:
+- process.trigger.on_field_change
+source_hints:
+  corpus_refs:
+  - REQ-013-outreach-marketing-attribution
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

@@ -1,0 +1,101 @@
+id: integration.marketing_platform.segment_sync
+version: 0.1.0
+status: active
+name: Marketing segment sync with event write-back
+description: Whether the CRM can export CRM-defined contact segments to an external marketing platform
+  for campaign delivery, and receive campaign engagement events (opens, clicks, unsubscribes) back from
+  that platform as first-class records on the CRM contact — making the CRM the single source of truth
+  for cross-channel interaction history. Also covers suppression sync so unsubscribes propagate in both
+  directions.
+question: 'Can the CRM export segments to a marketing platform and receive engagement events (opens, clicks,
+  unsubscribes) back onto the contact, with unsubscribes bi-directional?
+
+  '
+answer_schema:
+  type: structured
+  fields:
+    segment_export:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: CRM-defined segments or saved lists can be pushed to the marketing platform automatically
+          on change or on schedule, with pre-built or configurable connectors.
+        partial: Export possible but only as a manual one-time file dump; no continuous or scheduled sync.
+        workaround: Export only via third-party iPaaS; no native marketing-platform connector.
+        none: No export mechanism to external marketing platforms.
+    engagement_event_writeback:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Open, click, and unsubscribe events from the marketing platform are received and stored
+          as first-class activity records on the CRM contact, automatically.
+        partial: Some event types written back (e.g. unsubscribes only) but not the full engagement event
+          set.
+        workaround: Write-back only via third-party middleware; no native inbound event handling.
+        none: No engagement event write-back; marketing data stays in the marketing platform only.
+    suppression_bidirectional_sync:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
+      scoring_hints:
+        full: Unsubscribe recorded in the marketing platform immediately propagates to the CRM contact
+          opt-out flag, and vice versa — both directions enforced.
+        partial: One direction only (e.g. marketing unsubscribe → CRM, but CRM opt-out does not suppress
+          marketing sends).
+        none: No suppression sync; opt-outs must be managed manually in each system.
+    prebuilt_connector_availability:
+      type: rating
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
+      scoring_hints:
+        full: Pre-built, maintained connectors to major marketing platforms (e.g. Mailchimp, Constant
+          Contact, Klaviyo, HubSpot Marketing) available without custom code.
+        partial: Pre-built connector exists for one major platform but not others; others require custom
+          integration.
+        workaround: No native connectors; integration via generic webhook or third-party iPaaS only.
+        none: No integration with marketing platforms of any kind.
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:integration
+- applies-to:external-systems
+- axis:sync-direction
+- crm-dim:process
+- complexity:requires-probe
+examples:
+- requirement: Contact lists defined in the CRM flow out to the email marketing platform; opens, clicks,
+    and unsubscribes flow back and attach to the CRM contact record; unsubscribes suppress sends in both
+    directions
+  expected_answer:
+    segment_export: full
+    engagement_event_writeback: full
+    suppression_bidirectional_sync: full
+    prebuilt_connector_availability: full
+related_facets:
+- integration.bidirectional_sync
+- data.identity_resolution
+source_hints:
+  corpus_refs:
+  - REQ-028-marketing-list-sync
+created: '2026-04-19'
+modified: '2026-04-20'
+author: doug
+reviewer: doug
