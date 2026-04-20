@@ -1,0 +1,88 @@
+id: integration.outbound_webhooks
+version: 0.1.0
+status: active
+name: Outbound webhook subscriptions + delivery guarantees
+description: >
+  Whether the CRM supports outbound webhook subscriptions — creatable via
+  API, with defined event-type coverage, retry-on-failure semantics,
+  signature / authentication mechanisms, and bounded payload size.
+  Distinct from integration.bidirectional_sync (which is record-level
+  data synchronization); this facet covers one-way event push.
+
+question: >
+  Can the CRM deliver events to an external endpoint via webhooks, with
+  API-creatable subscriptions, documented retry behavior, and authenticated
+  payloads?
+
+answer_schema:
+  type: structured
+  fields:
+    create_via_api:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Webhook subscriptions are creatable, listable, updatable, and deletable through a documented API.
+        partial: Subscriptions creatable via API but limited (e.g. UI-only event-type selection).
+        none: Webhooks only configurable through the UI.
+    event_type_coverage:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Entity-level events + action-level events (create/update/delete/merge) + system events all subscribable; wildcards supported.
+        partial: Only a subset of entities or only create/update events, no wildcards.
+        none: Events severely limited or undocumented.
+    delivery_retry:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: At-least-once delivery with multiple retries, exponential or increasing backoff, documented timeout; sustained-failure backoff.
+        partial: Retries attempted but count/interval undocumented, or single retry only.
+        none: Fire-and-forget; no retry on delivery failure.
+    signing_mechanism:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: HMAC or similar cryptographic signature on every payload, with documented verification procedure.
+        partial: HTTP Basic auth or shared-secret in headers (less robust than HMAC).
+        none: No authenticity mechanism beyond HTTPS.
+
+applies_to:
+  - process
+  - cross-cutting
+
+tags:
+  - family:integration
+  - applies-to:external-systems
+  - axis:event-push
+  - crm-dim:process
+  - complexity:requires-probe
+
+examples:
+  - requirement: "When a client's engagement status changes, our Slack bot needs to be notified within seconds. The subscription must be programmable — we manage 40+ client deployments."
+    expected_answer:
+      create_via_api: full
+      event_type_coverage: full
+      delivery_retry: full
+      signing_mechanism: full
+  - requirement: "Webhooks exist in the UI. Ops can set one up to notify our billing system when a deal closes, but the delivery is single-attempt and unsigned."
+    expected_answer:
+      create_via_api: none
+      event_type_coverage: partial
+      delivery_retry: none
+      signing_mechanism: none
+
+related_facets:
+  - integration.bidirectional_sync
+  - process.trigger.on_field_change
+  - process.notification.status_change_transactional
+
+source_hints:
+  corpus_refs:
+    - REQ-022-email-integration-with-auto-logging
+    - REQ-026-public-website-intake-integration
+    - REQ-034-sis-lms-bidirectional-integration
+
+created: 2026-04-20
+modified: 2026-04-20
+author: doug
+reviewer: doug

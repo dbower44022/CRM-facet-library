@@ -5,7 +5,7 @@
 #
 # Specification: PRD 02 §6.2.
 
-library_version: 0.1.3
+library_version: 0.1.4
 schema_version: 1
 
 # Family convention note (v0.1.2):
@@ -45,6 +45,7 @@ families:
   - compliance
   - commercial
   - api
+  - layout
 
 # Reserved tag namespaces (PRD 02 §4.1). Tags not in one of these
 # namespaces are rejected by the validator.

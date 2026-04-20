@@ -1,0 +1,84 @@
+id: layout.multiple_saved_views
+version: 0.1.0
+status: active
+name: Multiple saved list/kanban views per entity type
+description: >
+  Whether the CRM allows users to create and save multiple named views
+  (list, kanban, or similar) on a single entity type, with per-view filters
+  and column layouts — and whether those view definitions are
+  programmatically addressable. Distinct from ad-hoc filtering: the
+  discriminator is whether a named-view artifact is a first-class,
+  shareable, API-addressable object.
+
+question: >
+  Can users save multiple named list/kanban views per entity type, each
+  with its own filters and layout, and are those views addressable via API?
+
+answer_schema:
+  type: structured
+  fields:
+    multiple_views_per_entity:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Unlimited named views per entity; each with independent filter + column + sort config; shareable or private per view.
+        partial: Multiple views supported but with a fixed cap, or shared-only, or with limited per-view configuration.
+        none: Only one default view per entity type.
+    view_definitions_api_addressable:
+      type: rating
+      allowed_values: [full, partial, read_only, none, unknown]
+      scoring_hints:
+        full: Views can be created, read, updated, and deleted through the API.
+        partial: Views accessible by id via API (e.g. query param) but not creatable via API.
+        read_only: Views readable via API but not creatable.
+        none: Views are UI-only; no API surface.
+    per_view_filter_and_sort:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Each view holds its own filter predicate AND column set AND sort order.
+        partial: Two of the three (e.g. filter + sort but not columns).
+        none: Views share a single global filter / column configuration.
+
+applies_to:
+  - entity
+  - persona
+
+tags:
+  - family:layout
+  - family:ui
+  - applies-to:layouts
+  - axis:saved-views
+  - crm-dim:persona
+  - complexity:requires-probe
+
+examples:
+  - requirement: "Coordinators need their own saved mentor-roster views (by specialty, availability, geography) that don't affect teammates' views — and our automation needs to fetch records through a named view id."
+    expected_answer:
+      multiple_views_per_entity: full
+      view_definitions_api_addressable: full
+      per_view_filter_and_sort: full
+  - requirement: "Saved filters exist in the UI; coordinators can create them; but our API integration has to re-specify all filter params explicitly for every call."
+    expected_answer:
+      multiple_views_per_entity: full
+      view_definitions_api_addressable: partial
+      per_view_filter_and_sort: full
+    commentary: >
+      Common mid-market pattern: UI supports named saved filters, but the
+      API expects filter params on each query rather than accepting a
+      saved-view id.
+
+related_facets:
+  - layout.api_management
+  - entity.search.multi_attribute_filter
+  - process.segment.dynamic_list
+
+source_hints:
+  corpus_refs:
+    - REQ-002-mentor-matching-and-assignment
+    - REQ-015-alumni-reactivation-and-recovery
+
+created: 2026-04-20
+modified: 2026-04-20
+author: doug
+reviewer: doug

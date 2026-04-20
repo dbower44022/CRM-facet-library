@@ -5,6 +5,25 @@ PRD 02 §7.4. Grouped under Added / Changed / Deprecated / Removed.
 
 ## [Unreleased]
 
+## [0.1.4] — 2026-04-20
+
+### Added
+- **New `layout` family** reserved in LIBRARY.yaml. Closes the
+  structural gap identified during PRD 04 step B: no CRMinventory facet
+  could map to CRMBuilder's tier-defining
+  `layout_management.write_layouts` capability.
+- **3 new facets** targeting previously-unmappable CRMBuilder capabilities:
+  - `layout.api_management` — structured facet covering read / write /
+    view-type coverage / panels+tabs / conditional visibility.
+    Maps directly onto CRMBuilder `layout_management.*` sub-capabilities.
+  - `layout.multiple_saved_views` — multiple named list/kanban views per
+    entity with per-view filter+column+sort, API-addressable or not.
+  - `integration.outbound_webhooks` — webhook subscription API + event
+    coverage + delivery retry + payload signing. Distinct from
+    `integration.bidirectional_sync` which covers record-level sync.
+
+Library 100 → 103 facets across 13 families.
+
 ## [0.1.3] — 2026-04-20
 
 ### Added

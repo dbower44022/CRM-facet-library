@@ -1,0 +1,101 @@
+id: layout.api_management
+version: 0.1.0
+status: active
+name: Layout definition read/write via API
+description: >
+  Whether the CRM exposes its layout definitions (how fields, panels, tabs,
+  and conditional-visibility rules are arranged on each record's detail / edit
+  / list view) for programmatic management. Distinct from the underlying
+  entity / field schema — layouts describe how the schema is PRESENTED.
+  Load-bearing for deployment automation, multi-tenant configuration
+  management, and layout-diff workflows.
+
+question: >
+  Can the CRM's layout definitions (detail/edit/list views, panels, tabs,
+  conditional visibility) be read and written via API?
+
+answer_schema:
+  type: structured
+  fields:
+    readable_via_api:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Layout definitions can be listed and read as structured data through a documented API endpoint.
+        partial: Some layout metadata readable (e.g. a field-order endpoint) but not full layout structure.
+        none: No API surface for reading layout definitions.
+    writable_via_api:
+      type: rating
+      allowed_values: [full, partial, indirect, none, unknown]
+      scoring_hints:
+        full: Layouts can be created, modified, and deleted through a documented API endpoint without UI action.
+        partial: Only a subset of layout elements can be changed via API (e.g. field order but not panel structure).
+        indirect: Achievable only via metadata package uploads, file import, or similar non-REST mechanism.
+        none: Layouts are UI-only; no API path to modify them.
+    view_type_coverage:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: All common view types (detail / edit / list / kanban) are separately addressable.
+        partial: Only a subset of view types has layout API support (e.g. list views only).
+        none: No view-type-specific layout API.
+    panels_and_tabs:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Panel and tab grouping is first-class in the layout definition; creatable via API.
+        partial: Panels but no tabs (or vice versa), or only UI-configurable.
+        none: No grouping primitives in layouts.
+    conditional_visibility:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Field / panel visibility can be configured to depend on record field values, via API.
+        partial: Dependency rules supported but not programmatically creatable.
+        none: No conditional-visibility mechanism.
+
+applies_to:
+  - entity
+  - cross-cutting
+
+tags:
+  - family:layout
+  - family:admin
+  - applies-to:layouts
+  - axis:configuration
+  - crm-dim:entity
+  - complexity:requires-probe
+
+examples:
+  - requirement: "Our admissions team needs different field visibility on the Application detail view per program — business programs hide a field that MBA programs require. We need this configurable without custom code, and deployable across environments via CI."
+    expected_answer:
+      readable_via_api: full
+      writable_via_api: full
+      view_type_coverage: full
+      panels_and_tabs: full
+      conditional_visibility: full
+  - requirement: "We customize the list view in the UI but have no automated way to push those customizations from staging to production."
+    expected_answer:
+      readable_via_api: none
+      writable_via_api: none
+      view_type_coverage: none
+      panels_and_tabs: partial
+      conditional_visibility: partial
+    commentary: >
+      Many mid-market CRMs fall here — rich UI layout configuration but no
+      API surface, making them harder to manage in multi-environment
+      deployments.
+
+related_facets:
+  - ui.persona_driven_view_composition
+  - permission.field_level_access_control
+
+source_hints:
+  corpus_refs:
+    - REQ-031-admissions-application-review-workflow
+    - REQ-033-self-service-student-portal-persona
+
+created: 2026-04-20
+modified: 2026-04-20
+author: doug
+reviewer: doug
