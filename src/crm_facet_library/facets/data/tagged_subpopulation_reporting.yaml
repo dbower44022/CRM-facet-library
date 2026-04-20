@@ -58,8 +58,10 @@ examples:
     producing per-segment totals then requires export. This is a common gap between lightweight and enterprise
     CRMs.
 related_facets:
+- entity.record.label_multi_assignment
 - field.computed_classification
 - history.field.audit_trail
+- ui.reporting.multi_dimension_pivot
 source_hints:
   corpus_refs:
   - REQ-018-donor-stewardship-and-lifetime-value

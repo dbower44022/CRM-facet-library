@@ -1,0 +1,39 @@
+id: api.owner.team_membership_and_primary_flag
+version: 0.1.0
+status: active
+name: Owner Team Membership with Primary Team Designation via API
+description: Measures whether the CRM API represents record owners as belonging to one or more named teams,
+  with one team designated as primary, and exposes this team membership as a queryable attribute on the
+  owner record — enabling team-based routing, filtering, and reporting logic to be built on the API.
+question: Does the CRM API expose team membership on record owner objects, with support for multiple teams
+  per owner and a primary-team flag, queryable without requiring administrative UI access?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- persona
+- cross-cutting
+tags:
+- family:admin
+- axis:ownership
+- crm-dim:user-management
+- complexity:low
+- impact:medium
+examples:
+- requirement: '[evidence from HubSpot] PublicOwner includes teams:array<PublicTeam>; PublicTeam has id*,
+    name*, primary* fields; GET /crm/owners supports lookup by email, archived flag, and pagination'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - hubspot-crm-owners-2026-09
+related_facets:
+- permission.self_vs_others_record_scope
+- workflow.task_autorouting_to_role
+created: '2026-04-20'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

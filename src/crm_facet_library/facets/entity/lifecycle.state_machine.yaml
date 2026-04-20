@@ -81,8 +81,12 @@ examples:
   commentary: Many CRMs support required rationale on approval/reject but do not natively mark Rejected
     as terminal; a validation rule may be needed to block re-opening.
 related_facets:
-- process.trigger.on_field_change
+- api.async_conversion.poll_pattern
+- api.pipeline.write_permissions_per_stage
 - history.field.audit_trail
+- integration.external_system_provisioning_trigger
+- process.notification.status_change_transactional
+- process.trigger.on_field_change
 - process.workflow.multi_gate_transition
 source_hints:
   corpus_refs:

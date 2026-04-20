@@ -60,8 +60,12 @@ examples:
     source_pointer_survives_transition: full
     rollup_reporting_on_source: full
 related_facets:
-- entity.relationship.cardinality
+- data.cross_record_conversion_attribution
 - data.identity_resolution
+- entity.contact.lifecycle_state
+- entity.deal.origin_channel_tracking
+- entity.relationship.cardinality
+- process.campaign.multichannel_attribution
 source_hints:
   corpus_refs:
   - REQ-012-partner-organization-relationships

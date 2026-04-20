@@ -60,9 +60,10 @@ examples:
     computed_adherence_metric: full
     drift_threshold_alert: full
 related_facets:
+- api.properties.formula_calculated_field
+- entity.hierarchy.nested_with_versioning
 - field.computed_classification
 - process.trigger.on_field_change
-- entity.hierarchy.nested_with_versioning
 source_hints:
   corpus_refs:
   - REQ-037-care-plan-tracking-adherence

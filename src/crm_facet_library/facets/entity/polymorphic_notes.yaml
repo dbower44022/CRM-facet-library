@@ -68,6 +68,7 @@ examples:
 related_facets:
 - history.field.audit_trail
 - permission.field_level_access_control
+- process.survey.native_builder
 source_hints:
   corpus_refs:
   - REQ-024-free-form-notes-on-any-record

@@ -1,0 +1,44 @@
+id: api.async_conversion.poll_pattern
+version: 0.1.0
+status: active
+name: Async record-conversion with poll-for-status
+description: Whether the CRM API models record type conversions (e.g., lead → deal, deal → lead) as asynchronous
+  long-running operations with a distinct conversion ID that a caller can poll to retrieve the outcome,
+  rather than completing synchronously.
+question: 'When converting a record from one type to another (e.g., lead to deal or deal to lead), does
+  the CRM API return an async conversion ID that must be polled for completion status?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:api
+- family:process
+- axis:async
+- crm-dim:integration
+- complexity:medium
+- impact:medium
+examples:
+- requirement: '`POST /leads/{id}/convert/deal` returns a `conversion_id`; caller polls `GET /leads/{id}/convert/status/{conversion_id}`
+    until done.'
+  expected_answer: unknown
+- requirement: '`POST /deals/{id}/convert/lead` similarly returns a conversion job ID.'
+  expected_answer: unknown
+source_hints:
+  corpus_refs:
+  - pipedrive-v2
+related_facets:
+- entity.lifecycle.state_machine
+- process.pipeline.multi_entity_stage_progression
+author: doug
+created: '2026-04-20'
+modified: '2026-04-20'
+reviewer: doug

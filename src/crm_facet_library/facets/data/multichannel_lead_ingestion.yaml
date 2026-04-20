@@ -55,6 +55,7 @@ examples:
     source_tag_on_record: full
 related_facets:
 - data.identity_resolution
+- entity.deal.origin_channel_tracking
 - process.attribution.lifecycle_persistence
 source_hints:
   corpus_refs:

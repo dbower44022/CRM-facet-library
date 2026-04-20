@@ -1,0 +1,45 @@
+id: entity.deal.origin_channel_tracking
+version: 0.1.0
+status: active
+name: Native deal origin and channel attribution fields
+description: Whether the CRM stores native structured origin and channel fields on deal records — separate
+  from custom fields — recording how and through which channel the deal was created, with sub-identifiers
+  for granular source tracking.
+question: 'Does the CRM record the origin source and channel of a deal as native first-class schema fields
+  (not custom fields), including sub-identifiers for granular attribution?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- entity
+- process
+tags:
+- family:entity
+- family:process
+- axis:attribution
+- crm-dim:marketing
+- complexity:low
+- impact:high
+examples:
+- requirement: 'The `Deal` schema includes `origin: string`, `origin_id: string`, `channel: integer`,
+    and `channel_id: string` as top-level fields.'
+  expected_answer: unknown
+- requirement: '`source_lead_id` links back to the originating lead record.'
+  expected_answer: unknown
+source_hints:
+  corpus_refs:
+  - pipedrive-v2
+related_facets:
+- data.multichannel_lead_ingestion
+- data.referral_attribution
+- process.attribution.lifecycle_persistence
+author: doug
+created: '2026-04-20'
+modified: '2026-04-20'
+reviewer: doug

@@ -1,0 +1,43 @@
+id: api.field_ui_visibility_metadata
+version: 0.1.0
+status: active
+name: Field UI-visibility and importance metadata via API
+description: Whether the CRM's field-schema API exposes metadata about which fields are marked as important,
+  required, or UI-visible — enabling integration tooling to mirror the CRM's own field prioritisation
+  without hardcoded field lists.
+question: 'Does the CRM''s API expose per-field metadata flags (e.g., UI visibility, ''important'', ''required'')
+  that reflect the administrative field configuration?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- cross-cutting
+tags:
+- family:api
+- family:admin
+- axis:schema
+- crm-dim:integration
+- complexity:low
+- impact:medium
+examples:
+- requirement: '`GET /dealFields?include_fields=ui_visibility,important_fields,required_fields` returns
+    field definitions enriched with those flags.'
+  expected_answer: unknown
+- requirement: Same opt-in metadata available for PersonFields and OrganizationFields.
+  expected_answer: unknown
+source_hints:
+  corpus_refs:
+  - pipedrive-v2
+related_facets:
+- api.field_schema_management
+- permission.field_level_access_control
+author: doug
+created: '2026-04-20'
+modified: '2026-04-20'
+reviewer: doug

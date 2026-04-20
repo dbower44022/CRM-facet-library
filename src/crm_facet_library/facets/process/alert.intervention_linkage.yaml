@@ -54,8 +54,8 @@ examples:
     alert_to_action_linkage: full
     outcome_reportable: full
 related_facets:
-- process.trigger.on_field_change
 - field.computed_classification
+- process.trigger.on_field_change
 source_hints:
   corpus_refs:
   - REQ-032-student-retention-early-alerts

@@ -63,8 +63,8 @@ examples:
     conversion_rate_reporting: full
 related_facets:
 - data.referral_attribution
-- process.campaign.multichannel_attribution
 - entity.event.registration_management
+- process.campaign.multichannel_attribution
 source_hints:
   corpus_refs:
   - REQ-014-workshop-and-event-management

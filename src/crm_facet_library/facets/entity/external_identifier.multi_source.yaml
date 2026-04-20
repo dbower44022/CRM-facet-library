@@ -68,6 +68,7 @@ examples:
     source_tagged: full
     cross_system_lookup: full
 related_facets:
+- api.object.alternate_id_lookup
 - data.identity_resolution
 - history.field.audit_trail
 source_hints:

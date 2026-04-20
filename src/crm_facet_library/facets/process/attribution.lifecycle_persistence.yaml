@@ -65,8 +65,9 @@ examples:
     multi_touch_model: full
     reportable_at_terminal_stage: full
 related_facets:
-- data.multichannel_lead_ingestion
 - data.identity_resolution
+- data.multichannel_lead_ingestion
+- entity.deal.origin_channel_tracking
 - history.field.audit_trail
 source_hints:
   corpus_refs:

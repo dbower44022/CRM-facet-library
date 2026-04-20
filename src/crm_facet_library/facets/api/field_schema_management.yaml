@@ -1,0 +1,44 @@
+id: api.field_schema_management
+version: 0.1.0
+status: active
+name: Programmatic custom-field schema management
+description: Whether the CRM exposes a full CRUD API for defining, updating, and deleting custom fields
+  — including their option lists — on all major entity types, enabling schema management to be automated
+  without using the admin UI.
+question: 'Does the CRM provide a programmatic API for creating, updating, and deleting custom field definitions
+  (including enumeration options) on all major entity types?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- cross-cutting
+tags:
+- family:api
+- family:admin
+- axis:schema
+- crm-dim:integration
+- complexity:medium
+- impact:high
+examples:
+- requirement: '`POST /dealFields`, `PATCH /dealFields/{field_code}`, `DELETE /dealFields/{field_code}/options`
+    available for Deals.'
+  expected_answer: unknown
+- requirement: Same pattern exists for PersonFields, OrganizationFields, ProductFields, and ActivityFields.
+  expected_answer: unknown
+source_hints:
+  corpus_refs:
+  - pipedrive-v2
+related_facets:
+- api.field_ui_visibility_metadata
+- api.sparse_fieldset_selection
+- permission.field_level_access_control
+author: doug
+created: '2026-04-20'
+modified: '2026-04-20'
+reviewer: doug

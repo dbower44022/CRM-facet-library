@@ -74,8 +74,9 @@ examples:
     accessible_to_non_admin_roles: full
     peer_access_for_contacts: full
 related_facets:
-- ui.persona_driven_view_composition
+- api.cross_entity_search.unified
 - permission.self_service_field_edit
+- ui.persona_driven_view_composition
 source_hints:
   corpus_refs:
   - REQ-010-mentor-profile-and-capacity

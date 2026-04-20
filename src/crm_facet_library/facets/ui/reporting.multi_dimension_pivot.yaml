@@ -89,6 +89,7 @@ examples:
 related_facets:
 - data.tagged_subpopulation_reporting
 - field.rollup_aggregate.child_to_parent
+- ui.campaign.goal_vs_actual_visualization
 source_hints:
   corpus_refs:
   - REQ-019-fundraising-analytics-reporting

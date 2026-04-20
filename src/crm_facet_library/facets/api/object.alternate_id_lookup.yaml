@@ -1,0 +1,42 @@
+id: api.object.alternate_id_lookup
+version: 0.1.0
+status: active
+name: Alternate Property Key Lookup on Record Reads and Writes
+description: Measures whether the CRM API allows callers to read, update, and batch-read records using
+  a non-primary unique property (e.g., an external ID or unique email field) as the lookup key — without
+  requiring the internal CRM ID — enabling external-system-driven workflows without a prior ID-resolution
+  step.
+question: Can API callers look up, read, update, and batch-process records using an alternate unique property
+  as the record identifier — specified at call time — rather than only the CRM-internal ID?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- entity
+- cross-cutting
+tags:
+- family:api
+- axis:identity
+- crm-dim:data-ingestion
+- complexity:low
+- impact:high
+examples:
+- requirement: '[evidence from HubSpot] GET /crm/objects/{objectType}/{objectId} and PATCH both accept
+    idProperty:query:string; BatchReadInputSimplePublicObjectId has idProperty:string; SimplePublicObjectBatchInput
+    and BatchInputUpsert also expose idProperty'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - hubspot-objects-2026-09
+  - hubspot-custom-objects-2026-09
+related_facets:
+- data.identity_resolution
+- entity.external_identifier.multi_source
+created: '2026-04-20'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

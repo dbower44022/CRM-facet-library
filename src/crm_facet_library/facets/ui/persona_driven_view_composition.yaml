@@ -2,79 +2,99 @@ id: ui.persona_driven_view_composition
 version: 0.1.0
 status: active
 name: Persona-driven view composition
-description: >
-  Whether the CRM composes the active user's landing view (dashboard, task
-  queue, navigation, visible record fields) from the user's current persona
-  or lifecycle stage — as a first-class capability distinct from RBAC
-  filtering. Covers two flavors: internal staff with multiple possible
-  roles / active-role-per-session, and external contacts whose lifecycle
-  persona changes over time (prospect → applicant → admit → enrolled;
+description: 'Whether the CRM composes the active user''s landing view (dashboard, task queue, navigation,
+  visible record fields) from the user''s current persona or lifecycle stage — as a first-class capability
+  distinct from RBAC filtering. Covers two flavors: internal staff with multiple possible roles / active-role-per-session,
+  and external contacts whose lifecycle persona changes over time (prospect → applicant → admit → enrolled;
   lead → customer → renewal; patient at risk-tier-A → risk-tier-B).
 
-question: >
-  Can the CRM present a different composed view (landing page, task queue,
-  accessible fields) to the same user based on persona or lifecycle stage —
-  beyond just hiding records they cannot access?
+  '
+question: 'Can the CRM present a different composed view (landing page, task queue, accessible fields)
+  to the same user based on persona or lifecycle stage — beyond just hiding records they cannot access?
 
+  '
 answer_schema:
   type: structured
   fields:
     internal_persona_views:
       type: rating
-      allowed_values: [full, partial, workaround, none, unknown]
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
       scoring_hints:
-        full: Landing view and task queue are composed from the active role; users with multiple roles switch between them without filter gymnastics.
-        partial: Views vary by role but composition is limited (e.g. same home page, different widget visibility).
+        full: Landing view and task queue are composed from the active role; users with multiple roles
+          switch between them without filter gymnastics.
+        partial: Views vary by role but composition is limited (e.g. same home page, different widget
+          visibility).
         workaround: Requires custom development or multiple user accounts per human.
         none: All internal users see the same landing view filtered by RBAC only.
     external_lifecycle_views:
       type: rating
-      allowed_values: [full, partial, workaround, none, unknown]
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
       scoring_hints:
         full: External portal view adapts automatically as the contact progresses through lifecycle stages.
-        partial: Separate portals per stage (prospect portal, applicant portal) rather than one adaptive view.
+        partial: Separate portals per stage (prospect portal, applicant portal) rather than one adaptive
+          view.
         workaround: Custom code or separate deployed portals.
         none: No stage-aware external portal capability.
     multi_hat_users:
       type: rating
-      allowed_values: [full, partial, workaround, none, unknown]
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
       scoring_hints:
-        full: A single user can hold multiple roles and switch the active role per session without separate login.
+        full: A single user can hold multiple roles and switch the active role per session without separate
+          login.
         partial: Multiple roles supported but require separate user accounts or separate logins.
         none: Each user holds exactly one role.
-
 applies_to:
-  - persona
-  - cross-cutting
-
+- persona
+- cross-cutting
 tags:
-  - family:ui
-  - family:permission
-  - applies-to:personas
-  - axis:view-composition
-  - crm-dim:persona
-  - complexity:requires-probe
-
+- family:ui
+- family:permission
+- applies-to:personas
+- axis:view-composition
+- crm-dim:persona
+- complexity:requires-probe
 examples:
-  - requirement: "Care coordinator logs in and sees a task queue composed from their active role today (nurse vs. social-work vs. supervisor), even though they hold all three roles"
-    expected_answer:
-      internal_persona_views: full
-      external_lifecycle_views: na
-      multi_hat_users: full
-  - requirement: "Prospective-student portal automatically becomes an applicant portal once the student submits an application, then an admitted-student portal once the decision is made — same login, adapting view"
-    expected_answer:
-      internal_persona_views: na
-      external_lifecycle_views: full
-      multi_hat_users: na
-
+- requirement: Care coordinator logs in and sees a task queue composed from their active role today (nurse
+    vs. social-work vs. supervisor), even though they hold all three roles
+  expected_answer:
+    internal_persona_views: full
+    external_lifecycle_views: na
+    multi_hat_users: full
+- requirement: Prospective-student portal automatically becomes an applicant portal once the student submits
+    an application, then an admitted-student portal once the decision is made — same login, adapting view
+  expected_answer:
+    internal_persona_views: na
+    external_lifecycle_views: full
+    multi_hat_users: na
 related_facets:
-  - permission.audit_log_access
-
+- permission.audit_log_access
+- permission.field_level_access_control
+- permission.multi_role_composition
+- permission.self_service_field_edit
+- ui.internal_directory_search
+- ui.portal.self_service_write_back
+- workflow.nurture.stage_and_segment_branching
+- workflow.review.per_entity_configurability
+- workflow.task_autorouting_to_role
 source_hints:
   corpus_refs:
-    - REQ-033-self-service-student-portal-persona
-    - REQ-039-care-coordinator-task-queue-persona
-
+  - REQ-033-self-service-student-portal-persona
+  - REQ-039-care-coordinator-task-queue-persona
 created: 2026-04-19
 modified: 2026-04-19
 author: doug

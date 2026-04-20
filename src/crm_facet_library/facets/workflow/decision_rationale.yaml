@@ -72,9 +72,10 @@ examples:
     rationale_at_status_transition: full
     rationale_in_audit_history: full
 related_facets:
-- workflow.status_transition_required_fields
-- workflow.review.per_entity_configurability
 - history.field.audit_trail
+- ui.portal.self_service_write_back
+- workflow.review.per_entity_configurability
+- workflow.status_transition_required_fields
 source_hints:
   corpus_refs:
   - REQ-001-online-client-intake

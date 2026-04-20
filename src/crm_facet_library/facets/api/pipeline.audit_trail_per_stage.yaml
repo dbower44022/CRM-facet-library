@@ -1,0 +1,44 @@
+id: api.pipeline.audit_trail_per_stage
+version: 0.1.0
+status: active
+name: Pipeline and Stage Change Audit Trail via API
+description: Measures whether the CRM API exposes a queryable audit log specific to pipeline and stage
+  configuration changes — capturing who changed what, when, and from which state — separate from general
+  field-level audit trails on individual records.
+question: 'Does the CRM API expose a dedicated audit endpoint for pipeline and pipeline-stage configuration
+  changes, returning structured records of each change with actor, timestamp, action type?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- process
+- cross-cutting
+tags:
+- family:history
+- family:api
+- axis:audit
+- crm-dim:pipeline-management
+- complexity:medium
+- impact:medium
+examples:
+- requirement: '[evidence from HubSpot] GET /crm/pipelines/2026-09/{objectType}/{pipelineId}/audit and
+    GET …/stages/{stageId}/audit both return CollectionResponsePublicAuditInfoNoPaging; PublicAuditInfo
+    includes action*, fromUserId, identifier*, timestamp, rawObject'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - hubspot-pipelines-2026-09
+related_facets:
+- history.field.audit_trail
+- permission.audit_log_access
+- process.pipeline.multi_entity_stage_progression
+created: '2026-04-20'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

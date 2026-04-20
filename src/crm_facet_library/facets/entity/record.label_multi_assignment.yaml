@@ -1,0 +1,40 @@
+id: entity.record.label_multi_assignment
+version: 0.1.0
+status: active
+name: Multiple label / tag assignment on core records
+description: Whether the CRM supports assigning multiple labels (tags) to a single deal, person, or organization
+  record as a native array field — distinct from a single-select category — enabling multi-dimensional
+  classification without custom fields.
+question: Does the CRM support assigning multiple labels or tags to a single record (deal, person, organization)
+  as a native array field, and are these labels filterable and reportable via the API?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- entity
+tags:
+- family:entity
+- axis:classification
+- crm-dim:data-management
+- complexity:low
+- impact:medium
+examples:
+- requirement: 'The `Deal`, `Person`, and `OrganizationItem` schemas all include `label_ids: array<integer>`
+    as a native field.'
+  expected_answer: unknown
+- requirement: Labels can be filtered on list endpoints.
+  expected_answer: unknown
+source_hints:
+  corpus_refs:
+  - pipedrive-v2
+related_facets:
+- data.tagged_subpopulation_reporting
+- entity.contact.lifecycle_state
+author: doug
+created: '2026-04-20'
+modified: '2026-04-20'
+reviewer: doug

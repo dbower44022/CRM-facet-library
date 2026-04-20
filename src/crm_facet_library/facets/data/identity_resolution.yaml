@@ -2,24 +2,27 @@ id: data.identity_resolution
 version: 0.1.0
 status: active
 name: Identity resolution and de-duplication
-description: >
-  Whether the CRM can merge inbound records from multiple upstream sources
-  (web form, import, API, partner feed, external system) into a unified
-  master record, with configurable matching rules, a manual review queue
-  for ambiguous matches, source lineage retained on every merged field,
-  and reversible merge.
+description: 'Whether the CRM can merge inbound records from multiple upstream sources (web form, import,
+  API, partner feed, external system) into a unified master record, with configurable matching rules,
+  a manual review queue for ambiguous matches, source lineage retained on every merged field, and reversible
+  merge.
 
-question: >
-  Can the CRM consolidate duplicate inbound records into a unified master
-  with configurable match rules, a manual review queue, per-field source
-  lineage, and reversible unmerge?
+  '
+question: 'Can the CRM consolidate duplicate inbound records into a unified master with configurable match
+  rules, a manual review queue, per-field source lineage, and reversible unmerge?
 
+  '
 answer_schema:
   type: structured
   fields:
     configurable_match_rules:
       type: rating
-      allowed_values: [full, partial, workaround, none, unknown]
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
       scoring_hints:
         full: Administrators can author deterministic + probabilistic / fuzzy rules per entity type.
         partial: Only deterministic (exact) matching; no fuzzy.
@@ -27,66 +30,90 @@ answer_schema:
         none: No de-duplication capability at all.
     manual_review_queue:
       type: rating
-      allowed_values: [full, partial, none, unknown]
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
       scoring_hints:
-        full: Ambiguous matches land in a review queue for a human to resolve; not auto-merge-everything, not reject-everything.
+        full: Ambiguous matches land in a review queue for a human to resolve; not auto-merge-everything,
+          not reject-everything.
         partial: Duplicates flagged but resolution requires manual ad-hoc action without a queue.
         none: Either auto-merge everything or no detection.
     source_lineage:
       type: rating
-      allowed_values: [full, partial, none, unknown]
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
       scoring_hints:
-        full: Every field on the merged record carries which source contributed its current value and when.
+        full: Every field on the merged record carries which source contributed its current value and
+          when.
         partial: Record-level source tracked but not field-level.
         none: No provenance retained after merge.
     reversible_merge:
       type: rating
-      allowed_values: [full, partial, none, unknown]
+      allowed_values:
+      - full
+      - partial
+      - none
+      - unknown
       scoring_hints:
         full: A false merge can be undone without data loss; split restores the original records intact.
         partial: Unmerge possible but loses some post-merge edits.
         none: Merge is one-way; errors require backup restore.
-
 applies_to:
-  - entity
-  - cross-cutting
-
+- entity
+- cross-cutting
 tags:
-  - family:data
-  - applies-to:records
-  - axis:deduplication
-  - crm-dim:entity
-  - complexity:requires-probe
-
+- family:data
+- applies-to:records
+- axis:deduplication
+- crm-dim:entity
+- complexity:requires-probe
 examples:
-  - requirement: "A patient arrives via referral feed, discharge feed, and self-enrollment form within a week; the CRM recognizes them as one person using fuzzy match on name+DOB+zip, routes the uncertain match to a data steward's review queue, retains which source contributed each field, and allows unmerge if the steward later finds the match was wrong"
-    expected_answer:
-      configurable_match_rules: full
-      manual_review_queue: full
-      source_lineage: full
-      reversible_merge: full
-  - requirement: "Same prospective student filling out the inquiry form with and without their middle initial should resolve to one record, preserving both campaign attributions"
-    expected_answer:
-      configurable_match_rules: full
-      manual_review_queue: partial
-      source_lineage: partial
-      reversible_merge: partial
-    commentary: >
-      Higher-ed CRMs typically have deterministic de-duplication but lighter
-      governance than healthcare-grade identity resolution — partial ratings
-      reflect the weaker manual-review + lineage typical of the segment.
+- requirement: A patient arrives via referral feed, discharge feed, and self-enrollment form within a
+    week; the CRM recognizes them as one person using fuzzy match on name+DOB+zip, routes the uncertain
+    match to a data steward's review queue, retains which source contributed each field, and allows unmerge
+    if the steward later finds the match was wrong
+  expected_answer:
+    configurable_match_rules: full
+    manual_review_queue: full
+    source_lineage: full
+    reversible_merge: full
+- requirement: Same prospective student filling out the inquiry form with and without their middle initial
+    should resolve to one record, preserving both campaign attributions
+  expected_answer:
+    configurable_match_rules: full
+    manual_review_queue: partial
+    source_lineage: partial
+    reversible_merge: partial
+  commentary: 'Higher-ed CRMs typically have deterministic de-duplication but lighter governance than
+    healthcare-grade identity resolution — partial ratings reflect the weaker manual-review + lineage
+    typical of the segment.
 
+    '
 related_facets:
-  - history.field.audit_trail
-  - compliance.data_retention_policy
-
+- api.object.alternate_id_lookup
+- api.object.merge_via_api
+- compliance.data_retention_policy
+- data.account_match_on_inbound
+- data.intake_channel_record_type_resolution
+- data.multichannel_lead_ingestion
+- data.referral_attribution
+- entity.external_identifier.multi_source
+- history.field.audit_trail
+- integration.bidirectional_sync
+- integration.inbound_webhook.form_to_record
+- integration.marketing_platform.segment_sync
+- process.attribution.lifecycle_persistence
 source_hints:
   corpus_refs:
-    - REQ-020-universal-contact-creation-rules
-    - REQ-026-public-website-intake-integration
-    - REQ-030-prospective-student-inquiry-nurture
-    - REQ-035-unified-patient-record-deduplication
-
+  - REQ-020-universal-contact-creation-rules
+  - REQ-026-public-website-intake-integration
+  - REQ-030-prospective-student-inquiry-nurture
+  - REQ-035-unified-patient-record-deduplication
 created: 2026-04-19
 modified: 2026-04-19
 author: doug

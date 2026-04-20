@@ -1,0 +1,41 @@
+id: api.incremental_sync.updated_since_filter
+version: 0.1.0
+status: active
+name: Incremental sync via updated-since / updated-until time?
+description: Whether the CRM's collection API endpoints support `updated_since` and `updated_until` query
+  parameters that allow integration consumers to fetch only records modified within a specific time window,
+  enabling efficient incremental sync without a full re-fetch.
+question: 'Do the CRM''s record collection endpoints support time-window query parameters (e.g., `updated_since`?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- cross-cutting
+tags:
+- family:api
+- axis:sync
+- crm-dim:integration
+- complexity:low
+- impact:high
+examples:
+- requirement: '`GET /persons?updated_since=2026-01-01T00:00:00Z&updated_until=2026-04-01T00:00:00Z` returns
+    only persons modified in that window.'
+  expected_answer: unknown
+- requirement: '`GET /organizations?updated_since=2026-03-01T00:00:00Z` enables delta polling.'
+  expected_answer: unknown
+source_hints:
+  corpus_refs:
+  - pipedrive-v2
+related_facets:
+- api.pagination.cursor_based
+- integration.bidirectional_sync
+author: doug
+created: '2026-04-20'
+modified: '2026-04-20'
+reviewer: doug

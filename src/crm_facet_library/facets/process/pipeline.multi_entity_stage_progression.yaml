@@ -75,8 +75,11 @@ examples:
   commentary: Many CRMs support pipelines only for a single entity type (e.g. Opportunity linked to either
     Contact or Account, not both simultaneously). Mixed-type pipelines often require a workaround entity.
 related_facets:
-- process.trigger.on_field_change
+- api.async_conversion.poll_pattern
+- api.pipeline.audit_trail_per_stage
 - history.field.audit_trail
+- process.next_action.per_record_reminder
+- process.trigger.on_field_change
 source_hints:
   corpus_refs:
   - REQ-016-donor-prospect-pipeline

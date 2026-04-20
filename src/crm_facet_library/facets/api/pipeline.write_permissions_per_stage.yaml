@@ -1,0 +1,45 @@
+id: api.pipeline.write_permissions_per_stage
+version: 0.1.0
+status: active
+name: Per-Stage Write Permission Controls on Pipelines
+description: Measures whether pipeline stages carry an explicit write-permission policy that controls
+  which actors or roles can move records into that stage — configurable at the stage level rather than
+  solely at the pipeline or record-type level.
+question: 'Does the CRM support a write-permission policy on individual pipeline stages — controlling
+  which roles or actors are allowed to transition a record into that stage — as a first-class attribute
+  of?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- process
+- entity
+tags:
+- family:permission
+- family:workflow
+- axis:access-control
+- crm-dim:pipeline-management
+- complexity:medium
+- impact:high
+examples:
+- requirement: '[evidence from HubSpot] PipelineStage schema includes writePermissions*:enum(3); field
+    is present on both GET responses and PipelineStagePatchInput/PipelineStageInput, making it queryable
+    and settable'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - hubspot-pipelines-2026-09
+related_facets:
+- entity.lifecycle.state_machine
+- permission.field_level_access_control
+- workflow.status_transition_required_fields
+created: '2026-04-20'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

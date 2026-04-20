@@ -1,0 +1,41 @@
+id: entity.deal.discount_management
+version: 0.1.0
+status: active
+name: Deal-level discount management
+description: Whether the CRM supports one or more named discount records attached to a deal (rather than
+  only a single discount field), each individually manageable, allowing complex pricing structures with
+  multiple concurrent discount lines.
+question: Does the CRM support multiple named discount entries on a single deal record, each independently
+  created, updated, and deleted via the API, enabling stacked or itemised discount modelling?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- entity
+tags:
+- family:entity
+- axis:revenue
+- crm-dim:commercial
+- complexity:medium
+- impact:medium
+examples:
+- requirement: '`POST /deals/{id}/discounts` adds a named discount; `PATCH /deals/{id}/discounts/{discount_id}`
+    updates it.'
+  expected_answer: unknown
+- requirement: Multiple discounts can coexist on one deal.
+  expected_answer: unknown
+source_hints:
+  corpus_refs:
+  - pipedrive-v2
+related_facets:
+- api.deal_products.bulk_attach
+- entity.product.variation_management
+- entity.transaction.polymorphic_typing
+author: doug
+created: '2026-04-20'
+modified: '2026-04-20'
+reviewer: doug

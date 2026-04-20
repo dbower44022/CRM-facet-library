@@ -5,6 +5,32 @@ PRD 02 §7.4. Grouped under Added / Changed / Deprecated / Removed.
 
 ## [Unreleased]
 
+## [0.1.3] — 2026-04-20
+
+### Added
+- **26 new facets from W1-C2 extraction** against vendor OpenAPI specs
+  (Pipedrive v2 + HubSpot CRM 7 specs). Populates the `api` family (19
+  new entries) and enriches `entity`/`field` (7 new entries). 74 → 100
+  facets total. Notable additions:
+  - API patterns: `api.pagination.cursor_based`, `api.sparse_fieldset_selection`,
+    `api.async_conversion.poll_pattern`, `api.bulk_operations.upsert_semantics`,
+    `api.bulk_operations.partial_failure_handling`, `api.query.structured_filter_expression`,
+    `api.incremental_sync.updated_since_filter`, `api.object.merge_via_api`,
+    `api.schema.runtime_object_type_definition`
+  - Pipeline / permissions: `api.pipeline.audit_trail_per_stage`,
+    `api.pipeline.write_permissions_per_stage`, `api.owner.team_membership_and_primary_flag`
+  - Field management: `api.field_schema_management`, `api.field_ui_visibility_metadata`,
+    `api.properties.formula_calculated_field`, `api.properties.data_sensitivity_classification`
+  - Entity variants: `entity.deal.discount_management`, `entity.deal.origin_channel_tracking`,
+    `entity.product.variation_management`, `entity.record.follower_subscription`,
+    `entity.record.label_multi_assignment`
+
+### Changed
+- **W2 P-crossref pass:** `related_facets` now symmetric across the library.
+  Added 187 reciprocal edges; deduplicated and sorted every facet's list.
+  Linter warnings dropped from 224 → 37 (remaining are singleton-tag
+  expected warnings).
+
 ## [0.1.2] — 2026-04-20
 
 ### Added

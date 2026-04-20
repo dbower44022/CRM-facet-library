@@ -59,8 +59,9 @@ examples:
     non_active_states_supported: full
     segmentable_without_polluting_active: full
 related_facets:
-- process.segment.dynamic_list
 - data.referral_attribution
+- entity.record.label_multi_assignment
+- process.segment.dynamic_list
 source_hints:
   corpus_refs:
   - REQ-015-alumni-reactivation-and-recovery

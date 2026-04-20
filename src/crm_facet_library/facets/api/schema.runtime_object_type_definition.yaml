@@ -1,0 +1,44 @@
+id: api.schema.runtime_object_type_definition
+version: 0.1.0
+status: active
+name: Runtime Custom Object Schema Definition via API
+description: Measures whether the CRM API allows programmatic creation, modification, and deletion of
+  entire object type schemas at runtime — including defining properties, labels, required fields, searchable
+  fields, and inter-object association definitions — without requiring portal-level UI configuration or
+  vendor support.
+question: 'Can an integrator or administrator programmatically create, update, and delete custom object
+  schemas (including their properties, labels, required fields?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - read_only
+  - none
+  - unknown
+applies_to:
+- cross-cutting
+tags:
+- family:api
+- axis:schema-management
+- crm-dim:extensibility
+- complexity:high
+- impact:high
+examples:
+- requirement: '[evidence from HubSpot] POST/GET/PATCH/DELETE /crm-object-schemas/2026-09/schemas; POST
+    /schemas/{objectType}/associations; ObjectSchemaEgg includes properties, labels, requiredProperties,
+    searchableProperties, associatedObjects'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - hubspot-schemas-2026-09
+  - hubspot-properties-2026-09
+related_facets:
+- entity.relationship.cardinality
+- field.computed_classification
+created: '2026-04-20'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

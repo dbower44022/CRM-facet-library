@@ -87,8 +87,8 @@ examples:
     bidirectional_state_transition: full
     exclusion_flag_suppression: full
 related_facets:
-- process.trigger.on_field_change
 - field.computed_classification
+- process.trigger.on_field_change
 source_hints:
   corpus_refs:
   - REQ-004-cadence-aware-inactivity-monitoring

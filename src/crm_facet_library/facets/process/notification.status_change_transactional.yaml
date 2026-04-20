@@ -66,8 +66,8 @@ examples:
     recipient_targeting: full
     field_merge_in_content: full
 related_facets:
-- process.trigger.on_field_change
 - entity.lifecycle.state_machine
+- process.trigger.on_field_change
 source_hints:
   corpus_refs:
   - REQ-008-mentor-application-and-admission

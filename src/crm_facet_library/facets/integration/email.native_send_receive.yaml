@@ -65,8 +65,8 @@ examples:
     inbound_receive: full
     per_user_mailbox_connection: full
 related_facets:
-- integration.email.auto_logging
 - integration.bidirectional_sync
+- integration.email.auto_logging
 source_hints:
   corpus_refs:
   - REQ-022-email-integration-with-auto-logging

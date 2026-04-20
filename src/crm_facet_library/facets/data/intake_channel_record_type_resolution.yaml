@@ -59,6 +59,7 @@ examples:
   commentary: 'CRMs vary significantly here: some allow per-form type configuration as a hidden metadata
     field, others require post-submit automation, others have no mechanism at all.'
 related_facets:
+- data.account_match_on_inbound
 - data.identity_resolution
 - entity.relationship.cardinality
 source_hints:

@@ -78,8 +78,13 @@ examples:
     and grant management as distinct objects. The gap is highly discriminating between general and vertical
     CRMs.
 related_facets:
+- entity.deal.discount_management
+- entity.product.variation_management
 - entity.relationship.cardinality
 - field.computed_classification
+- field.rollup_aggregate.child_to_parent
+- process.deadline_tracking.date_bound_obligation
+- process.document_generation.record_merge
 source_hints:
   corpus_refs:
   - REQ-017-contribution-recording-and-receipts

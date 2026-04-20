@@ -72,6 +72,8 @@ examples:
     attendance_and_noshow_tracking: full
     date_relative_automated_comms: full
 related_facets:
+- data.cross_record_conversion_attribution
+- entity.event.multi_role_relationships
 - entity.relationship.cardinality
 - process.trigger.on_field_change
 source_hints:

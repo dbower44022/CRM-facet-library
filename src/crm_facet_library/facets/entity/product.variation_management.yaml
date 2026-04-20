@@ -1,0 +1,40 @@
+id: entity.product.variation_management
+version: 0.1.0
+status: active
+name: Product variant / SKU management
+description: Whether the CRM supports a native product-variation (SKU) sub-entity, allowing a single product
+  record to carry multiple variants with independent pricing or attributes, each manageable via the API
+  and attachable to deals.
+question: Does the CRM support native product variations (SKUs) as a first-class sub-entity of a product
+  record, with each variation independently created, updated, and deleted via the API?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- entity
+tags:
+- family:entity
+- axis:product-catalog
+- crm-dim:commercial
+- complexity:medium
+- impact:medium
+examples:
+- requirement: '`GET /products/{id}/variations` lists all variants; `POST /products/{id}/variations` creates
+    one.'
+  expected_answer: unknown
+- requirement: Variants can carry distinct price points and be individually attached to deal line items.
+  expected_answer: unknown
+source_hints:
+  corpus_refs:
+  - pipedrive-v2
+related_facets:
+- entity.deal.discount_management
+- entity.transaction.polymorphic_typing
+author: doug
+created: '2026-04-20'
+modified: '2026-04-20'
+reviewer: doug

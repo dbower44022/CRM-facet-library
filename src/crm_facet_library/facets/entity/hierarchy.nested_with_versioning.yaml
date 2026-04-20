@@ -89,8 +89,9 @@ examples:
     plan_versioning: full
 related_facets:
 - entity.relationship.cardinality
-- process.trigger.on_field_change
+- field.computed_metric.with_drift_alert
 - history.relationship.temporal_modeling
+- process.trigger.on_field_change
 source_hints:
   corpus_refs:
   - REQ-037-care-plan-tracking-adherence

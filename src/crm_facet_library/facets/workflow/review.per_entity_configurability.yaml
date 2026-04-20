@@ -71,9 +71,9 @@ examples:
     per_type_reviewer_assignment: full
     document_completeness_gate: full
 related_facets:
-- workflow.decision_rationale
 - history.field.audit_trail
 - ui.persona_driven_view_composition
+- workflow.decision_rationale
 source_hints:
   corpus_refs:
   - REQ-031-admissions-application-review-workflow

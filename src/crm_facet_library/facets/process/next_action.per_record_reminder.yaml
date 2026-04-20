@@ -54,8 +54,9 @@ examples:
     next_action_on_record: full
     automated_reminder: full
 related_facets:
-- process.trigger.on_field_change
+- process.deadline_tracking.date_bound_obligation
 - process.pipeline.multi_entity_stage_progression
+- process.trigger.on_field_change
 source_hints:
   corpus_refs:
   - REQ-016-donor-prospect-pipeline

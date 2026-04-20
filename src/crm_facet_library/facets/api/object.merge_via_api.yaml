@@ -1,0 +1,40 @@
+id: api.object.merge_via_api
+version: 0.1.0
+status: active
+name: Programmatic Record Merge with Primary Record Designation
+description: Measures whether the CRM API supports merging two records of the same object type into one
+  via an API call — designating which record is primary (retained) and which is merged (absorbed) — as
+  opposed to requiring merge to be performed only through the UI.
+question: 'Does the CRM provide an API endpoint to merge two records of the same type, where the caller
+  designates the primary record to retain and the secondary record to absorb?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- entity
+- cross-cutting
+tags:
+- family:api
+- axis:data-management
+- crm-dim:deduplication
+- complexity:medium
+- impact:high
+examples:
+- requirement: '[evidence from HubSpot] POST /crm/objects/2026-09/{objectType}/merge with PublicMergeInput
+    body containing primaryObjectId* and objectIdToMerge*; available under the Advanced tag for all objectTypes'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - hubspot-custom-objects-2026-09
+related_facets:
+- data.identity_resolution
+created: '2026-04-20'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

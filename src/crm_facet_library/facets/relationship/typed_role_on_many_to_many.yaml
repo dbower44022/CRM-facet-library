@@ -40,6 +40,7 @@ examples:
     relationship fields or junction entities to model this, which makes querying and UI rendering significantly
     more complex.
 related_facets:
+- api.association.labeled_typed_batch_management
 - entity.relationship.cardinality
 - history.relationship.temporal_modeling
 source_hints:

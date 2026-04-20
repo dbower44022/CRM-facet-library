@@ -55,9 +55,9 @@ examples:
     closed_children_retained_on_parent: full
     multiple_engagement_lifetimes: full
 related_facets:
-- history.relationship.retention
 - compliance.data_retention_policy
 - history.queryability.point_in_time
+- history.relationship.retention
 source_hints:
   corpus_refs:
   - REQ-005-engagement-closure-with-outcomes

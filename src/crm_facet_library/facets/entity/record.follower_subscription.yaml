@@ -1,0 +1,44 @@
+id: entity.record.follower_subscription
+version: 0.1.0
+status: active
+name: Per-record follower subscription with changelog
+description: Whether the CRM supports a first-class 'follower' relationship that lets any user subscribe
+  to updates on a specific record, with an auditable changelog of who followed/unfollowed and when — distinct
+  from record ownership.
+question: 'Does the CRM support a named ''follower'' subscription model on records (separate from ownership),
+  allowing any user to subscribe to a record?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- entity
+- persona
+tags:
+- family:entity
+- family:process
+- axis:collaboration
+- crm-dim:engagement
+- complexity:low
+- impact:medium
+examples:
+- requirement: '`GET /deals/{id}/followers`, `POST /deals/{id}/followers`, `GET /deals/{id}/followers/changelog`
+    available for deals, persons, organizations, and products.'
+  expected_answer: unknown
+- requirement: Follower changelog records user_id, add_time, and removal events.
+  expected_answer: unknown
+source_hints:
+  corpus_refs:
+  - pipedrive-v2
+related_facets:
+- entity.organization.activity_timeline
+- history.field.audit_trail
+author: doug
+created: '2026-04-20'
+modified: '2026-04-20'
+reviewer: doug

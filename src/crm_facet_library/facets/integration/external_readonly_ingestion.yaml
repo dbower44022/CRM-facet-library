@@ -98,9 +98,9 @@ examples:
     workflow_gate_on_external_data: full
     connector_flexibility: partial
 related_facets:
+- field.computed_classification
 - integration.bidirectional_sync
 - process.trigger.on_field_change
-- field.computed_classification
 source_hints:
   corpus_refs:
   - REQ-027-lms-integration-for-training

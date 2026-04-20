@@ -1,0 +1,47 @@
+id: api.sparse_fieldset_selection
+version: 0.1.0
+status: active
+name: Sparse field-set selection on GET requests
+description: Whether the CRM API allows callers to request only a named subset of fields (including opt-in
+  expensive/computed fields) on a single GET call, reducing payload size and avoiding N+1 fetches for
+  embedded child data.
+question: 'Can an API caller opt in or out of specific fields — including expensive computed or joined
+  fields — on a per-request basis using a query parameter?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- cross-cutting
+tags:
+- family:api
+- axis:query
+- crm-dim:integration
+- complexity:low
+- impact:medium
+examples:
+- requirement: '`GET /deals/{id}?include_fields=next_activity_id,products_count` returns those extra fields
+    only when requested.'
+  expected_answer: unknown
+- requirement: '`GET /persons/{id}?custom_fields=field_key1,field_key2` returns only the specified custom
+    fields.'
+  expected_answer: unknown
+source_hints:
+  corpus_refs:
+  - pipedrive-v2
+  - hubspot-objects-2026-09
+  - hubspot-custom-objects-2026-09
+related_facets:
+- api.cross_entity_bulk_query
+- api.field_schema_management
+- api.pagination.cursor_based
+- field.computed_classification
+author: doug
+created: '2026-04-20'
+modified: '2026-04-20'
+reviewer: doug

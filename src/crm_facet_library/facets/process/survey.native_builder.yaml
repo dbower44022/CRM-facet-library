@@ -83,8 +83,8 @@ examples:
     delivery_trigger: full
     multi_entity_reuse: full
 related_facets:
-- process.trigger.on_field_change
 - entity.polymorphic_notes
+- process.trigger.on_field_change
 source_hints:
   corpus_refs:
   - REQ-025-shared-survey-mechanism

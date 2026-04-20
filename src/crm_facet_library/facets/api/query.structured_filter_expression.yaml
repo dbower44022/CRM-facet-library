@@ -1,0 +1,40 @@
+id: api.query.structured_filter_expression
+version: 0.1.0
+status: active
+name: Structured Filter Expression Language for Record Search
+description: Measures whether the CRM API exposes a structured, multi-condition filter query language
+  for record search — supporting filter groups with multiple conditions, a range of comparison operators,
+  and property-level targeting — accessible via API without relying solely on simple query-string parameters.
+question: 'Does the CRM API support a structured filter expression language for searching records, with
+  multiple filter groups, multiple conditions per group, and a named set of comparison operators (e.g?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- cross-cutting
+tags:
+- family:api
+- axis:query
+- crm-dim:search
+- complexity:medium
+- impact:high
+examples:
+- requirement: '[evidence from HubSpot] PublicObjectSearchRequest with filterGroups*:array<FilterGroup>;
+    Filter has operator*:enum(13) and highValue/values fields supporting BETWEEN and IN-style operators'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - hubspot-objects-2026-09
+  - hubspot-custom-objects-2026-09
+related_facets:
+- entity.search.multi_attribute_filter
+created: '2026-04-20'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

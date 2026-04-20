@@ -67,9 +67,9 @@ examples:
     parent_record_auto_log: full
     thread_context_matching: full
 related_facets:
-- integration.email.native_send_receive
-- integration.bidirectional_sync
 - history.field.audit_trail
+- integration.bidirectional_sync
+- integration.email.native_send_receive
 source_hints:
   corpus_refs:
   - REQ-022-email-integration-with-auto-logging

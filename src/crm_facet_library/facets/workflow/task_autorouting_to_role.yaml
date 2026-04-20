@@ -73,9 +73,10 @@ examples:
     priority_ordering_in_queue: full
     supervisor_cross_team_view: full
 related_facets:
+- api.owner.team_membership_and_primary_flag
+- field.computed_classification
 - ui.persona_driven_view_composition
 - workflow.tier_driven_routing
-- field.computed_classification
 source_hints:
   corpus_refs:
   - REQ-039-care-coordinator-task-queue-persona

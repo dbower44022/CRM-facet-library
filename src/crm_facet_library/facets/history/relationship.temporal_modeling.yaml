@@ -2,59 +2,63 @@ id: history.relationship.temporal_modeling
 version: 0.1.0
 status: active
 name: Temporal relationship modeling
-description: >
-  Whether the CRM can natively represent relationships between entities
-  that are bounded by a start date and end date (e.g., a contact's employment
-  at a company from date A to date B), producing a first-class historical
-  record rather than overwriting current state.
+description: 'Whether the CRM can natively represent relationships between entities that are bounded by
+  a start date and end date (e.g., a contact''s employment at a company from date A to date B), producing
+  a first-class historical record rather than overwriting current state.
 
-question: >
-  Does the CRM support relationships bounded by start/end dates, preserved
-  as first-class historical records?
+  '
+question: 'Does the CRM support relationships bounded by start/end dates, preserved as first-class historical
+  records?
 
+  '
 answer_schema:
   type: rating
-  allowed_values: [full, partial, workaround, none, unknown]
+  allowed_values:
+  - full
+  - partial
+  - workaround
+  - none
+  - unknown
   scoring_hints:
     full: Native support — a dedicated "effective-dated" relationship type or equivalent.
     partial: Supported but requires workarounds (e.g., a custom entity with manually managed dates).
     workaround: Achievable only via external integration or heavy custom development.
     none: Not supported in any documented form.
     unknown: Insufficient evidence; default rating.
-
 applies_to:
-  - entity
-  - cross-cutting
-
+- entity
+- cross-cutting
 tags:
-  - family:history
-  - applies-to:relationships
-  - axis:modeling
-  - crm-dim:entity
-
+- family:history
+- applies-to:relationships
+- axis:modeling
+- crm-dim:entity
 examples:
-  - requirement: "Model a mentor's engagement with a client as a time-bounded relationship (active from start date through closure date), producing a first-class historical record after closure"
-    expected_answer: full
-    commentary: >
-      A CRM that models Engagement as a first-class time-bounded relationship
-      between Mentor and Client satisfies this cleanly. A CRM that overwrites
-      current mentor assignment on closure does not.
+- requirement: Model a mentor's engagement with a client as a time-bounded relationship (active from start
+    date through closure date), producing a first-class historical record after closure
+  expected_answer: full
+  commentary: 'A CRM that models Engagement as a first-class time-bounded relationship between Mentor
+    and Client satisfies this cleanly. A CRM that overwrites current mentor assignment on closure does
+    not.
 
+    '
 related_facets:
-  - history.relationship.retention
-  - history.field.audit_trail
-  - history.queryability.point_in_time
-
+- entity.hierarchy.nested_with_versioning
+- entity.hierarchy.parent_child_timeline
+- entity.organization.agreement_lifecycle
+- entity.relationship.cardinality
+- history.field.audit_trail
+- history.queryability.point_in_time
+- history.relationship.retention
+- relationship.typed_role_on_many_to_many
 prerequisites:
-  - entity.relationship.cardinality
-
+- entity.relationship.cardinality
 source_hints:
   corpus_refs:
-    - REQ-003-active-engagement-with-sessions
-    - REQ-012-partner-organization-relationships
+  - REQ-003-active-engagement-with-sessions
+  - REQ-012-partner-organization-relationships
   standards_refs:
-    - "Bitemporal modeling (Snodgrass, 2000)"
-
+  - Bitemporal modeling (Snodgrass, 2000)
 created: 2026-04-17
 modified: 2026-04-19
 author: doug

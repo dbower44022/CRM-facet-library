@@ -56,8 +56,9 @@ examples:
     self_edit_supported: full
     field_level_permission_granularity: full
 related_facets:
-- ui.persona_driven_view_composition
 - permission.audit_log_access
+- ui.internal_directory_search
+- ui.persona_driven_view_composition
 source_hints:
   corpus_refs:
   - REQ-010-mentor-profile-and-capacity

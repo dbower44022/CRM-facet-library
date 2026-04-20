@@ -72,9 +72,9 @@ examples:
     preference_enforcement_at_send: full
     consent_basis_tracking: full
 related_facets:
-- process.trigger.on_field_change
-- history.field.audit_trail
 - compliance.data_retention_policy
+- history.field.audit_trail
+- process.trigger.on_field_change
 source_hints:
   corpus_refs:
   - REQ-036-multichannel-patient-outreach

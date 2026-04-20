@@ -54,7 +54,9 @@ examples:
     multi_channel_campaign_record: full
     conversion_attribution_to_campaign: full
 related_facets:
+- data.cross_record_conversion_attribution
 - data.referral_attribution
+- process.segment.dynamic_list
 - process.trigger.on_field_change
 source_hints:
   corpus_refs:

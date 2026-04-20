@@ -71,8 +71,8 @@ examples:
   commentary: Most higher-ed CRMs cover email + SMS; additional channels (direct mail, social) vary widely
     by vendor.
 related_facets:
-- process.trigger.on_field_change
 - field.computed_classification
+- process.trigger.on_field_change
 - ui.persona_driven_view_composition
 source_hints:
   corpus_refs:

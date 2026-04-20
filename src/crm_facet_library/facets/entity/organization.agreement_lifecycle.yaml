@@ -54,6 +54,8 @@ examples:
     agreement_as_first_class_record: full
     renewal_reminder: full
 related_facets:
+- entity.organization.activity_timeline
+- entity.record.file_attachment
 - entity.relationship.cardinality
 - history.relationship.temporal_modeling
 - process.trigger.on_field_change

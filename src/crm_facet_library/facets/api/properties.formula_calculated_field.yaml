@@ -1,0 +1,45 @@
+id: api.properties.formula_calculated_field
+version: 0.1.0
+status: active
+name: Formula-Based Calculated Property Definition via API
+description: Measures whether the CRM API allows defining properties whose values are computed from a
+  formula expression referencing other properties on the same record — with the formula stored on the
+  property definition itself and evaluated by the platform, not by the caller.
+question: 'Does the CRM API support defining properties with a stored calculation formula that the platform
+  evaluates automatically?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- entity
+- cross-cutting
+tags:
+- family:field
+- family:api
+- axis:schema-management
+- crm-dim:computed-fields
+- complexity:medium
+- impact:medium
+examples:
+- requirement: '[evidence from HubSpot] PropertyCreate has calculationFormula:string; Property response
+    has calculated:boolean and calculationFormula:string; PropertyUpdate also exposes calculationFormula
+    — formula is part of the API-managed property definition'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - hubspot-properties-2026-09
+  - hubspot-schemas-2026-09
+related_facets:
+- field.computed_classification
+- field.computed_metric.with_drift_alert
+- field.rollup_aggregate.child_to_parent
+created: '2026-04-20'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

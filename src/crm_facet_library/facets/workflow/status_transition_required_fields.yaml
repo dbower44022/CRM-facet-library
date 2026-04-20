@@ -60,8 +60,10 @@ examples:
     conditional_required_fields: full
     transition_blocked_on_violation: full
 related_facets:
-- process.trigger.on_field_change
+- api.pipeline.write_permissions_per_stage
 - history.field.audit_trail
+- process.trigger.on_field_change
+- workflow.decision_rationale
 source_hints:
   corpus_refs:
   - REQ-001-online-client-intake

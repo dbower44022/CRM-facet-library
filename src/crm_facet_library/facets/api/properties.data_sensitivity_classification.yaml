@@ -1,0 +1,44 @@
+id: api.properties.data_sensitivity_classification
+version: 0.1.0
+status: active
+name: Property-Level Data Sensitivity Classification
+description: Measures whether the CRM exposes a first-class data sensitivity tier (e.g., non-sensitive,
+  sensitive, highly-sensitive) on individual properties, usable both when defining the schema and when
+  reading property definitions, enabling downstream access control, masking, or compliance filtering.
+question: 'Does the CRM support assigning a named sensitivity tier to individual properties in the schema
+  definition?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- entity
+- cross-cutting
+tags:
+- family:field
+- family:compliance
+- axis:data-governance
+- crm-dim:privacy
+- complexity:medium
+- impact:high
+examples:
+- requirement: '[evidence from HubSpot] PropertyCreate has dataSensitivity:enum(3); GET /crm/properties/{objectType}
+    accepts dataSensitivity:query:enum(highly_sensitive,non_sensitive,sensitive); Property schema includes
+    sensitiveDataCategories:array<string>'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - hubspot-properties-2026-09
+  - hubspot-schemas-2026-09
+related_facets:
+- compliance.data_retention_policy
+- permission.field_level_access_control
+created: '2026-04-20'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

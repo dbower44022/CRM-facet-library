@@ -1,0 +1,46 @@
+id: api.pagination.cursor_based
+version: 0.1.0
+status: active
+name: Cursor-Based Pagination for Collection Endpoints
+description: Measures whether the CRM API uses cursor-based (opaque token / 'after' pointer) pagination
+  rather than offset/page-number pagination, enabling stable iteration over large collections even when
+  the underlying data changes during traversal.
+question: 'Does the CRM API paginate collections using an opaque cursor token (rather than offset or page-number
+  parameters)?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- cross-cutting
+tags:
+- family:api
+- axis:pagination
+- crm-dim:data-access
+- complexity:low
+- impact:medium
+examples:
+- requirement: '[evidence from HubSpot] NextPage schema has after*:string and link; PreviousPage has before*:string;
+    ForwardPaging and Paging schemas used across all collection responses; after:query param on GET list
+    endpoints'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - hubspot-objects-2026-09
+  - hubspot-custom-objects-2026-09
+  - hubspot-associations-2026-09
+  - hubspot-crm-owners-2026-09
+  - pipedrive-v2
+related_facets:
+- api.cross_entity_bulk_query
+- api.incremental_sync.updated_since_filter
+- api.sparse_fieldset_selection
+created: '2026-04-20'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

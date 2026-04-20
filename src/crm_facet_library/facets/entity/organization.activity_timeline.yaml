@@ -53,8 +53,9 @@ examples:
     multi_user_logging: full
     per_entry_attribution: full
 related_facets:
-- history.field.audit_trail
 - entity.organization.agreement_lifecycle
+- entity.record.follower_subscription
+- history.field.audit_trail
 source_hints:
   corpus_refs:
   - REQ-012-partner-organization-relationships

@@ -66,8 +66,8 @@ examples:
     tamper_evidence: full
     document_version_binding: full
 related_facets:
-- history.field.audit_trail
 - compliance.data_retention_policy
+- history.field.audit_trail
 - permission.audit_log_access
 source_hints:
   corpus_refs:

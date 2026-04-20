@@ -72,8 +72,11 @@ examples:
     for one child object type per field, making cross-type rollup partial without formula fields or custom
     code. Many lighter CRMs have no native rollup type at all.
 related_facets:
-- field.computed_classification
+- api.properties.formula_calculated_field
 - entity.transaction.polymorphic_typing
+- field.computed_classification
+- ui.campaign.goal_vs_actual_visualization
+- ui.reporting.multi_dimension_pivot
 source_hints:
   corpus_refs:
   - REQ-018-donor-stewardship-and-lifetime-value

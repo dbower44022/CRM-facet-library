@@ -1,0 +1,39 @@
+id: api.cross_entity_bulk_query
+version: 0.1.0
+status: active
+name: Cross-entity bulk query by ID list
+description: Whether the CRM API accepts a comma-separated or array list of record IDs on collection GET
+  endpoints to retrieve multiple specific records in a single request, avoiding N individual GETs.
+question: Does the CRM API allow fetching multiple specific records of the same type in a single GET request
+  by supplying a list of IDs as a query parameter, rather than requiring one request per record?
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- cross-cutting
+tags:
+- family:api
+- axis:bulk
+- crm-dim:integration
+- complexity:low
+- impact:medium
+examples:
+- requirement: '`GET /deals?ids=1,2,3,4` returns exactly those four deal records in one response.'
+  expected_answer: unknown
+- requirement: '`GET /persons?ids=10,20,30` similarly supported.'
+  expected_answer: unknown
+source_hints:
+  corpus_refs:
+  - pipedrive-v2
+related_facets:
+- api.deal_products.bulk_attach
+- api.pagination.cursor_based
+- api.sparse_fieldset_selection
+author: doug
+created: '2026-04-20'
+modified: '2026-04-20'
+reviewer: doug

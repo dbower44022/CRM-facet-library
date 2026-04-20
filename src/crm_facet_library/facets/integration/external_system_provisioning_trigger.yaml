@@ -40,9 +40,9 @@ examples:
     manually in a separate system
   expected_answer: full
 related_facets:
-- process.trigger.on_field_change
-- integration.bidirectional_sync
 - entity.lifecycle.state_machine
+- integration.bidirectional_sync
+- process.trigger.on_field_change
 source_hints:
   corpus_refs:
   - REQ-009-mentor-onboarding-with-training

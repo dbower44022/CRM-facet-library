@@ -90,8 +90,8 @@ examples:
     suppression_bidirectional_sync: full
     prebuilt_connector_availability: full
 related_facets:
-- integration.bidirectional_sync
 - data.identity_resolution
+- integration.bidirectional_sync
 source_hints:
   corpus_refs:
   - REQ-028-marketing-list-sync

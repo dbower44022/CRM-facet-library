@@ -2,57 +2,80 @@ id: entity.relationship.cardinality
 version: 0.1.0
 status: active
 name: Relationship cardinality support
-description: >
-  The cardinalities the CRM can natively express between two entity types —
-  one-to-one, one-to-many, many-to-many — and whether the cardinality is
-  enforced by the platform rather than left to application logic.
+description: 'The cardinalities the CRM can natively express between two entity types — one-to-one, one-to-many,
+  many-to-many — and whether the cardinality is enforced by the platform rather than left to application
+  logic.
 
-question: >
-  Which relationship cardinalities does the CRM support natively between
-  two custom entity types, and are they enforced by the platform?
+  '
+question: 'Which relationship cardinalities does the CRM support natively between two custom entity types,
+  and are they enforced by the platform?
 
+  '
 answer_schema:
   type: structured
   fields:
     one_to_one:
       type: rating
-      allowed_values: [full, partial, workaround, none, unknown]
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
     one_to_many:
       type: rating
-      allowed_values: [full, partial, workaround, none, unknown]
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
     many_to_many:
       type: rating
-      allowed_values: [full, partial, workaround, none, unknown]
-
+      allowed_values:
+      - full
+      - partial
+      - workaround
+      - none
+      - unknown
 applies_to:
-  - entity
-
+- entity
 tags:
-  - family:entity
-  - family:relationship
-  - applies-to:relationships
-  - axis:modeling
-  - crm-dim:entity
-
+- family:entity
+- family:relationship
+- applies-to:relationships
+- axis:modeling
+- crm-dim:entity
 examples:
-  - requirement: "Let one Contact belong to many Accounts and vice versa"
-    expected_answer:
-      one_to_one: full
-      one_to_many: full
-      many_to_many: full
-    commentary: >
-      Most mature CRMs support one-to-many natively but vary widely on
-      many-to-many — some require an explicit junction entity.
+- requirement: Let one Contact belong to many Accounts and vice versa
+  expected_answer:
+    one_to_one: full
+    one_to_many: full
+    many_to_many: full
+  commentary: 'Most mature CRMs support one-to-many natively but vary widely on many-to-many — some require
+    an explicit junction entity.
 
+    '
 related_facets:
-  - history.relationship.temporal_modeling
-  - history.relationship.retention
-
+- api.association.labeled_typed_batch_management
+- api.schema.runtime_object_type_definition
+- data.intake_channel_record_type_resolution
+- data.referral_attribution
+- entity.event.multi_role_relationships
+- entity.event.registration_management
+- entity.hierarchy.nested_with_versioning
+- entity.hierarchy.parent_child_timeline
+- entity.organization.agreement_lifecycle
+- entity.organization.primary_contact_designation
+- entity.search.multi_attribute_filter
+- entity.transaction.polymorphic_typing
+- history.relationship.retention
+- history.relationship.temporal_modeling
+- relationship.typed_role_on_many_to_many
 source_hints:
   corpus_refs:
-    - REQ-002-mentor-matching-and-assignment
-    - REQ-012-partner-organization-relationships
-
+  - REQ-002-mentor-matching-and-assignment
+  - REQ-012-partner-organization-relationships
 created: 2026-04-17
 modified: 2026-04-19
 author: doug

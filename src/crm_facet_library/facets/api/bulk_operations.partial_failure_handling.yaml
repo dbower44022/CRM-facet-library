@@ -1,0 +1,43 @@
+id: api.bulk_operations.partial_failure_handling
+version: 0.1.0
+status: active
+name: Batch Operation Partial-Failure Reporting
+description: Measures whether the CRM API's batch (bulk) endpoints return partial-success responses —
+  processing all inputs independently and reporting per-item errors alongside successful results — rather
+  than failing the entire batch on a single error or succeeding silently.
+question: 'When a CRM batch API call contains a mix of valid and invalid inputs, does the platform process
+  all items independently and return both the successful results and per-item errors in a single?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- cross-cutting
+tags:
+- family:api
+- axis:bulk-write
+- crm-dim:data-ingestion
+- complexity:medium
+- impact:high
+examples:
+- requirement: '[evidence from HubSpot] BatchResponseSimplePublicObject includes errors:array<StandardError>,
+    numErrors:integer, results array, and status:enum — indicating partial-success responses with per-item
+    error reporting'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - hubspot-objects-2026-09
+  - hubspot-custom-objects-2026-09
+  - hubspot-associations-2026-09
+  - hubspot-properties-2026-09
+related_facets:
+- api.bulk_operations.upsert_semantics
+created: '2026-04-20'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

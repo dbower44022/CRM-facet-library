@@ -1,0 +1,41 @@
+id: api.bulk_operations.upsert_semantics
+version: 0.1.0
+status: active
+name: Bulk Upsert with Create-or-Update Semantics
+description: Measures whether the CRM API supports a true batch upsert operation that creates records
+  that don't exist and updates records that do — in a single call — with the response indicating which
+  records were newly created vs. updated, and supporting an alternate match key (idProperty) rather than
+  only the internal ID.
+question: 'Does the CRM API support a batch upsert endpoint that atomically creates-or-updates records
+  matched by a configurable key?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- cross-cutting
+tags:
+- family:api
+- axis:bulk-write
+- crm-dim:data-ingestion
+- complexity:medium
+- impact:high
+examples:
+- requirement: '[evidence from HubSpot] POST /crm/objects/2026-09/{objectType}/batch/upsert accepts inputs
+    with idProperty; SimplePublicUpsertObject response includes new*:boolean discriminator'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - hubspot-objects-2026-09
+  - hubspot-custom-objects-2026-09
+related_facets:
+- api.bulk_operations.partial_failure_handling
+created: '2026-04-20'
+modified: '2026-04-20'
+author: doug
+reviewer: doug

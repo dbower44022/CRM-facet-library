@@ -71,6 +71,8 @@ examples:
     numeric_derived_filter: full
     compound_filter_across_field_types: full
 related_facets:
+- api.cross_entity_search.unified
+- api.query.structured_filter_expression
 - entity.relationship.cardinality
 - field.computed_classification
 source_hints:

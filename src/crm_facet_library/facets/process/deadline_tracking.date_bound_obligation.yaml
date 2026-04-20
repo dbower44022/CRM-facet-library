@@ -57,8 +57,8 @@ examples:
   commentary: General-purpose CRMs with a single close-date field per record fail this for multi-deadline
     grants. Nonprofit-vertical CRMs often include grant management modules with multi-deadline support.
 related_facets:
-- process.next_action.per_record_reminder
 - entity.transaction.polymorphic_typing
+- process.next_action.per_record_reminder
 source_hints:
   corpus_refs:
   - REQ-017-contribution-recording-and-receipts

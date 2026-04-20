@@ -52,6 +52,7 @@ examples:
     control over the policy; fully configurable composition is rare.
 related_facets:
 - permission.field_level_access_control
+- permission.self_vs_others_record_scope
 - ui.persona_driven_view_composition
 source_hints:
   corpus_refs:

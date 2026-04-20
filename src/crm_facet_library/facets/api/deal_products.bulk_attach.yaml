@@ -1,0 +1,42 @@
+id: api.deal_products.bulk_attach
+version: 0.1.0
+status: active
+name: Bulk product line-item attachment to a deal
+description: Whether the CRM API supports attaching multiple product line items to a deal in a single
+  bulk request, rather than requiring one API call per product attachment — and whether it supports bulk
+  deletion of multiple line items simultaneously.
+question: 'Does the CRM API allow attaching multiple product line items to a deal record in a single bulk
+  request, and removing multiple line items in a single delete call?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- entity
+- process
+tags:
+- family:api
+- axis:bulk
+- crm-dim:integration
+- complexity:low
+- impact:medium
+examples:
+- requirement: '`POST /deals/{id}/products/bulk` attaches multiple products to a deal in one request.'
+  expected_answer: unknown
+- requirement: '`DELETE /deals/{id}/products?ids=1,2,3` removes multiple product attachments at once.'
+  expected_answer: unknown
+source_hints:
+  corpus_refs:
+  - pipedrive-v2
+related_facets:
+- api.cross_entity_bulk_query
+- entity.deal.discount_management
+author: doug
+created: '2026-04-20'
+modified: '2026-04-20'
+reviewer: doug

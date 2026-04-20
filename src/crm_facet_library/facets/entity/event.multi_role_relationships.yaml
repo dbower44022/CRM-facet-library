@@ -39,8 +39,8 @@ examples:
   commentary: CRMs with a rigid event model (attendees only) rate none; those supporting typed junction
     entities or polymorphic relationships rate full.
 related_facets:
-- entity.relationship.cardinality
 - entity.event.registration_management
+- entity.relationship.cardinality
 source_hints:
   corpus_refs:
   - REQ-014-workshop-and-event-management

@@ -36,8 +36,10 @@ examples:
     their own engagement history but not other clients'
   expected_answer: full
 related_facets:
+- api.owner.team_membership_and_primary_flag
 - permission.field_level_access_control
 - permission.multi_role_composition
+- ui.cross_entity_reporting
 source_hints:
   corpus_refs:
   - REQ-021-role-based-access-control

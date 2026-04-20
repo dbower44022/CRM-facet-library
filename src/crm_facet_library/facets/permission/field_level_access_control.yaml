@@ -55,7 +55,15 @@ examples:
   commentary: Many CRMs support record-level RBAC but stop short of field-level write restrictions. Platforms
     that enforce field-level security natively are a minority.
 related_facets:
+- api.field_schema_management
+- api.field_ui_visibility_metadata
+- api.pipeline.write_permissions_per_stage
+- api.properties.data_sensitivity_classification
+- entity.polymorphic_notes
 - permission.audit_log_access
+- permission.multi_role_composition
+- permission.self_vs_others_record_scope
+- ui.cross_entity_reporting
 - ui.persona_driven_view_composition
 source_hints:
   corpus_refs:

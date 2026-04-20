@@ -1,0 +1,44 @@
+id: api.cross_entity_search.unified
+version: 0.1.0
+status: active
+name: Unified cross-entity search endpoint
+description: Whether the CRM offers a single search endpoint that queries across multiple entity types
+  simultaneously — returning ranked or typed results from deals, persons, organizations, products, and
+  leads in one response — alongside per-entity search endpoints.
+question: 'Does the CRM provide a unified search API endpoint that queries across multiple entity types
+  in a single request, returning typed results from each?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- cross-cutting
+- persona
+tags:
+- family:api
+- family:ui
+- axis:search
+- crm-dim:integration
+- complexity:medium
+- impact:medium
+examples:
+- requirement: '`GET /itemSearch?term=acme&item_types=deal,person,organization` returns typed results
+    across all three entity types.'
+  expected_answer: unknown
+- requirement: '`search_for_related_items=true` expands results to include records related to matches.'
+  expected_answer: unknown
+source_hints:
+  corpus_refs:
+  - pipedrive-v2
+related_facets:
+- entity.search.multi_attribute_filter
+- ui.internal_directory_search
+author: doug
+created: '2026-04-20'
+modified: '2026-04-20'
+reviewer: doug

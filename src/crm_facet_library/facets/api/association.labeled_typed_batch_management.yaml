@@ -1,0 +1,44 @@
+id: api.association.labeled_typed_batch_management
+version: 0.1.0
+status: active
+name: Labeled Association Batch Create and Selective Label Removal
+description: Measures whether the CRM API supports creating associations between record pairs with one
+  or more typed labels in a single batch call, and removing specific labels from existing associations
+  without deleting the underlying association — enabling fine-grained relationship labeling at scale via
+  API.
+question: 'Does the CRM API allow batch-creating associations with custom typed labels, and separately
+  removing individual labels from an association without removing the association itself — both as bulk?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- entity
+- cross-cutting
+tags:
+- family:api
+- family:relationship
+- axis:bulk-write
+- crm-dim:relationship-management
+- complexity:medium
+- impact:medium
+examples:
+- requirement: '[evidence from HubSpot] POST /crm/associations/2026-09/{from}/{to}/batch/create with AssociationSpec
+    types; POST …/batch/labels/archive for selective label removal; AssociationSpecWithLabel includes
+    category, typeId, label; separate from /batch/archive which removes the whole association'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - hubspot-associations-2026-09
+related_facets:
+- entity.relationship.cardinality
+- relationship.typed_role_on_many_to_many
+created: '2026-04-20'
+modified: '2026-04-20'
+author: doug
+reviewer: doug
