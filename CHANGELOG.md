@@ -5,6 +5,40 @@ PRD 02 §7.4. Grouped under Added / Changed / Deprecated / Removed.
 
 ## [Unreleased]
 
+## [0.1.5] — 2026-04-21
+
+### Changed
+
+Decomposed two overbroad single-rating facets into structured
+multi-field facets. Surfaced by PRD 04 step B/C work on Attio, where
+the single-rating facets could not distinguish asymmetric CRM support
+(create-yes, delete-no) and forced mappings to share identical ratings
+across CRMBuilder sub-capabilities that should be independent.
+
+- `api.schema.runtime_object_type_definition` — now structured with
+  `create / update / delete / property_management` fields. Previously
+  a single rating. Bumped facet version 0.1.0 → 0.1.1.
+- `api.field_schema_management` — now structured with
+  `create / update / delete / read_metadata / option_management`
+  fields. Previously a single rating. Bumped facet version 0.1.0 → 0.1.1.
+
+### Compatibility note
+
+Consumers that previously read `rating` at the top level of these two
+facets must now read the relevant sub-field. The CRMinventory exporter
+mapping was updated in lockstep to route CRMBuilder sub-capabilities
+to the appropriate facet sub-fields.
+
+Existing W4 rating JSONs for these two facets produced under v0.1.0
+are stale (they have a single `rating` string instead of the new
+structured fields). Re-rating against the updated facets is cheap
+(~$0.20 for 2 facets × N pilot CRMs).
+
+### Library size unchanged
+
+Still 103 facets across 13 families; the decomposed facets retain
+their original ids.
+
 ## [0.1.4] — 2026-04-20
 
 ### Added

@@ -1,44 +1,92 @@
 id: api.schema.runtime_object_type_definition
-version: 0.1.0
+version: 0.1.1
 status: active
-name: Runtime Custom Object Schema Definition via API
-description: Measures whether the CRM API allows programmatic creation, modification, and deletion of
-  entire object type schemas at runtime — including defining properties, labels, required fields, searchable
-  fields, and inter-object association definitions — without requiring portal-level UI configuration or
-  vendor support.
-question: 'Can an integrator or administrator programmatically create, update, and delete custom object
-  schemas (including their properties, labels, required fields?
+name: Runtime object-type schema management via API
+description: >
+  Whether the CRM API exposes programmatic management of object-type schemas —
+  separately covering creation, update, deletion, and inline property management.
+  Decomposed in v0.1.5 (from a single-rating facet to structured sub-fields)
+  because CRMBuilder's tier calc treats entity create / update / delete as
+  distinct sub-capabilities; conflating them under one rating under-claimed
+  CRMs with asymmetric support (e.g. create-yes but delete-no, common in
+  modern CRMs like Attio).
 
-  '
+question: >
+  Can object-type schemas be created, updated, and deleted via API — with
+  inline definition of properties, labels, and required fields?
+
 answer_schema:
-  type: rating
-  allowed_values:
-  - full
-  - partial
-  - read_only
-  - none
-  - unknown
+  type: structured
+  fields:
+    create:
+      type: rating
+      allowed_values: [full, partial, indirect, none, unknown]
+      scoring_hints:
+        full: New object types creatable via documented API endpoint without UI interaction; returns a usable object ID.
+        partial: Object types creatable via API but with gaps (e.g. requires post-create UI steps, limited type coverage).
+        indirect: Achievable only via package upload, file import, metadata config, or similar non-REST mechanism.
+        none: No API path to create object types; UI-only.
+    update:
+      type: rating
+      allowed_values: [full, partial, indirect, none, unknown]
+      scoring_hints:
+        full: Object-type metadata (labels, singular/plural, display fields) modifiable via API.
+        partial: Only some metadata modifiable via API; some fields UI-only.
+        indirect: Only via package re-upload or config edit.
+        none: Object types immutable once created through API.
+    delete:
+      type: rating
+      allowed_values: [full, partial, indirect, none, na, unknown]
+      scoring_hints:
+        full: Object types deletable via API; dependent records handled (cascade or block as documented).
+        partial: Soft-delete / deactivate supported; hard delete not via API.
+        indirect: Only via support request or package reinstall.
+        none: Object types cannot be deleted (permanent once created).
+        na: Delete is conceptually not applicable (rare; some CRMs treat object types as immutable system state).
+    property_management:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Properties (fields) managed inline at schema-definition time — not only through a separate field-management API.
+        partial: Only a subset of property types / metadata inline; rest requires the separate field API.
+        none: Schema creation is bare; fields must all be added through a separate API.
+
 applies_to:
-- cross-cutting
+  - cross-cutting
+
 tags:
-- family:api
-- axis:schema-management
-- crm-dim:extensibility
-- complexity:high
-- impact:high
+  - family:api
+  - axis:schema-management
+  - crm-dim:extensibility
+  - complexity:high
+  - impact:high
+
 examples:
-- requirement: '[evidence from HubSpot] POST/GET/PATCH/DELETE /crm-object-schemas/2026-09/schemas; POST
-    /schemas/{objectType}/associations; ObjectSchemaEgg includes properties, labels, requiredProperties,
-    searchableProperties, associatedObjects'
-  expected_answer: full
+  - requirement: "[HubSpot v3 schemas] POST/GET/PATCH/DELETE /crm-object-schemas/{}/schemas; ObjectSchemaEgg includes properties, labels, requiredProperties, searchableProperties, associatedObjects"
+    expected_answer:
+      create: full
+      update: full
+      delete: full
+      property_management: full
+  - requirement: "[Attio v2 objects] POST /v2/objects (create) + PATCH /v2/objects/{} (update) supported; no DELETE endpoint for objects. Properties managed via the separate /v2/objects/{object}/attributes API, not inline at object creation."
+    expected_answer:
+      create: full
+      update: full
+      delete: none
+      property_management: none
+
+related_facets:
+  - api.field_schema_management
+  - entity.relationship.cardinality
+  - field.computed_classification
+
 source_hints:
   corpus_refs:
-  - hubspot-schemas-2026-09
-  - hubspot-properties-2026-09
-related_facets:
-- entity.relationship.cardinality
-- field.computed_classification
-created: '2026-04-20'
-modified: '2026-04-20'
+    - hubspot-schemas-2026-09
+    - hubspot-properties-2026-09
+    - pipedrive-v2
+
+created: 2026-04-20
+modified: 2026-04-21
 author: doug
 reviewer: doug

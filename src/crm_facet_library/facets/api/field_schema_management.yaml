@@ -1,44 +1,106 @@
 id: api.field_schema_management
-version: 0.1.0
+version: 0.1.1
 status: active
-name: Programmatic custom-field schema management
-description: Whether the CRM exposes a full CRUD API for defining, updating, and deleting custom fields
-  — including their option lists — on all major entity types, enabling schema management to be automated
-  without using the admin UI.
-question: 'Does the CRM provide a programmatic API for creating, updating, and deleting custom field definitions
-  (including enumeration options) on all major entity types?
+name: Custom-field schema management via API
+description: >
+  Whether the CRM exposes CRUD operations for custom field definitions —
+  separately covering creation, update, deletion, and metadata read.
+  Decomposed in v0.1.5 (from single-rating to structured) so CRMBuilder's
+  separate field_management.create_field / update_field / read_field_metadata
+  sub-capabilities can be rated independently. Conflating them under one
+  rating under-claimed CRMs with asymmetric support.
 
-  '
+question: >
+  Can custom field definitions be created, updated, read, and deleted via
+  API — including enumeration options on enum/multiEnum fields?
+
 answer_schema:
-  type: rating
-  allowed_values:
-  - full
-  - partial
-  - none
-  - unknown
+  type: structured
+  fields:
+    create:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: New fields creatable on all major entity types via documented API; all standard field types supported.
+        partial: Field creation works but with gaps (type coverage limited, or only on some entity types).
+        none: No API path for field creation.
+    update:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Field metadata (label, options, validation, visibility) modifiable via API.
+        partial: Only a subset of field attributes modifiable.
+        none: Fields immutable once created through API.
+    delete:
+      type: rating
+      allowed_values: [full, partial, indirect, none, unknown]
+      scoring_hints:
+        full: Fields deletable via API; dependent data handled (soft-delete or hard-delete as documented).
+        partial: Soft-delete / archive supported; no hard delete.
+        indirect: Only via package reinstall or admin support.
+        none: Fields cannot be deleted once created.
+    read_metadata:
+      type: rating
+      allowed_values: [full, partial, none, unknown]
+      scoring_hints:
+        full: Complete field schema readable via API — type, label, options, validation, display properties.
+        partial: Basic metadata readable but some attributes UI-only.
+        none: No field metadata API; must introspect from record payloads.
+    option_management:
+      type: rating
+      allowed_values: [full, partial, none, unknown, na]
+      scoring_hints:
+        full: For enum / multiEnum fields, options creatable / updatable / deletable via API.
+        partial: Options readable but can only be edited via UI.
+        none: Option values bound at field creation; not API-manageable afterwards.
+        na: CRM has no enum concept.
+
 applies_to:
-- cross-cutting
+  - cross-cutting
+
 tags:
-- family:api
-- family:admin
-- axis:schema
-- crm-dim:integration
-- complexity:medium
-- impact:high
+  - family:api
+  - family:admin
+  - axis:schema
+  - crm-dim:integration
+  - complexity:medium
+  - impact:high
+
 examples:
-- requirement: '`POST /dealFields`, `PATCH /dealFields/{field_code}`, `DELETE /dealFields/{field_code}/options`
-    available for Deals.'
-  expected_answer: unknown
-- requirement: Same pattern exists for PersonFields, OrganizationFields, ProductFields, and ActivityFields.
-  expected_answer: unknown
+  - requirement: "[HubSpot v3] POST/GET/PATCH/DELETE /crm/v3/properties/{objectType}; PropertyCreate supports enum options + validation"
+    expected_answer:
+      create: full
+      update: full
+      delete: full
+      read_metadata: full
+      option_management: full
+  - requirement: "[Pipedrive v1] POST /dealFields, PATCH /dealFields/{code}, DELETE /dealFields/{code}; similar for Person/Organization/Product/Activity fields"
+    expected_answer:
+      create: full
+      update: full
+      delete: full
+      read_metadata: full
+      option_management: full
+  - requirement: "[Attio v2] POST /v2/objects/{object}/attributes (create), PATCH same path (update), GET for read; wysiwyg type missing; no DELETE endpoint documented for attributes"
+    expected_answer:
+      create: partial
+      update: full
+      delete: none
+      read_metadata: full
+      option_management: full
+
+related_facets:
+  - api.schema.runtime_object_type_definition
+  - api.field_ui_visibility_metadata
+  - api.sparse_fieldset_selection
+  - permission.field_level_access_control
+
 source_hints:
   corpus_refs:
-  - pipedrive-v2
-related_facets:
-- api.field_ui_visibility_metadata
-- api.sparse_fieldset_selection
-- permission.field_level_access_control
+    - pipedrive-v2
+    - hubspot-properties-2026-09
+
 author: doug
-created: '2026-04-20'
-modified: '2026-04-20'
+created: 2026-04-20
+modified: 2026-04-21
 reviewer: doug
