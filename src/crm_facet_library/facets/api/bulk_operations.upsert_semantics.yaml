@@ -35,7 +35,8 @@ source_hints:
   - hubspot-custom-objects-2026-09
 related_facets:
 - api.bulk_operations.partial_failure_handling
+- api.bulk_operations.batch_create_endpoint
 created: '2026-04-20'
-modified: '2026-04-20'
+modified: '2026-04-22'
 author: doug
 reviewer: doug

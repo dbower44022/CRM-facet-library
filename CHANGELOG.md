@@ -5,6 +5,28 @@ PRD 02 §7.4. Grouped under Added / Changed / Deprecated / Removed.
 
 ## [Unreleased]
 
+## [0.1.6] — 2026-04-22
+
+### Added
+
+- `api.bulk_operations.batch_create_endpoint` — new facet rating
+  whether the CRM API supports creating many records of a single
+  entity type in one API call, with per-record success/failure.
+
+### Compatibility note
+
+Previously, CRMinventory's `facet_to_crmbuilder_mapping.yaml` routed
+CRMBuilder's `data_operations.batch_create` sub-capability through
+`api.bulk_operations.upsert_semantics`. That conflated batch-create
+*availability* with upsert-semantics nuances (e.g. Salesforce rated
+`partial` on upsert_semantics because Bulk API 2.0 job results don't
+include a new-vs-updated discriminator — but batch_create itself is
+fully supported). This new facet lets the mapping answer the
+batch-create question directly.
+
+Consumers: no breakage. Old `upsert_semantics` facet unchanged; new
+facet is additive. Library grew 103 → 104 facets.
+
 ## [0.1.5] — 2026-04-21
 
 ### Changed

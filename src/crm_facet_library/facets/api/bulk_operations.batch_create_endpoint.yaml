@@ -1,0 +1,45 @@
+id: api.bulk_operations.batch_create_endpoint
+version: 0.1.0
+status: active
+name: Batch Record Creation Endpoint
+description: Measures whether the CRM API supports creating many records of a single entity type in
+  one API call, with per-record success/failure reporting. Distinct from bulk upsert (which additionally
+  requires create-or-update matching semantics) and from partial-failure handling (which rates response
+  granularity on errors, not whether a batch-create endpoint exists).
+question: 'Does the CRM API support creating many records of a single entity type in a single API call,
+  with per-record success/failure response?
+
+  '
+answer_schema:
+  type: rating
+  allowed_values:
+  - full
+  - partial
+  - none
+  - unknown
+applies_to:
+- cross-cutting
+tags:
+- family:api
+- axis:bulk-write
+- crm-dim:data-ingestion
+- complexity:low
+- impact:high
+examples:
+- requirement: '[evidence from Salesforce] POST /services/data/v66.0/jobs/ingest with operation: insert
+    creates many records via CSV upload (150 M records/day), returning per-row success/failure.'
+  expected_answer: full
+- requirement: '[evidence from HubSpot] POST /crm/objects/2026-09/{objectType}/batch/create accepts an
+    inputs array; SimplePublicObjectBatchInput shape; partial failures reported per input.'
+  expected_answer: full
+source_hints:
+  corpus_refs:
+  - salesforce-enriched-evidence
+  - hubspot-objects-2026-09
+related_facets:
+- api.bulk_operations.upsert_semantics
+- api.bulk_operations.partial_failure_handling
+created: '2026-04-22'
+modified: '2026-04-22'
+author: doug
+reviewer: doug
